@@ -25,6 +25,10 @@ import {
   Timer,
   AlertTriangle,
   TrendingUp,
+  Star,
+  Users,
+  Gift,
+  Crown,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -40,11 +44,13 @@ const DownloadButton = ({
   icon,
   onClick,
   compact = false,
+  centered = false,
 }: {
   label: string;
   icon: React.ReactNode;
   onClick?: () => void;
   compact?: boolean;
+  centered?: boolean;
 }) => (
   <Button
     onClick={onClick}
@@ -55,7 +61,7 @@ const DownloadButton = ({
     className={`${compact
       ? "hover:opacity-90 active:opacity-85 text-white font-bold py-2 px-4 rounded-md flex items-center gap-2 transition-all duration-300 min-h-[36px] text-sm shadow-lg"
       : "hover:opacity-90 active:opacity-85 text-white font-bold py-4 px-8 rounded-lg flex items-center gap-3 transition-all duration-300 min-h-[56px] text-base sm:text-lg touch-manipulation shadow-xl"
-      }`}
+      } ${centered ? "block mx-auto" : ""}`}
   >
     {icon}
     {label}
@@ -355,8 +361,16 @@ export default function Home() {
           <div className="text-center mt-12">
             <Button
               onClick={() => document.querySelector("#hero")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg block mx-auto flex items-center gap-3 transition-all duration-300 min-h-[56px] text-base sm:text-lg touch-manipulation shadow-xl"
+              style={{
+                backgroundColor: COLORS.laranja,
+                border: 'none',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px'
+              }}
             >
+              <Download size={24} />
               BAIXE O APP E COMECE AGORA
             </Button>
           </div>
@@ -455,11 +469,13 @@ export default function Home() {
 
           {/* CTA Repetido */}
           <div className="text-center mt-12">
-            <DownloadButton
-              label="BAIXE O APP AGORA E CONFIRA"
-              icon={<Download size={24} />}
-              onClick={handleAndroidDownload}
-            />
+            <div className="flex justify-center">
+              <DownloadButton
+                label="BAIXE O APP AGORA E CONFIRA"
+                icon={<Download size={24} />}
+                onClick={handleAndroidDownload}
+              />
+            </div>
           </div>
         </div>
       </section>
@@ -716,13 +732,13 @@ export default function Home() {
                     <span className="font-bold text-lg" style={{ color: COLORS.azul }}>R$ 18.700</span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Taxa BuscaFrete (5%)</span>
-                    <span className="text-sm text-gray-600">-R$ 935</span>
+                    <span className="text-sm text-gray-600">Taxa BuscaFrete (15%)</span>
+                    <span className="text-sm text-gray-600">-R$ 2.805</span>
                   </div>
                   <hr className="my-2" />
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Você Recebe</span>
-                    <span className="font-bold text-lg" style={{ color: COLORS.verde }}>R$ 17.765</span>
+                    <span className="font-bold text-lg" style={{ color: COLORS.verde }}>R$ 15.895</span>
                   </div>
                 </div>
 
@@ -764,11 +780,119 @@ export default function Home() {
           {/* CTA após mockups */}
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-6">Pronto para começar? Baixe o app e veja fretes reais!</p>
-            <DownloadButton
-              label="COMEÇAR AGORA"
-              icon={<Download size={24} />}
-              onClick={handleAndroidDownload}
-            />
+            <div className="flex justify-center">
+              <DownloadButton
+                label="COMEÇAR AGORA"
+                icon={<Download size={24} />}
+                onClick={handleAndroidDownload}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SEÇÃO MOTORISTAS FUNDADORES */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-orange-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Crown size={40} style={{ color: COLORS.laranja }} />
+              <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: COLORS.azul }}>
+                Motoristas Fundadores
+              </h2>
+            </div>
+            <p className="text-xl text-gray-600 mb-4">
+              Seja um dos primeiros 100 motoristas e garanta benefícios exclusivos!
+            </p>
+            <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md">
+              <Users size={20} style={{ color: COLORS.azul }} />
+              <span className="font-semibold text-lg" style={{ color: COLORS.azul }}>
+                VAGAS LIMITADAS
+              </span>
+            </div>
+          </div>
+
+          {/* Container dos benefícios */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+            {/* Benefício 1: Desconto nas primeiras cargas */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Gift size={32} style={{ color: COLORS.laranja }} />
+                </div>
+                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
+                  Desconto Especial
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  <strong className="text-2xl font-bold" style={{ color: COLORS.verde }}>50% OFF</strong>
+                  <br />nas primeiras 4 cargas
+                </p>
+                <p className="text-sm text-gray-500">
+                  Reduza sua taxa de 15% para apenas 7,5% nas suas primeiras negociações
+                </p>
+              </div>
+            </div>
+
+            {/* Benefício 2: Selo de Fundador */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Star size={32} style={{ color: COLORS.azul }} />
+                </div>
+                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
+                  Selo de Fundador
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Badge exclusivo no seu perfil confirmando que você foi um dos pioneiros do BuscaFrete
+                </p>
+                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <Crown size={14} />
+                  FUNDADOR
+                </div>
+              </div>
+            </div>
+
+            {/* Benefício 3: Grupo VIP */}
+            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Users size={32} style={{ color: COLORS.verde }} />
+                </div>
+                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
+                  Grupo VIP Exclusivo
+                </h3>
+                <p className="text-gray-600 mb-4">
+                  Acesso antecipado a novas funcionalidades, dicas exclusivas e networking com outros fundadores
+                </p>
+                <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <Zap size={14} />
+                  ACESSO VIP
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Call to Action */}
+          <div className="text-center">
+            <div className="bg-gradient-to-r from-blue-600 to-orange-600 rounded-2xl p-8 text-white shadow-2xl">
+              <h3 className="text-2xl font-bold mb-4">
+                🚀 Não perca essa oportunidade única!
+              </h3>
+              <p className="text-lg mb-6 opacity-95">
+                Apenas <strong>100 vagas</strong> disponíveis para motoristas fundadores.
+                Garanta seu lugar na história do BuscaFrete!
+              </p>
+              <div className="flex justify-center">
+                <DownloadButton
+                  label="GARANTIR VAGA DE FUNDADOR"
+                  icon={<Crown size={24} />}
+                  onClick={handleAndroidDownload}
+                />
+              </div>
+              <p className="text-sm mt-4 opacity-80">
+                ⚡ Oferta por tempo limitado • Vagas preenchidas por ordem de cadastro
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -792,7 +916,7 @@ export default function Home() {
                 </div>
               </AccordionTrigger>
               <AccordionContent className="text-gray-600 pt-2">
-                O cadastro e uso básico do app é <strong>100% gratuito</strong>. Você só paga uma pequena taxa de 5% sobre o valor do frete quando fecha negócio com sucesso.
+                O cadastro e uso básico do app é <strong>100% gratuito</strong>. Você só paga uma taxa competitiva de 15% sobre o valor do frete quando fecha negócio com sucesso.
               </AccordionContent>
             </AccordionItem>
 
@@ -852,11 +976,13 @@ export default function Home() {
           {/* CTA na seção FAQ */}
           <div className="text-center mt-12">
             <p className="text-gray-600 mb-6">Ainda tem dúvidas? Baixe o app e tire todas as dúvidas na prática!</p>
-            <DownloadButton
-              label="BAIXAR BUSCAFRETE AGORA"
-              icon={<Download size={24} />}
-              onClick={handleAndroidDownload}
-            />
+            <div className="flex justify-center">
+              <DownloadButton
+                label="BAIXAR BUSCAFRETE AGORA"
+                icon={<Download size={24} />}
+                onClick={handleAndroidDownload}
+              />
+            </div>
           </div>
         </div>
       </section>
