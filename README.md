@@ -37,11 +37,13 @@ Este projeto pode ser hospedado gratuitamente em várias plataformas. Aqui estã
    - O Vercel detectará automaticamente as configurações
 
 3. **Configure o deploy:**
-   - **Framework Preset**: `Other`
+   - **Framework Preset**: `Other` (ou deixe automático)
    - **Root Directory**: `./` (raiz do projeto)
    - **Build Command**: `pnpm build`
    - **Output Directory**: `dist/public`
    - **Install Command**: `pnpm install`
+
+   **OU** simplesmente deixe o Vercel detectar automaticamente as configurações do `vercel.json`
 
 4. **Deploy:**
    - Clique em "Deploy"
@@ -210,6 +212,58 @@ Todas as plataformas suportam **deploy automático** via Git:
 4. **Deploy para produção**
 
 **URL de exemplo**: `https://buscafrete-landing.vercel.app`
+
+---
+
+## 🔧 **TROUBLESHOOTING**
+
+### **Erro: "Build 'src' is 'client/index.html' but expected 'package.json'"**
+```json
+// vercel.json - Versão Simplificada
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist/public",
+  "installCommand": "pnpm install"
+}
+```
+
+### **SPA não funciona (páginas 404)**
+- Certifique-se que o `_redirects` está em `client/public/_redirects`
+- Para Vercel: `rewrites` está configurado no `vercel.json`
+
+### **Build falha no Vercel**
+```bash
+# Teste local primeiro
+pnpm install
+pnpm build
+
+# Verifique se dist/public foi criado
+ls -la dist/public/
+```
+
+### **Deploy lento**
+- Arquivo `.vercelignore` otimizado
+- Apenas arquivos necessários são enviados
+- Considere usar `vercel --prod` para produção
+
+### **Variáveis de ambiente**
+```bash
+# Para produção, configure no painel do Vercel:
+# VITE_API_URL=https://your-api.vercel.app
+```
+
+---
+
+## 📊 **MONITORAMENTO**
+
+### **Vercel Analytics (Gratuito)**
+- Performance metrics
+- Real User Monitoring
+- Core Web Vitals
+
+### **Google Analytics**
+- Já configurado no projeto
+- Rastreamento de eventos de download
 
 ---
 

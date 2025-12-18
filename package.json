@@ -13,7 +13,8 @@
     "vercel:build": "pnpm build",
     "netlify:build": "pnpm build",
     "deploy:vercel": "vercel --prod",
-    "deploy:netlify": "netlify deploy --prod --dir=dist/public"
+    "deploy:netlify": "netlify deploy --prod --dir=dist/public",
+    "deploy:check": "pnpm build && echo '✅ Build successful! Ready for deploy'"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
