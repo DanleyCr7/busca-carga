@@ -1,0 +1,54 @@
+# Dependencies
+node_modules/
+.pnpm-debug.log*
+
+# Testing
+coverage/
+.nyc_output/
+
+# Development
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Local development
+.env.local
+.env.development
+
+# Build outputs (will be generated)
+dist/
+build/
+
+# Logs
+logs/
+*.log
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# IDE files
+.DS_Store
+Thumbs.db
