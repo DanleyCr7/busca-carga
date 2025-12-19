@@ -29,6 +29,8 @@ import {
   Users,
   Gift,
   Crown,
+  Instagram,
+  MessageCircle,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -106,6 +108,14 @@ export default function Home() {
   const handleIOSDownload = () => {
     trackDownloadEvent("ios");
     window.open("https://apps.apple.com/br/app/busca-frete/id6747501257", "_blank");
+  };
+
+  const handleInstagramClick = () => {
+    window.open("https://www.instagram.com/busca.frete/", "_blank");
+  };
+
+  const handleWhatsAppClick = () => {
+    window.open("https://wa.me/5586999960441", "_blank");
   };
 
   return (
@@ -988,22 +998,61 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-center md:text-left">
-              © 2025 BuscaFrete. Todos os direitos reservados. | Rota SP ⇄ PI
-            </p>
-
-            {/* Selo de Segurança no Footer */}
-            <div className="flex items-center gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <Shield size={16} className="text-green-400" />
-                <span className="text-gray-300">SSL Seguro</span>
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            {/* Logo e Copyright */}
+            <div className="text-center md:text-left">
+              <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
+                <Truck size={24} style={{ color: COLORS.laranja }} />
+                <span className="font-bold text-xl">BuscaFrete</span>
               </div>
-              <div className="flex items-center gap-2">
-                <CreditCard size={16} className="text-blue-400" />
-                <span className="text-gray-300">Pagar.me</span>
+              <p className="text-gray-400 text-sm">
+                © 2025 BuscaFrete. Todos os direitos reservados.<br />
+                Rota SP ⇄ PI
+              </p>
+            </div>
+
+            {/* Redes Sociais */}
+            <div className="text-center">
+              <h4 className="font-semibold mb-4" style={{ color: COLORS.laranja }}>
+                Conecte-se Conosco
+              </h4>
+              <div className="flex justify-center gap-6">
+                <button
+                  onClick={handleInstagramClick}
+                  className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-110 transition-transform duration-300"
+                  aria-label="Siga-nos no Instagram"
+                >
+                  <Instagram size={20} className="text-white" />
+                </button>
+                <button
+                  onClick={handleWhatsAppClick}
+                  className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full hover:scale-110 transition-transform duration-300"
+                  aria-label="Fale conosco no WhatsApp"
+                >
+                  <MessageCircle size={20} className="text-white" />
+                </button>
+              </div>
+              <p className="text-gray-400 text-sm mt-3">
+                Fique por dentro das novidades!
+              </p>
+            </div>
+
+            {/* Selos de Segurança */}
+            <div className="text-center md:text-right">
+              <h4 className="font-semibold mb-4" style={{ color: COLORS.verde }}>
+                Segurança Garantida
+              </h4>
+              <div className="flex flex-wrap justify-center md:justify-end gap-3 text-xs">
+                <div className="flex items-center gap-2 bg-gray-800 px-3 py-2 rounded-full">
+                  <Shield size={14} className="text-green-400" />
+                  <span className="text-gray-300">SSL Seguro</span>
+                </div>
+                <div className="flex items-center gap-2 bg-gray-800 px-3 py-2 rounded-full">
+                  <CreditCard size={14} className="text-blue-400" />
+                  <span className="text-gray-300">Pagar.me</span>
+                </div>
               </div>
             </div>
           </div>
