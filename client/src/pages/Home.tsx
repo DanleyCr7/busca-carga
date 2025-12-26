@@ -397,84 +397,16 @@ export default function Home() {
             Assista ao vídeo e veja como é fácil e rápido fechar um frete de retorno com pagamento garantido
           </p>
 
-          {/* Demonstração Animada da Interface do App */}
+          {/* Vídeo do YouTube */}
           <div className="relative w-full bg-gray-900 rounded-lg shadow-lg overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-            <div className="absolute inset-0 flex items-center justify-center">
-              {/* Simulação do Smartphone */}
-              <div className="relative w-64 h-[500px] bg-black rounded-3xl border-4 border-gray-700 p-2">
-                {/* Tela do Smartphone */}
-                <div className="w-full h-full bg-white rounded-2xl overflow-hidden relative">
-                  {/* Header do App */}
-                  <div className="bg-blue-600 text-white p-4" style={{ background: `linear-gradient(135deg, ${COLORS.azul} 0%, ${COLORS.azul}dd 100%)` }}>
-                    <div className="flex items-center justify-between">
-                      <h4 className="font-bold text-lg">BuscaFrete</h4>
-                      <div className="flex space-x-1">
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                        <div className="w-2 h-2 bg-white rounded-full"></div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Conteúdo Animado */}
-                  <div className="p-4 space-y-4">
-                    {/* Fretes Disponíveis */}
-                    <div className="animate-pulse">
-                      <h5 className="font-semibold text-gray-800 mb-3">Fretes Disponíveis</h5>
-                      <div className="space-y-3">
-                        {/* Frete 1 */}
-                        <div className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <p className="font-medium" style={{ color: COLORS.azul }}>São Paulo → Teresina</p>
-                              <p className="text-sm text-gray-600">Distância: 1.800 km</p>
-                            </div>
-                            <span className="font-bold text-green-600">R$ 4.200</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle size={16} className="text-green-500" />
-                            <span className="text-xs text-gray-600">Pagamento via Pagar.me</span>
-                          </div>
-                        </div>
-
-                        {/* Frete 2 */}
-                        <div className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors opacity-60">
-                          <div className="flex justify-between items-start mb-2">
-                            <div>
-                              <p className="font-medium" style={{ color: COLORS.azul }}>Campinas → Fortaleza</p>
-                              <p className="text-sm text-gray-600">Distância: 2.100 km</p>
-                            </div>
-                            <span className="font-bold text-green-600">R$ 5.800</span>
-                          </div>
-                          <div className="flex items-center space-x-2">
-                            <CheckCircle size={16} className="text-green-500" />
-                            <span className="text-xs text-gray-600">Pagamento via Pagar.me</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Botão de Ação */}
-                    <div className="pt-4">
-                      <button
-                        className="w-full py-3 rounded-lg font-bold text-white transition-all hover:scale-105"
-                        style={{ backgroundColor: COLORS.laranja }}
-                      >
-                        <Download size={20} className="inline mr-2" />
-                        DAR LANCE
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Overlay explicativo */}
-            <div className="absolute bottom-4 left-4 right-4 bg-black bg-opacity-70 text-white p-3 rounded-lg">
-              <p className="text-sm text-center">
-                📱 Interface real do BuscaFrete - Baixe o app e veja fretes em tempo real!
-              </p>
-            </div>
+            <iframe
+              className="absolute inset-0 w-full h-full rounded-lg"
+              src="https://www.youtube.com/embed/01ub8UwHzs4"
+              title="BuscaFrete em Ação"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
           </div>
 
           {/* CTA Repetido */}
