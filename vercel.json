@@ -3,5 +3,11 @@
   "devCommand": "pnpm dev",
   "framework": null,
   "installCommand": "pnpm install",
-  "outputDirectory": "dist/public"
+  "outputDirectory": "dist/public",
+  "rewrites": [
+    {
+      "destination": "/index.html",
+      "source": "/(.*)"
+    }
+  ]
 }
