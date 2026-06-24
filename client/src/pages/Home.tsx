@@ -7,989 +7,1001 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import {
-  Truck,
-  Clock,
-  Gavel,
-  MapPin,
-  Zap,
-  Lock,
-  Smartphone,
+  ArrowUpRight,
+  Apple,
+  BadgeCheck,
+  Camera,
   CheckCircle,
+  Clock,
   Download,
-  Shield,
-  CreditCard,
-  Award,
-  HelpCircle,
-  DollarSign,
-  Car,
-  Timer,
-  AlertTriangle,
-  TrendingUp,
-  Star,
-  Users,
-  Gift,
-  Crown,
+  Home as HomeIcon,
   Instagram,
+  MapPin,
   MessageCircle,
+  Package,
+  Play,
+  Send,
+  Smartphone,
+  Gift,
+  Users,
+  Truck,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-// Paleta de cores conforme especificado no documento
 const COLORS = {
-  azul: "#1E40AF",
-  verde: "#10B981",
-  laranja: "#F59E0B",
+  blue: "#1E40AF",
+  green: "#10B981",
+  orange: "#F59E0B",
 };
 
-const DownloadButton = ({
-  label,
-  icon,
-  onClick,
-  compact = false,
-  centered = false,
-}: {
-  label: string;
-  icon: React.ReactNode;
-  onClick?: () => void;
-  compact?: boolean;
-  centered?: boolean;
-}) => (
-  <Button
-    onClick={onClick}
-    style={{
-      backgroundColor: compact ? COLORS.laranja : COLORS.laranja,
-      border: 'none'
-    }}
-    className={`${compact
-      ? "hover:opacity-90 active:opacity-85 text-white font-bold py-2 px-4 rounded-md flex items-center gap-2 transition-all duration-300 min-h-[36px] text-sm shadow-lg"
-      : "hover:opacity-90 active:opacity-85 text-white font-bold py-4 px-8 rounded-lg flex items-center gap-3 transition-all duration-300 min-h-[56px] text-base sm:text-lg touch-manipulation shadow-xl"
-      } ${centered ? "block mx-auto" : ""}`}
-  >
-    {icon}
-    {label}
-  </Button>
-);
+const WHATSAPP_NUMBER = "558699960441";
+const WHATSAPP_DISPLAY = "+55 86 9996-0441";
+const WHATSAPP_MESSAGE =
+  "Olá! Vim pela landing da Busca Frete e quero um orçamento para minha mudança residencial em Vinhedo.";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+  WHATSAPP_MESSAGE
+)}`;
+const APP_STORE_URL = "https://apps.apple.com/br/app/busca-frete/id6747501257";
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.frete.busca";
+const INSTAGRAM_URL = "https://www.instagram.com/busca.frete/";
 
-const trackDownloadEvent = (platform: string) => {
-  // Google Analytics event
-  if ((window as any).gtag) {
-    (window as any).gtag("event", "app_download_sp_pi", {
-      platform: platform,
+const services = [
+  {
+    title: "Pequeno porte",
+    description:
+      "Geladeira, fogão, mesa, sofá, cama e outros itens avulsos para mover sem complicação.",
+    icon: Package,
+  },
+  {
+    title: "Médio porte",
+    description:
+      "Alguns móveis, caixas e parte da mudança quando o volume já pede mais espaço no carro.",
+    icon: Truck,
+  },
+  {
+    title: "Grande porte",
+    description:
+      "Mudança completa de casa ou apartamento, com mais volume e organização no app.",
+    icon: HomeIcon,
+  },
+  {
+    title: "Vinhedo e arredores",
+    description:
+      "Atendimento local para reduzir espera, facilitar a conversa e combinar o melhor horário.",
+    icon: MapPin,
+  },
+];
+
+const steps = [
+  {
+    title: "Chame no WhatsApp",
+    description:
+      "Toque no botão principal e envie sua mensagem com o pedido de mudança residencial.",
+    icon: MessageCircle,
+  },
+  {
+    title: "Envie itens e fotos",
+    description:
+      "Conte o que precisa levar, mande fotos, endereço de origem e destino para agilizar.",
+    icon: Camera,
+  },
+  {
+    title: "Receba orientação local",
+    description:
+      "A equipe responde com o caminho mais simples para organizar seu frete em Vinhedo.",
+    icon: Send,
+  },
+  {
+    title: "Acompanhe no app",
+    description:
+      "Combine os detalhes, receba as propostas no app e acompanhe a marca no Instagram.",
+    icon: CheckCircle,
+  },
+];
+
+const localHighlights = [
+  {
+    title: "Carreto residencial",
+    description:
+      "Sofá, geladeira, fogão, mesa e outros itens de casa saindo do lugar certo sem enrolação.",
+    icon: Truck,
+    color: COLORS.orange,
+  },
+  {
+    title: "Frete Vinhedo",
+    description:
+      "Atendimento local para Vinhedo e região, com resposta rápida e conversa direta no WhatsApp.",
+    icon: MapPin,
+    color: COLORS.blue,
+  },
+  {
+    title: "Casa e apartamento",
+    description:
+      "Mudanças completas para quem vai trocar de endereço com mais volume e quer resolver no app.",
+    icon: HomeIcon,
+    color: COLORS.green,
+  },
+  {
+    title: "Mudança Vinhedo",
+    description:
+      "Quando o pedido é pequeno, médio ou grande porte e você quer receber propostas com agilidade.",
+    icon: Package,
+    color: COLORS.orange,
+  },
+];
+
+const driverHighlights = [
+  {
+    title: "Baixe o app",
+    description:
+      "Instale pela App Store ou no Google Play e faça seu cadastro de motorista.",
+    icon: Smartphone,
+    color: COLORS.blue,
+  },
+  {
+    title: "Cadastro completo",
+    description:
+      "Preencha seus dados no app para deixar a conta pronta para receber fretes.",
+    icon: BadgeCheck,
+    color: COLORS.green,
+  },
+  {
+    title: "Receba fretes",
+    description:
+      "Acompanhe as oportunidades da plataforma para Vinhedo e região.",
+    icon: Truck,
+    color: COLORS.orange,
+  },
+  {
+    title: "Programa de indicação",
+    description:
+      "Indique um motorista. Se ele concluir o cadastro completo e fizer o primeiro frete, você ganha R$ 10.",
+    icon: Gift,
+    color: COLORS.blue,
+  },
+];
+
+const faqs = [
+  {
+    question: "Vocês atendem só mudança completa?",
+    answer:
+      "Não. O Busca Frete Residencial trabalha com pequeno, médio e grande porte, cobrindo desde um item avulso até a mudança completa.",
+  },
+  {
+    question: "Posso pedir orçamento pelo WhatsApp?",
+    answer:
+      "Sim. O WhatsApp é o contato principal para enviar fotos, explicar os itens e receber orientação rápida.",
+  },
+  {
+    question: "O atendimento é em Vinhedo?",
+    answer:
+      "A página está focada em Vinhedo e região para manter a conversa local e facilitar o agendamento.",
+  },
+  {
+    question: "Quais itens posso levar?",
+    answer:
+      "Geladeira, fogão, mesa, sofá, cama, armário, caixas e outros itens de casa ou apartamento podem entrar no orçamento.",
+  },
+];
+
+const trackContactEvent = (eventName: string) => {
+  if (typeof window !== "undefined" && (window as any).gtag) {
+    (window as any).gtag("event", eventName, {
+      page: "residential_landing_vinhedo",
       timestamp: new Date().toISOString(),
     });
   }
 };
 
+const openExternal = (url: string, eventName: string) => {
+  trackContactEvent(eventName);
+  window.open(url, "_blank", "noopener,noreferrer");
+};
+
+const SectionHeading = ({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description: string;
+}) => (
+  <div className="mx-auto mb-10 max-w-3xl text-center">
+    <p
+      className="mb-3 text-sm font-bold uppercase tracking-[0.18em]"
+      style={{ color: COLORS.orange }}
+    >
+      {eyebrow}
+    </p>
+    <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+      {title}
+    </h2>
+    <p className="mt-4 text-base leading-7 text-slate-600 sm:text-lg">
+      {description}
+    </p>
+  </div>
+);
+
 export default function Home() {
-  const [showStickyHeader, setShowStickyHeader] = useState(false);
+  const [showFixedCta, setShowFixedCta] = useState(false);
 
   useEffect(() => {
-    // Scroll to top on mount
-    window.scrollTo(0, 0);
-
-    // Handle sticky header visibility
     const handleScroll = () => {
-      const heroSection = document.querySelector('#hero-section') as HTMLElement;
-      if (heroSection) {
-        const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-        setShowStickyHeader(window.scrollY > heroBottom - 100);
+      const heroSection = document.querySelector(
+        "#inicio"
+      ) as HTMLElement | null;
+      if (!heroSection) {
+        setShowFixedCta(window.scrollY > 240);
+        return;
       }
+
+      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+      setShowFixedCta(window.scrollY > heroBottom - 140);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleAndroidDownload = () => {
-    trackDownloadEvent("android");
-    window.open("https://play.google.com/store/apps/details?id=com.frete.busca", "_blank");
-  };
-
-  const handleIOSDownload = () => {
-    trackDownloadEvent("ios");
-    window.open("https://apps.apple.com/br/app/busca-frete/id6747501257", "_blank");
+  const handleWhatsAppClick = () => {
+    openExternal(WHATSAPP_URL, "contact_whatsapp_residential");
   };
 
   const handleInstagramClick = () => {
-    window.open("https://www.instagram.com/busca.frete/", "_blank");
+    openExternal(INSTAGRAM_URL, "contact_instagram_residential");
   };
 
-  const handleWhatsAppClick = () => {
-    window.open("https://wa.me/5586999960441", "_blank");
+  const handleAppStoreClick = () => {
+    trackContactEvent("download_ios_app");
+  };
+
+  const handlePlayStoreClick = () => {
+    trackContactEvent("download_android_app");
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Sticky Header com CTAs */}
-      <div
-        className={`fixed top-0 left-0 right-0 z-50 bg-white shadow-lg border-b border-gray-200 transition-transform duration-300 ${showStickyHeader ? 'translate-y-0' : '-translate-y-full'
-          }`}
-      >
-        <div className="max-w-6xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between">
-            {/* Logo/Brand */}
-            <div className="flex items-center space-x-2">
-              <Truck size={24} style={{ color: COLORS.azul }} />
-              <span className="font-bold text-lg" style={{ color: COLORS.azul }}>BuscaFrete</span>
-            </div>
-
-            {/* CTAs no Sticky Header */}
-            <div className="flex items-center space-x-3">
-              <DownloadButton
-                label="ANDROID"
-                icon={<Download size={16} />}
-                onClick={handleAndroidDownload}
-                compact={true}
-              />
-              <DownloadButton
-                label="IPHONE"
-                icon={<Download size={16} />}
-                onClick={handleIOSDownload}
-                compact={true}
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section
-        id="hero-section"
-        className="relative py-20 px-4 sm:px-6 lg:px-8 text-center"
-        style={{ background: `linear-gradient(135deg, ${COLORS.azul} 0%, ${COLORS.azul}dd 100%)` }}
-      >
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-6">
-            <span style={{ color: COLORS.laranja }}>BUSCAFRETE</span>: O Fim do Vazio de Retorno na Rota SP ⇄ PI
-          </h1>
-          <p className="text-xl sm:text-2xl text-blue-100 mb-8">
-            Fretes de Alto Valor na Rota Longa: SP ⇄ PI
-          </p>
-          <p className="text-lg text-blue-50 mb-12 max-w-2xl mx-auto">
-            Receba propostas de frete na hora e garanta o pagamento 100% seguro via Pagar.me
-          </p>
-
-          {/* CTAs Duplos */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mx-auto">
-            <DownloadButton
-              label="BAIXAR PARA ANDROID"
-              icon={<Download size={24} />}
-              onClick={handleAndroidDownload}
-            />
-            <DownloadButton
-              label="BAIXAR PARA IPHONE"
-              icon={<Download size={24} />}
-              onClick={handleIOSDownload}
-            />
-          </div>
-
-          {/* Selos de Segurança Expandidos */}
-          <div className="mt-8">
-            {/* Selos principais */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white opacity-90 mb-4">
-              <div className="flex items-center gap-2 bg-white bg-opacity-10 px-3 py-2 rounded-full">
-                <Shield size={20} className="text-blue-300" />
-                <span className="text-sm font-medium text-blue-300">App Seguro</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white bg-opacity-10 px-3 py-2 rounded-full">
-                <CreditCard size={20} className="text-blue-300" />
-                <span className="text-sm font-medium text-blue-300">Parceiro Pagar.me</span>
-              </div>
-              <div className="flex items-center gap-2 bg-white bg-opacity-10 px-3 py-2 rounded-full">
-                <Award size={20} className="text-blue-300" />
-                <span className="text-sm font-medium text-blue-300">100% Confiável</span>
-              </div>
-            </div>
-
-            {/* Selos adicionais */}
-            <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-white opacity-80 text-xs">
-              <div className="flex items-center gap-1">
-                <Lock size={14} className="text-green-400" />
-                <span>SSL 256-bit</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <CheckCircle size={14} className="text-green-400" />
-                <span>Pagamento Garantido</span>
-              </div>
-              <div className="flex items-center gap-1">
-                <Zap size={14} className="text-green-400" />
-                <span>Processamento Rápido</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 2: DOR E SOLUÇÃO (3 CARDS) */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <AlertTriangle size={32} className="text-red-500" />
-              <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: COLORS.azul }}>
-                Sua Maior Dor
-              </h2>
-            </div>
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <TrendingUp size={32} style={{ color: COLORS.verde }} />
-              <h3 className="text-2xl sm:text-3xl font-bold text-green-600">
-                tem Solução Imediata
-              </h3>
-            </div>
-            <p className="text-gray-600 text-lg">
-              Descubra como o BuscaFrete resolve os principais desafios do motorista
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Card 1: Vazio de Retorno */}
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
-                style={{ backgroundColor: COLORS.laranja }}
-              >
-                <Truck size={32} className="text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-                Ficar Parado Custa Caro
-              </h3>
-              <p className="text-gray-600 text-center">
-                Encontre cargas para sua volta (PI → SP ou SP → PI) em tempo real. Elimine o "vazio de retorno".
-              </p>
-            </Card>
-
-            {/* Card 2: Pagamento Demorado */}
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
-                style={{ backgroundColor: COLORS.verde }}
-              >
-                <Clock size={32} className="text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-                Pagamento Demorado e Inseguro
-              </h3>
-              <p className="text-gray-600 text-center">
-                Receba via Split Pagar.me. O dinheiro é seu e cai na sua conta com a máxima segurança e rapidez.
-              </p>
-            </Card>
-
-            {/* Card 3: Seu Lance, Seu Preço Justo */}
-            <Card className="p-8 hover:shadow-lg transition-shadow">
-              <div
-                className="w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
-                style={{ backgroundColor: COLORS.azul }}
-              >
-                <TrendingUp size={32} className="text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-                Seu Lance, Seu Preço Justo
-              </h3>
-              <p className="text-gray-600 text-center">
-                Você tem o poder de decidir o valor. Faça lances competitivos e garanta fretes rentáveis na rota que você conhece melhor.
-              </p>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 3: PROCESSO SIMPLIFICADO (3 PASSOS) */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-            Como Funciona em 3 Passos Simples
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Este é o fluxo de operação simplificado para o motorista
-          </p>
-
-          <div className="relative">
-            {/* Linha de timeline para desktop */}
-            <div className="hidden md:block absolute top-10 left-0 right-0 h-0.5 bg-gray-300"></div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-              {/* Passo 1 */}
-              <div className="text-center relative">
-                <div className="relative mb-6">
-                  <div
-                    className="w-24 h-24 rounded-full flex items-center justify-center mx-auto text-white font-bold text-3xl shadow-lg border-4 border-white"
-                    style={{ backgroundColor: COLORS.azul }}
-                  >
-                    1
-                  </div>
-                  {/* Conector para o próximo passo */}
-                  <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gray-300" style={{ width: 'calc(100% - 6rem)' }}></div>
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Encontre o Frete Ideal <span className="text-orange-500 font-extrabold">AGORA</span>
-                </h3>
-                <p className="text-gray-600">
-                  Abra o app, faça seu cadastro rápido e veja as ofertas exclusivas para a rota SP ⇄ PI. Sem enrolação.
-                </p>
-              </div>
-
-              {/* Passo 2 */}
-              <div className="text-center relative">
-                <div className="relative mb-6">
-                  <div
-                    className="w-24 h-24 rounded-full flex items-center justify-center mx-auto text-white font-bold text-3xl shadow-lg border-4 border-white"
-                    style={{ backgroundColor: COLORS.verde }}
-                  >
-                    2
-                  </div>
-                  {/* Conector para o próximo passo */}
-                  <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-gray-300" style={{ width: 'calc(100% - 6rem)' }}></div>
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Feche seu Lance Vencedor
-                </h3>
-                <p className="text-gray-600">
-                  Dê seu lance. A burocracia do documento só entra após o fechamento do frete. Máxima agilidade.
-                </p>
-              </div>
-
-              {/* Passo 3 */}
-              <div className="text-center relative">
-                <div className="relative mb-6">
-                  <div
-                    className="w-24 h-24 rounded-full flex items-center justify-center mx-auto text-white font-bold text-3xl shadow-lg border-4 border-white"
-                    style={{ backgroundColor: COLORS.laranja }}
-                  >
-                    3
-                  </div>
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Receba Rápido e <span className="text-green-600 font-extrabold">SEGURO</span>
-                </h3>
-                <p className="text-gray-600">
-                  Pagamento seguro via Pagar.me direto na sua conta. Zero risco de calote. Seu tempo é dinheiro, e ele cai na hora.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* CTA Repetido */}
-          <div className="text-center mt-12">
-            <Button
-              onClick={() => document.querySelector("#hero")?.scrollIntoView({ behavior: "smooth" })}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg block mx-auto flex items-center gap-3 transition-all duration-300 min-h-[56px] text-base sm:text-lg touch-manipulation shadow-xl"
-              style={{
-                backgroundColor: COLORS.laranja,
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px'
-              }}
-            >
-              <Download size={24} />
-              BAIXE O APP E COMECE AGORA
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 4: VÍDEO (DEMONSTRAÇÃO) */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-            Veja o BuscaFrete em Ação
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Assista ao vídeo e veja como é fácil e rápido fechar um frete de retorno com pagamento garantido
-          </p>
-
-          {/* Vídeo do YouTube */}
-          <div className="relative w-full bg-gray-900 rounded-lg shadow-lg overflow-hidden" style={{ paddingBottom: "56.25%" }}>
-            <iframe
-              className="absolute inset-0 w-full h-full rounded-lg"
-              src="https://www.youtube.com/embed/01ub8UwHzs4"
-              title="BuscaFrete em Ação"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-          </div>
-
-          {/* CTA Repetido */}
-          <div className="text-center mt-12">
-            <div className="flex justify-center">
-              <DownloadButton
-                label="BAIXE O APP AGORA E CONFIRA"
-                icon={<Download size={24} />}
-                onClick={handleAndroidDownload}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 5: VANTAGENS DO APP */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-            BuscaFrete na Rota SP ⇄ PI: Sua Vantagem Competitiva
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Descubra os recursos que fazem a diferença
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Vantagem 1 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: COLORS.laranja }}
-              >
-                <Shield size={24} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.azul }}>
-                  Segurança Máxima <span className="text-sm font-normal bg-green-100 text-green-800 px-2 py-1 rounded-full">Pagar.me</span>
-                </h3>
-                <p className="text-gray-600">
-                  Pagamento 100% seguro via Pagar.me. Zero risco de calote. Seu dinheiro cai direto na conta.
-                </p>
-              </div>
-            </div>
-
-            {/* Vantagem 2 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: COLORS.verde }}
-              >
-                <MapPin size={24} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.azul }}>
-                  Foco Exclusivo
-                </h3>
-                <p className="text-gray-600">
-                  Fretes de alta qualidade e valor, filtrados apenas para a rota que você já opera (SP ⇄ PI).
-                </p>
-              </div>
-            </div>
-
-            {/* Vantagem 3 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: COLORS.azul }}
-              >
-                <Zap size={24} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.azul }}>
-                  Cadastro Rápido
-                </h3>
-                <p className="text-gray-600">
-                  Zero burocracia inicial. Documentos só após fechar o frete.
-                </p>
-              </div>
-            </div>
-
-            {/* Vantagem 4 */}
-            <div className="flex items-start gap-4">
-              <div
-                className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0"
-                style={{ backgroundColor: COLORS.laranja }}
-              >
-                <Smartphone size={24} className="text-white" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold mb-2" style={{ color: COLORS.azul }}>
-                  App Leve e Simples
-                </h3>
-                <p className="text-gray-600">
-                  Projetado para funcionar bem mesmo com conexões instáveis na estrada.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 6: PROVA SOCIAL */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-12" style={{ color: COLORS.azul }}>
-            Quem usa, aprova
-          </h2>
-
-          {/* Testemunho */}
-          <Card className="p-8 mb-8 border-l-4" style={{ borderLeftColor: COLORS.verde }}>
-            <p className="text-lg text-gray-700 italic mb-4">
-              "Achei que ia voltar vazio, mas fechei um frete de Teresina para São Paulo em 10 minutos pelo app. O pagamento caiu sem dor de cabeça. Resolveu meu mês!"
-            </p>
-            <p className="font-bold" style={{ color: COLORS.azul }}>
-              — João A., Caminhoneiro Autônomo, PI
-            </p>
-          </Card>
-
-          {/* Contador de Urgência */}
-          <div
-            className="text-center p-8 rounded-lg text-white"
-            style={{ backgroundColor: COLORS.laranja }}
+    <div className="min-h-screen bg-white text-slate-950">
+      <header className="border-b border-slate-200 bg-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <a
+            href="#inicio"
+            className="flex items-center gap-3"
+            aria-label="Busca Frete Residencial"
           >
-            <h3 className="text-4xl font-bold mb-2">1.500+</h3>
-            <h4 className="text-xl font-semibold mb-4">FRETES MAPEADOS NOS ÚLTIMOS 30 DIAS</h4>
-            <p className="text-lg opacity-95">
-              O volume de cargas para a rota Sul-Nordeste está alto. Garanta já sua vaga no app e não perca oportunidades.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO 7: FINAL */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8" id="hero">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-8" style={{ color: COLORS.azul }}>
-            Não perca mais tempo na estrada.
-          </h2>
-          <p className="text-2xl font-bold mb-12" style={{ color: COLORS.laranja }}>
-            Comece a lucrar agora.
-          </p>
-
-          {/* CTAs Duplos Finais */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center w-full max-w-md mx-auto">
-            <DownloadButton
-              label="BAIXAR BUSCAFRETE ANDROID"
-              icon={<Download size={24} />}
-              onClick={handleAndroidDownload}
+            <img
+              src="/logo.png"
+              alt=""
+              aria-hidden="true"
+              className="h-12 w-12 shrink-0 rounded-xl border border-slate-200 bg-white object-contain shadow-sm"
             />
-            <DownloadButton
-              label="BAIXAR BUSCAFRETE iOS"
-              icon={<Download size={24} />}
-              onClick={handleIOSDownload}
-            />
-          </div>
+            <span>
+              <strong className="block text-lg font-bold text-slate-950">
+                Busca Frete Residencial
+              </strong>
+              <span className="block text-sm text-slate-600">
+                Vinhedo e região
+              </span>
+            </span>
+          </a>
+
+          <nav
+            className="flex flex-wrap gap-2 text-sm font-semibold text-slate-700"
+            aria-label="Navegação principal"
+          >
+            <a
+              className="rounded-full px-3 py-2 hover:bg-slate-100"
+              href="#servicos"
+            >
+              Serviços
+            </a>
+            <a
+              className="rounded-full px-3 py-2 hover:bg-slate-100"
+              href="#como-funciona"
+            >
+              Como funciona
+            </a>
+            <a
+              className="rounded-full px-3 py-2 hover:bg-slate-100"
+              href="#trabalhe-conosco"
+            >
+              Trabalhe conosco
+            </a>
+            <a
+              className="rounded-full px-3 py-2 hover:bg-slate-100"
+              href="#local"
+            >
+              Vinhedo
+            </a>
+            <a
+              className="rounded-full px-3 py-2 hover:bg-slate-100"
+              href="#faq"
+            >
+              FAQ
+            </a>
+          </nav>
         </div>
-      </section>
+      </header>
 
-      {/* SEÇÃO MOCKUPS DO APP */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-            Conheça o BuscaFrete na Prática
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Veja como é simples encontrar fretes e garantir pagamentos na rota SP ⇄ PI
-          </p>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Mockup 1: Listagem de Fretes */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-              {/* Header do App */}
-              <div className="bg-blue-600 text-white p-4" style={{ background: `linear-gradient(135deg, ${COLORS.azul} 0%, ${COLORS.azul}dd 100%)` }}>
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-lg">BuscaFrete</h4>
-                  <div className="flex space-x-1">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
-                  </div>
-                </div>
-                <p className="text-sm text-blue-100 mt-1">Fretes disponíveis agora</p>
+      <main className="pb-28">
+        <section
+          id="inicio"
+          className="bg-slate-950 px-4 py-16 text-white sm:px-6 sm:py-20 lg:px-8"
+        >
+          <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center">
+            <div>
+              <div className="mb-6 flex flex-wrap gap-3">
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+                  Mudança residencial
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+                  Vinhedo/SP
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+                  Atendimento via WhatsApp
+                </span>
+                <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
+                  Motorista parceiro
+                </span>
               </div>
 
-              {/* Conteúdo */}
-              <div className="p-4 space-y-3">
-                {/* Frete 1 - São Paulo → Teresina */}
-                <div className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <p className="font-medium text-sm" style={{ color: COLORS.azul }}>São Paulo → Teresina</p>
-                      <p className="text-xs text-gray-600">Distância: 2.682 km • Carga: Carga Geral</p>
+              <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+                Mudança sem dor de cabeça.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200 sm:text-xl">
+                O Busca Frete Residencial ajuda você a levar desde uma
+                geladeira, um fogão ou uma mesa até uma mudança completa de casa
+                ou apartamento, com uma conversa simples e direta.
+              </p>
+
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  size="lg"
+                  onClick={handleWhatsAppClick}
+                  className="min-h-[52px] rounded-xl px-6 text-base font-bold text-slate-950 shadow-lg hover:opacity-95"
+                  style={{ backgroundColor: COLORS.green }}
+                >
+                  <MessageCircle size={20} aria-hidden="true" />
+                  Falar no WhatsApp
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={handleInstagramClick}
+                  className="min-h-[52px] rounded-xl border-white/25 bg-white/10 px-6 text-base font-bold text-white hover:bg-white/15 hover:text-white"
+                >
+                  <Instagram size={20} aria-hidden="true" />
+                  Ver Instagram
+                </Button>
+              </div>
+
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-white"
+                      style={{ backgroundColor: COLORS.orange }}
+                      aria-hidden="true"
+                    >
+                      <Users size={22} />
+                    </span>
+                    <div className="min-w-0">
+                      <strong className="block text-sm font-bold text-white">
+                        Motorista parceiro
+                      </strong>
+                      <p className="mt-1 text-sm leading-6 text-slate-300">
+                        Baixe o app, faça seu cadastro completo e comece a
+                        receber fretes em Vinhedo e região.
+                      </p>
                     </div>
-                    <span className="font-bold text-sm" style={{ color: COLORS.verde }}>R$ 18.700</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <CheckCircle size={12} className="text-green-500" />
-                      <span className="text-xs text-gray-600">Pagar.me</span>
-                    </div>
-                    <span className="text-xs text-gray-500">há 2h</span>
                   </div>
                 </div>
 
-                {/* Frete 2 - Campinas → Fortaleza */}
-                <div className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <p className="font-medium text-sm" style={{ color: COLORS.azul }}>Campinas → Fortaleza</p>
-                      <p className="text-xs text-gray-600">Distância: 2.850 km • Carga: Frigorificada</p>
+                <div className="rounded-2xl border border-blue-100/20 bg-blue-500/10 p-5">
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-blue-600 text-white shadow-sm"
+                      aria-hidden="true"
+                    >
+                      <span className="absolute inset-0 animate-ping rounded-xl bg-blue-400/30" />
+                      <Gift size={20} className="relative" />
+                    </span>
+                    <div className="min-w-0">
+                      <strong className="block text-sm font-bold text-white">
+                        Indicação no app
+                      </strong>
+                      <p className="mt-1 text-sm leading-6 text-slate-300">
+                        O programa fica dentro do app para você indicar outro
+                        motorista e acompanhar o bônus.
+                      </p>
                     </div>
-                    <span className="font-bold text-sm" style={{ color: COLORS.verde }}>R$ 22.800</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <CheckCircle size={12} className="text-green-500" />
-                      <span className="text-xs text-gray-600">Pagar.me</span>
-                    </div>
-                    <span className="text-xs text-gray-500">há 4h</span>
-                  </div>
-                </div>
-
-                {/* Frete 3 - São José → Recife */}
-                <div className="border border-gray-200 rounded-lg p-3 hover:bg-gray-50 transition-colors cursor-pointer">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="flex-1">
-                      <p className="font-medium text-sm" style={{ color: COLORS.azul }}>São José → Recife</p>
-                      <p className="text-xs text-gray-600">Distância: 2.450 km • Carga: Conteinerizada</p>
-                    </div>
-                    <span className="font-bold text-sm" style={{ color: COLORS.verde }}>R$ 18.200</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-1">
-                      <CheckCircle size={12} className="text-green-500" />
-                      <span className="text-xs text-gray-600">Pagar.me</span>
-                    </div>
-                    <span className="text-xs text-gray-500">há 6h</span>
                   </div>
                 </div>
               </div>
 
-              {/* Legenda */}
-              <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
-                <p className="text-xs text-center text-gray-600 font-medium">📱 Tela Principal - Fretes Disponíveis</p>
+              <a
+                href="#trabalhe-conosco"
+                className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-blue-300 hover:text-blue-200"
+              >
+                Ver programa de indicação
+                <ArrowUpRight size={16} aria-hidden="true" />
+              </a>
+
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <strong className="block text-base">Contato direto</strong>
+                  <span className="mt-1 block text-sm leading-6 text-slate-300">
+                    {WHATSAPP_DISPLAY} para orçamento e dúvidas.
+                  </span>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <strong className="block text-base">Foco residencial</strong>
+                  <span className="mt-1 block text-sm leading-6 text-slate-300">
+                    Pequeno, médio e grande porte para qualquer tipo de mudança.
+                  </span>
+                </div>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4">
+                  <strong className="block text-base">Propostas no app</strong>
+                  <span className="mt-1 block text-sm leading-6 text-slate-300">
+                    Baixe na App Store ou no Google Play para receber as
+                    propostas do pequeno ao grande porte.
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* Mockup 2: Tela de Pagamento */}
-            <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-              {/* Header do App */}
-              <div className="bg-green-600 text-white p-4" style={{ background: `linear-gradient(135deg, ${COLORS.verde} 0%, ${COLORS.verde}dd 100%)` }}>
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-lg">Pagamento Seguro</h4>
-                  <Shield size={20} className="text-white" />
-                </div>
-                <p className="text-sm text-green-100 mt-1">Frete: São Paulo → Teresina</p>
-              </div>
-
-              {/* Conteúdo */}
-              <div className="p-4 space-y-4">
-                {/* Valor do Frete */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm text-gray-600">Valor do Frete</span>
-                    <span className="font-bold text-lg" style={{ color: COLORS.azul }}>R$ 18.700</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Taxa BuscaFrete (15%)</span>
-                    <span className="text-sm text-gray-600">-R$ 2.805</span>
-                  </div>
-                  <hr className="my-2" />
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">Você Recebe</span>
-                    <span className="font-bold text-lg" style={{ color: COLORS.verde }}>R$ 15.895</span>
-                  </div>
-                </div>
-
-                {/* Método de Pagamento */}
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="font-medium text-sm">Pagamento via Pagar.me</span>
-                    <div className="flex items-center space-x-1">
-                      <Shield size={16} className="text-green-500" />
-                      <span className="text-xs text-green-600 font-medium">Garantido</span>
-                    </div>
-                  </div>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <p className="text-xs text-blue-800">
-                      💳 O valor fica retido no Pagar.me até você confirmar a entrega. Sem risco de calote!
+            <div className="rounded-2xl bg-white p-5 text-slate-950 shadow-2xl">
+              <div
+                className="rounded-xl p-5 text-white"
+                style={{ backgroundColor: COLORS.blue }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold uppercase tracking-[0.16em] text-blue-100">
+                      Receba propostas no app
+                    </p>
+                    <h2 className="mt-3 text-2xl font-bold">
+                      Baixe o app e acompanhe as propostas da sua mudança.
+                    </h2>
+                    <p className="mt-3 text-sm leading-6 text-blue-100">
+                      Depois de mandar os detalhes no WhatsApp, use o app para
+                      receber as propostas no celular com mais praticidade.
                     </p>
                   </div>
+                  <Clock className="mt-1 shrink-0 text-orange-300" size={30} />
                 </div>
+              </div>
 
-                {/* Status */}
-                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    <span className="text-sm font-medium text-green-800">Frete Aprovado</span>
+              <div className="mt-5 grid gap-4">
+                {[
+                  "Envie fotos dos móveis e caixas.",
+                  "Informe se é pequeno, médio ou grande porte.",
+                  "Receba as propostas no app quando tudo estiver pronto.",
+                ].map(item => (
+                  <div
+                    key={item}
+                    className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
+                  >
+                    <CheckCircle
+                      className="mt-0.5 shrink-0"
+                      size={20}
+                      style={{ color: COLORS.green }}
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm font-medium leading-6 text-slate-700">
+                      {item}
+                    </span>
                   </div>
-                  <p className="text-xs text-green-700 mt-1">
-                    Pagamento será liberado após confirmação de entrega
-                  </p>
-                </div>
+                ))}
               </div>
 
-              {/* Legenda */}
-              <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
-                <p className="text-xs text-center text-gray-600 font-medium">💰 Tela de Pagamento - Segurança Máxima</p>
+              <button
+                type="button"
+                onClick={handleWhatsAppClick}
+                className="mt-5 flex w-full items-center justify-between rounded-xl px-5 py-4 text-left font-bold text-white transition hover:opacity-95"
+                style={{ backgroundColor: COLORS.orange }}
+              >
+                Falar no WhatsApp
+                <ArrowUpRight size={20} aria-hidden="true" />
+              </button>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <Button
+                  asChild
+                  onClick={handleAppStoreClick}
+                  size="lg"
+                  className="h-auto min-h-[52px] rounded-xl bg-slate-950 px-4 py-3 text-base font-bold text-white hover:bg-slate-800"
+                >
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download size={18} aria-hidden="true" />
+                    App Store
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  onClick={handlePlayStoreClick}
+                  size="lg"
+                  variant="outline"
+                  className="h-auto min-h-[52px] rounded-xl border-slate-200 bg-white px-4 py-3 text-base font-bold text-slate-950 hover:bg-slate-50"
+                >
+                  <a
+                    href={PLAY_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download size={18} aria-hidden="true" />
+                    Google Play
+                  </a>
+                </Button>
               </div>
-            </div>
-          </div>
-
-          {/* CTA após mockups */}
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">Pronto para começar? Baixe o app e veja fretes reais!</p>
-            <div className="flex justify-center">
-              <DownloadButton
-                label="COMEÇAR AGORA"
-                icon={<Download size={24} />}
-                onClick={handleAndroidDownload}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SEÇÃO MOTORISTAS FUNDADORES */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-orange-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Crown size={40} style={{ color: COLORS.laranja }} />
-              <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: COLORS.azul }}>
-                Motoristas Fundadores
-              </h2>
-            </div>
-            <p className="text-xl text-gray-600 mb-4">
-              Seja um dos primeiros 100 motoristas e garanta benefícios exclusivos!
-            </p>
-            <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-md">
-              <Users size={20} style={{ color: COLORS.azul }} />
-              <span className="font-semibold text-lg" style={{ color: COLORS.azul }}>
-                VAGAS LIMITADAS
-              </span>
-            </div>
-          </div>
-
-          {/* Container dos benefícios */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-            {/* Benefício 1: Desconto nas primeiras cargas */}
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Gift size={32} style={{ color: COLORS.laranja }} />
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Desconto Especial
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  <strong className="text-2xl font-bold" style={{ color: COLORS.verde }}>50% OFF</strong>
-                  <br />nas primeiras 4 cargas
-                </p>
-                <p className="text-sm text-gray-500">
-                  Reduza sua taxa de 15% para apenas 7,5% nas suas primeiras negociações
-                </p>
-              </div>
-            </div>
-
-            {/* Benefício 2: Selo de Fundador */}
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Star size={32} style={{ color: COLORS.azul }} />
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Selo de Fundador
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Badge exclusivo no seu perfil confirmando que você foi um dos pioneiros do BuscaFrete
-                </p>
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  <Crown size={14} />
-                  FUNDADOR
-                </div>
-              </div>
-            </div>
-
-            {/* Benefício 3: Grupo VIP */}
-            <div className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 border border-orange-100">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Users size={32} style={{ color: COLORS.verde }} />
-                </div>
-                <h3 className="text-xl font-bold mb-4" style={{ color: COLORS.azul }}>
-                  Grupo VIP Exclusivo
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Acesso antecipado a novas funcionalidades, dicas exclusivas e networking com outros fundadores
-                </p>
-                <div className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                  <Zap size={14} />
-                  ACESSO VIP
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Call to Action */}
-          <div className="text-center">
-            <div className="bg-gradient-to-r from-blue-600 to-orange-600 rounded-2xl p-8 text-white shadow-2xl">
-              <h3 className="text-2xl font-bold mb-4">
-                🚀 Não perca essa oportunidade única!
-              </h3>
-              <p className="text-lg mb-6 opacity-95">
-                Apenas <strong>100 vagas</strong> disponíveis para motoristas fundadores.
-                Garanta seu lugar na história do BuscaFrete!
+              <p className="mt-3 text-center text-xs leading-5 text-slate-500">
+                Baixe o app para receber as propostas no iPhone ou no Android.
               </p>
-              <div className="flex justify-center">
-                <DownloadButton
-                  label="GARANTIR VAGA DE FUNDADOR"
-                  icon={<Crown size={24} />}
-                  onClick={handleAndroidDownload}
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="trabalhe-conosco"
+          className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8"
+        >
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Motorista parceiro"
+              title="Trabalhe conosco"
+              description="Se você é motorista, baixe o app, faça seu cadastro completo e comece a receber fretes em Vinhedo e região. Indique outro motorista e ganhe R$ 10 quando ele concluir o cadastro completo e fizer o primeiro frete na plataforma."
+            />
+
+            <div className="mx-auto mb-8 flex max-w-3xl flex-col justify-center gap-3 sm:flex-row">
+              <Button
+                asChild
+                onClick={handleAppStoreClick}
+                size="lg"
+                className="min-h-[52px] rounded-xl bg-slate-950 px-6 text-base font-bold text-white hover:bg-slate-800"
+              >
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Apple size={20} aria-hidden="true" />
+                  Baixar na App Store
+                </a>
+              </Button>
+              <Button
+                asChild
+                onClick={handlePlayStoreClick}
+                size="lg"
+                variant="outline"
+                className="min-h-[52px] rounded-xl border-slate-200 bg-white px-6 text-base font-bold text-slate-950 hover:bg-slate-50"
+              >
+                <a
+                  href={PLAY_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Play size={20} aria-hidden="true" />
+                  Baixar no Google Play
+                </a>
+              </Button>
+            </div>
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {driverHighlights.map(item => {
+                const Icon = item.icon;
+
+                return (
+                  <Card
+                    key={item.title}
+                    className="h-full rounded-2xl border-slate-200 p-6 shadow-sm"
+                  >
+                    <span
+                      className="flex h-12 w-12 items-center justify-center rounded-xl text-white"
+                      style={{ backgroundColor: item.color }}
+                    >
+                      <Icon size={24} aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-950">
+                        {item.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-6 text-slate-600">
+                        {item.description}
+                      </p>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="servicos" className="px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="O que fazemos"
+              title="Frete residencial para a vida real"
+              description="A página fala com quem precisa resolver desde um item pequeno até uma mudança completa, sem cadastro obrigatório e sem linguagem complicada."
+            />
+
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {services.map(service => {
+                const Icon = service.icon;
+                return (
+                  <Card
+                    key={service.title}
+                    className="h-full rounded-2xl border-slate-200 p-6 shadow-sm"
+                  >
+                    <span
+                      className="flex h-12 w-12 items-center justify-center rounded-xl text-white"
+                      style={{ backgroundColor: COLORS.blue }}
+                    >
+                      <Icon size={24} aria-hidden="true" />
+                    </span>
+                    <div>
+                      <h3 className="text-xl font-bold text-slate-950">
+                        {service.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-6 text-slate-600">
+                        {service.description}
+                      </p>
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="como-funciona"
+          className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8"
+        >
+          <div className="mx-auto max-w-6xl">
+            <SectionHeading
+              eyebrow="Como funciona"
+              title="Do pedido ao agendamento em poucos passos"
+              description="O caminho é direto para o WhatsApp, com informações fáceis de enviar e resposta pensada para Vinhedo e região."
+            />
+
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <div
+                    key={step.title}
+                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span
+                        className="flex h-12 w-12 items-center justify-center rounded-xl text-white"
+                        style={{
+                          backgroundColor:
+                            index === 1
+                              ? COLORS.green
+                              : index === 2
+                                ? COLORS.orange
+                                : COLORS.blue,
+                        }}
+                      >
+                        <Icon size={23} aria-hidden="true" />
+                      </span>
+                      <span className="text-sm font-bold text-slate-400">
+                        0{index + 1}
+                      </span>
+                    </div>
+                    <h3 className="mt-5 text-lg font-bold text-slate-950">
+                      {step.title}
+                    </h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-600">
+                      {step.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="video" className="px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div>
+              <p
+                className="mb-3 text-sm font-bold uppercase tracking-[0.18em]"
+                style={{ color: COLORS.orange }}
+              >
+                Vídeo
+              </p>
+              <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+                Veja o app em ação.
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Assista ao vídeo e veja como o Busca Frete ajuda você a receber
+                propostas para item único, mudança parcial ou mudança completa
+                em Vinhedo e região.
+              </p>
+
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  onClick={handleAppStoreClick}
+                  size="lg"
+                  className="min-h-[52px] rounded-xl bg-slate-950 px-6 text-base font-bold text-white hover:bg-slate-800"
+                >
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Apple size={20} aria-hidden="true" />
+                    App Store
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  onClick={handlePlayStoreClick}
+                  size="lg"
+                  variant="outline"
+                  className="min-h-[52px] rounded-xl border-slate-200 bg-white px-6 text-base font-bold text-slate-950 hover:bg-slate-50"
+                >
+                  <a
+                    href={PLAY_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Play size={20} aria-hidden="true" />
+                    Google Play
+                  </a>
+                </Button>
+              </div>
+              <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
+                Baixe o app para acompanhar as propostas da sua mudança com mais
+                praticidade.
+              </p>
+            </div>
+
+            <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 shadow-lg">
+              <div className="aspect-video">
+                <iframe
+                  className="h-full w-full"
+                  src="https://www.youtube.com/embed/01ub8UwHzs4"
+                  title="BuscaFrete em Ação"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
                 />
               </div>
-              <p className="text-sm mt-4 opacity-80">
-                ⚡ Oferta por tempo limitado • Vagas preenchidas por ordem de cadastro
-              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* SEÇÃO FAQ */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-4" style={{ color: COLORS.azul }}>
-            Dúvidas Frequentes
-          </h2>
-          <p className="text-center text-gray-600 mb-12 text-lg">
-            Tire suas dúvidas sobre o BuscaFrete e a rota SP ⇄ PI
-          </p>
-
-          <Accordion type="single" collapsible className="w-full space-y-4">
-            <AccordionItem value="item-1" className="bg-white rounded-lg border border-gray-200 px-6">
-              <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3 text-left">
-                  <DollarSign size={20} style={{ color: COLORS.verde }} />
-                  <span className="font-medium">Quanto custa usar o BuscaFrete?</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2">
-                O cadastro e uso básico do app é <strong>100% gratuito</strong>. Você só paga uma taxa competitiva de 15% sobre o valor do frete quando fecha negócio com sucesso.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-2" className="bg-white rounded-lg border border-gray-200 px-6">
-              <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3 text-left">
-                  <Car size={20} style={{ color: COLORS.azul }} />
-                  <span className="font-medium">Qualquer caminhão pode usar o app?</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2">
-                O BuscaFrete é otimizado para caminhões que operam na rota Sul-Nordeste (SP ⇄ PI e similares). Caminhões de pequeno, médio e grande porte são bem-vindos, desde que tenham capacidade para cargas de longa distância.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-3" className="bg-white rounded-lg border border-gray-200 px-6">
-              <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3 text-left">
-                  <Timer size={20} style={{ color: COLORS.laranja }} />
-                  <span className="font-medium">Quando o pagamento cai na conta?</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2">
-                Com o <strong>Pagar.me</strong>, o pagamento é processado em até 2 dias úteis após a entrega confirmada. Você recebe o dinheiro diretamente na sua conta bancária, sem intermediários.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-4" className="bg-white rounded-lg border border-gray-200 px-6">
-              <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3 text-left">
-                  <Shield size={20} style={{ color: COLORS.verde }} />
-                  <span className="font-medium">É seguro fechar frete pelo app?</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2">
-                <strong>100% seguro!</strong> Todos os pagamentos são processados via Pagar.me com garantia total. O dinheiro fica retido até você confirmar a entrega, eliminando qualquer risco de calote.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-5" className="bg-white rounded-lg border border-gray-200 px-6">
-              <AccordionTrigger className="hover:no-underline">
-                <div className="flex items-center gap-3 text-left">
-                  <HelpCircle size={20} style={{ color: COLORS.azul }} />
-                  <span className="font-medium">Como funciona o processo de contratação?</span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-600 pt-2">
-                1) Baixe o app e cadastre-se rapidamente<br />
-                2) Veja fretes disponíveis para SP ⇄ PI<br />
-                3) Dê seu lance competitivo<br />
-                4) Feche o negócio com segurança<br />
-                5) Execute o frete e receba o pagamento
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-
-          {/* CTA na seção FAQ */}
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-6">Ainda tem dúvidas? Baixe o app e tire todas as dúvidas na prática!</p>
-            <div className="flex justify-center">
-              <DownloadButton
-                label="BAIXAR BUSCAFRETE AGORA"
-                icon={<Download size={24} />}
-                onClick={handleAndroidDownload}
-              />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            {/* Logo e Copyright */}
-            <div className="text-center md:text-left">
-              <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
-                <Truck size={24} style={{ color: COLORS.laranja }} />
-                <span className="font-bold text-xl">BuscaFrete</span>
-              </div>
-              <p className="text-gray-400 text-sm">
-                © 2025 BuscaFrete. Todos os direitos reservados.<br />
-                Rota SP ⇄ PI
+        <section id="local" className="px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-6xl gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
+            <div>
+              <p
+                className="mb-3 text-sm font-bold uppercase tracking-[0.18em]"
+                style={{ color: COLORS.orange }}
+              >
+                Foco local
               </p>
-            </div>
-
-            {/* Redes Sociais */}
-            <div className="text-center">
-              <h4 className="font-semibold mb-4" style={{ color: COLORS.laranja }}>
-                Conecte-se Conosco
-              </h4>
-              <div className="flex justify-center gap-6">
-                <button
-                  onClick={handleInstagramClick}
-                  className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full hover:scale-110 transition-transform duration-300"
-                  aria-label="Siga-nos no Instagram"
-                >
-                  <Instagram size={20} className="text-white" />
-                </button>
-                <button
+              <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+                Vinhedo e região para sua mudança.
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Atendimento local para transporte de itens, carreto residencial
+                e mudança de pequeno, médio ou grande porte em Vinhedo e região.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Button
+                  size="lg"
                   onClick={handleWhatsAppClick}
-                  className="flex items-center justify-center w-12 h-12 bg-green-500 rounded-full hover:scale-110 transition-transform duration-300"
-                  aria-label="Fale conosco no WhatsApp"
+                  className="min-h-[52px] rounded-xl px-6 text-base font-bold text-white"
+                  style={{ backgroundColor: COLORS.blue }}
                 >
-                  <MessageCircle size={20} className="text-white" />
-                </button>
+                  <MessageCircle size={20} aria-hidden="true" />
+                  Pedir orçamento
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={handleInstagramClick}
+                  className="min-h-[52px] rounded-xl px-6 text-base font-bold"
+                >
+                  <Instagram size={20} aria-hidden="true" />
+                  @busca.frete
+                </Button>
               </div>
-              <p className="text-gray-400 text-sm mt-3">
-                Fique por dentro das novidades!
-              </p>
             </div>
 
-            {/* Selos de Segurança */}
-            <div className="text-center md:text-right">
-              <h4 className="font-semibold mb-4" style={{ color: COLORS.verde }}>
-                Segurança Garantida
-              </h4>
-              <div className="flex flex-wrap justify-center md:justify-end gap-3 text-xs">
-                <div className="flex items-center gap-2 bg-gray-800 px-3 py-2 rounded-full">
-                  <Shield size={14} className="text-green-400" />
-                  <span className="text-gray-300">SSL Seguro</span>
-                </div>
-                <div className="flex items-center gap-2 bg-gray-800 px-3 py-2 rounded-full">
-                  <CreditCard size={14} className="text-blue-400" />
-                  <span className="text-gray-300">Pagar.me</span>
-                </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {localHighlights.map(item => {
+                const Icon = item.icon;
+
+                return (
+                  <div
+                    key={item.title}
+                    className="rounded-2xl border border-slate-200 bg-slate-50 p-5"
+                  >
+                    <span
+                      className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl text-white"
+                      style={{ backgroundColor: item.color }}
+                      aria-hidden="true"
+                    >
+                      <Icon size={24} />
+                    </span>
+                    <strong className="text-lg text-slate-950">
+                      {item.title}
+                    </strong>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">
+                      {item.description}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="faq" className="bg-slate-50 px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-4xl">
+            <SectionHeading
+              eyebrow="Perguntas rápidas"
+              title="Dúvidas antes de chamar"
+              description="As respostas já deixam claro o foco residencial e encurtam o caminho até o orçamento."
+            />
+
+            <Accordion type="single" collapsible className="space-y-4">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={faq.question}
+                  value={`item-${index + 1}`}
+                  className="rounded-2xl border border-slate-200 bg-white px-6"
+                >
+                  <AccordionTrigger className="text-left text-base font-bold hover:no-underline">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-5 text-base leading-7 text-slate-600">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+
+            <div className="mt-10 rounded-2xl bg-slate-950 p-6 text-center text-white">
+              <h3 className="text-2xl font-bold">
+                Baixe o app e receba as propostas da sua mudança.
+              </h3>
+              <p className="mx-auto mt-3 max-w-2xl text-slate-300">
+                O WhatsApp continua aberto para falar com a equipe, e o app é
+                onde você acompanha as propostas de pequeno, médio e grande
+                porte no celular.
+              </p>
+              <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button
+                  asChild
+                  onClick={handleAppStoreClick}
+                  size="lg"
+                  className="min-h-[52px] rounded-xl bg-white px-6 text-base font-bold text-slate-950 hover:bg-slate-100"
+                >
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download size={20} aria-hidden="true" />
+                    App Store
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  onClick={handlePlayStoreClick}
+                  size="lg"
+                  variant="outline"
+                  className="min-h-[52px] rounded-xl border-white/25 bg-white/10 px-6 text-base font-bold text-white hover:bg-white/15 hover:text-white"
+                >
+                  <a
+                    href={PLAY_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Download size={20} aria-hidden="true" />
+                    Google Play
+                  </a>
+                </Button>
               </div>
             </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-slate-200 bg-white px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-4 text-sm text-slate-600 md:flex-row md:items-center md:justify-between">
+          <div className="flex items-center gap-3">
+            <img
+              src="/logo.png"
+              alt=""
+              aria-hidden="true"
+              className="h-11 w-11 shrink-0 rounded-xl border border-slate-200 bg-white object-contain shadow-sm"
+            />
+            <div>
+              <strong className="block text-base text-slate-950">
+                Busca Frete Residencial
+              </strong>
+              <span>Vinhedo e região • Mudança sem dor de cabeça</span>
+            </div>
+          </div>
+          <div className="flex flex-col gap-1 md:text-right">
+            <span>WhatsApp {WHATSAPP_DISPLAY}</span>
+            <span>Instagram @busca.frete</span>
           </div>
         </div>
       </footer>
+
+      <div
+        className={`fixed bottom-3 right-4 z-50 w-[min(calc(100%-2rem),520px)] rounded-2xl border border-white/10 bg-slate-950/95 p-2 text-white shadow-2xl backdrop-blur transition duration-300 sm:bottom-4 sm:p-3 ${
+          showFixedCta
+            ? "translate-y-0 opacity-100"
+            : "pointer-events-none translate-y-6 opacity-0"
+        }`}
+        role="navigation"
+        aria-label="Ações rápidas"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <strong className="block text-sm sm:text-base">
+              Receba as propostas no app.
+            </strong>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <Button
+                asChild
+                onClick={handleAppStoreClick}
+                size="sm"
+                className="h-9 rounded-full border border-white/10 bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15 hover:text-white"
+              >
+                <a
+                  href={APP_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Apple size={14} aria-hidden="true" />
+                  App Store
+                </a>
+              </Button>
+              <Button
+                asChild
+                onClick={handlePlayStoreClick}
+                size="sm"
+                className="h-9 rounded-full border border-white/10 bg-white/10 px-3 text-xs font-semibold text-white hover:bg-white/15 hover:text-white"
+              >
+                <a
+                  href={PLAY_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Play size={14} aria-hidden="true" />
+                  Google Play
+                </a>
+              </Button>
+            </div>
+          </div>
+          <div className="sm:shrink-0">
+            <Button
+              onClick={handleWhatsAppClick}
+              className="min-h-[44px] w-full rounded-xl px-4 font-bold text-slate-950 sm:w-auto"
+              style={{ backgroundColor: COLORS.green }}
+            >
+              <MessageCircle size={18} aria-hidden="true" />
+              WhatsApp
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

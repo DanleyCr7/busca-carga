@@ -1,31 +1,61 @@
 <!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-  <link rel="icon" type="image/png" href="/logo.png" />
-  <link rel="apple-touch-icon" href="/logo.png" />
-  <title>Busca Frete</title>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
-  </script>
-  <!-- Add Google Fonts here, example:
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta
+      name="description"
+      content="Busca Frete Residencial em Vinhedo e região. Faça sua mudança sem dor de cabeça com atendimento rápido no WhatsApp e novidades no Instagram."
+    />
+    <meta
+      property="og:title"
+      content="Busca Frete Residencial | Vinhedo e região"
+    />
+    <meta
+      property="og:description"
+      content="Mudança residencial sem dor de cabeça, com atendimento rápido pelo WhatsApp e Instagram."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <title>Busca Frete Residencial | Vinhedo e região</title>
+    <!-- Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-XXXXXXXXXX");
+    </script>
+    <!-- Add Google Fonts here, example:
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     -->
-</head>
+  </head>
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-  <script defer src="%VITE_ANALYTICS_ENDPOINT%/umami" data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
-</body>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      const analyticsEndpoint = import.meta.env.VITE_ANALYTICS_ENDPOINT;
+      const analyticsWebsiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
 
+      if (analyticsEndpoint && analyticsWebsiteId) {
+        const script = document.createElement("script");
+        script.defer = true;
+        script.src = `${analyticsEndpoint.replace(/\/$/, "")}/umami`;
+        script.dataset.websiteId = analyticsWebsiteId;
+        document.body.appendChild(script);
+      }
+    </script>
+  </body>
 </html>
