@@ -5,21 +5,25 @@ import Home from "./Home";
 global.window.open = vi.fn();
 (global.window as any).gtag = vi.fn();
 
-describe("Home - Busca Frete Residencial", () => {
+describe("Home - Busca Frete de Cargas", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("renders the residential hero and local context", () => {
+  it("renders the cargo hero and local context", () => {
     render(<Home />);
 
     expect(
-      screen.getByRole("heading", { name: "Mudança sem dor de cabeça." })
+      screen.getByRole("heading", {
+        name: "Frete de cargas sem dor de cabeça.",
+      })
     ).toBeTruthy();
     expect(
-      screen.getAllByText(/Busca Frete Residencial/i).length
+      screen.getAllByText(/Busca Frete de Cargas/i).length
     ).toBeGreaterThan(0);
-    expect(screen.getAllByText(/Vinhedo e região/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/Piauí, São Paulo e expansão nacional/i).length
+    ).toBeGreaterThan(0);
     expect(screen.getAllByText(/Motorista parceiro/i).length).toBeGreaterThan(
       0
     );
@@ -29,15 +33,15 @@ describe("Home - Busca Frete Residencial", () => {
     ).toHaveAttribute("href", "#trabalhe-conosco");
   });
 
-  it("renders residential service language", () => {
+  it("renders cargo service language", () => {
     render(<Home />);
 
-    expect(screen.getByText("Pequeno porte")).toBeTruthy();
-    expect(screen.getByText("Médio porte")).toBeTruthy();
-    expect(screen.getByText("Grande porte")).toBeTruthy();
+    expect(screen.getAllByText("Grande porte").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Carga completa").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Carga dedicada").length).toBeGreaterThan(0);
     expect(
       screen.getByText(
-        "Geladeira, fogão, mesa, sofá, cama e outros itens avulsos para mover sem complicação."
+        "Cargas maiores que pedem espaço, organização e uma rota dedicada."
       )
     ).toBeTruthy();
   });
@@ -45,18 +49,20 @@ describe("Home - Busca Frete Residencial", () => {
   it("renders the expected page sections", () => {
     render(<Home />);
 
-    expect(screen.getByText("Frete residencial para a vida real")).toBeTruthy();
+    expect(screen.getByText("Frete de cargas para a vida real")).toBeTruthy();
     expect(
       screen.getByText("Do pedido ao agendamento em poucos passos")
     ).toBeTruthy();
     expect(
       screen.getByRole("heading", { name: "Trabalhe conosco" })
     ).toBeTruthy();
-    expect(screen.getByText("Vinhedo e região para sua mudança.")).toBeTruthy();
-    expect(screen.getByText("Carreto residencial")).toBeTruthy();
-    expect(screen.getByText("Frete Vinhedo")).toBeTruthy();
-    expect(screen.getByText("Casa e apartamento")).toBeTruthy();
-    expect(screen.getByText("Mudança Vinhedo")).toBeTruthy();
+    expect(
+      screen.getByText("Piauí, São Paulo e expansão para outras regiões.")
+    ).toBeTruthy();
+    expect(screen.getByText("Carreto de cargas")).toBeTruthy();
+    expect(screen.getByText("Operação nacional")).toBeTruthy();
+    expect(screen.getAllByText("Carga dedicada").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Carga completa").length).toBeGreaterThan(0);
     expect(screen.getByText("Programa de indicação")).toBeTruthy();
     expect(screen.getAllByText(/R\$ 10/i).length).toBeGreaterThan(0);
     expect(
@@ -68,7 +74,7 @@ describe("Home - Busca Frete Residencial", () => {
     );
     expect(screen.getByText("Dúvidas antes de chamar")).toBeTruthy();
     expect(
-      screen.getByText("Baixe o app e acompanhe as propostas da sua mudança.")
+      screen.getByText("Baixe o app e acompanhe as propostas da sua carga.")
     ).toBeTruthy();
   });
 
@@ -80,7 +86,7 @@ describe("Home - Busca Frete Residencial", () => {
     });
     const scoped = within(floating);
 
-    expect(scoped.getByText("Receba as propostas no app.")).toBeTruthy();
+    expect(scoped.getByText("Receba as propostas da sua carga.")).toBeTruthy();
     expect(scoped.getByRole("link", { name: "App Store" })).toHaveAttribute(
       "href",
       "https://apps.apple.com/br/app/busca-frete/id6747501257"
@@ -95,7 +101,7 @@ describe("Home - Busca Frete Residencial", () => {
     expect(floating.textContent ?? "").not.toMatch(/Instagram @busca\.frete/i);
   });
 
-  it("opens WhatsApp with a residential Vinhedo message", () => {
+  it("opens WhatsApp with a national cargo message", () => {
     render(<Home />);
 
     fireEvent.click(
@@ -109,12 +115,14 @@ describe("Home - Busca Frete Residencial", () => {
     );
     expect(
       decodeURIComponent((global.window.open as any).mock.calls[0][0])
-    ).toContain("orçamento para minha mudança residencial em Vinhedo");
+    ).toContain(
+      "orçamento para meu frete de cargas no Piauí, em São Paulo e em outras regiões do Brasil"
+    );
     expect((global.window as any).gtag).toHaveBeenCalledWith(
       "event",
-      "contact_whatsapp_residential",
+      "contact_whatsapp_cargas",
       expect.objectContaining({
-        page: "residential_landing_vinhedo",
+        page: "cargas_landing_nacional",
       })
     );
   });
@@ -133,9 +141,9 @@ describe("Home - Busca Frete Residencial", () => {
     );
     expect((global.window as any).gtag).toHaveBeenCalledWith(
       "event",
-      "contact_instagram_residential",
+      "contact_instagram_cargas",
       expect.objectContaining({
-        page: "residential_landing_vinhedo",
+        page: "cargas_landing_nacional",
       })
     );
   });
@@ -150,31 +158,29 @@ describe("Home - Busca Frete Residencial", () => {
       "event",
       "download_ios_app",
       expect.objectContaining({
-        page: "residential_landing_vinhedo",
+        page: "cargas_landing_nacional",
       })
     );
     expect((global.window as any).gtag).toHaveBeenCalledWith(
       "event",
       "download_android_app",
       expect.objectContaining({
-        page: "residential_landing_vinhedo",
+        page: "cargas_landing_nacional",
       })
     );
   });
 
-  it("does not render the old long-route driver positioning", () => {
+  it("does not render the old residential positioning", () => {
     render(<Home />);
 
     const pageText = document.body.textContent ?? "";
 
-    expect(pageText).not.toMatch(/SP ⇄ PI/);
-    expect(pageText).not.toMatch(/Rota SP-PI/);
-    expect(pageText).not.toMatch(/Pagar\.me/);
-    expect(pageText).not.toMatch(/frete de retorno/i);
-    expect(pageText).not.toMatch(/BAIXAR PARA ANDROID/);
-    expect(pageText).not.toMatch(/BAIXAR PARA IPHONE/);
-    expect(pageText).not.toMatch(/carga pesada/i);
-    expect(pageText).not.toMatch(/operação semi-manual/i);
-    expect(pageText).not.toMatch(/validação interna/i);
+    expect(pageText).not.toMatch(/residencial/i);
+    expect(pageText).not.toMatch(/mudança/i);
+    expect(pageText).not.toMatch(/pequeno porte/i);
+    expect(pageText).not.toMatch(/médio porte/i);
+    expect(pageText).not.toMatch(/carreto residencial/i);
+    expect(pageText).not.toMatch(/casa e apartamento/i);
+    expect(pageText).not.toMatch(/Mudança Vinhedo/i);
   });
 });

@@ -37,7 +37,7 @@ const COLORS = {
 const WHATSAPP_NUMBER = "558699960441";
 const WHATSAPP_DISPLAY = "+55 86 9996-0441";
 const WHATSAPP_MESSAGE =
-  "Olá! Vim pela landing da Busca Frete e quero um orçamento para minha mudança residencial em Vinhedo.";
+  "Olá! Vim pela landing da Busca Frete e quero um orçamento para meu frete de cargas no Piauí, em São Paulo e em outras regiões do Brasil.";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
   WHATSAPP_MESSAGE
 )}`;
@@ -48,27 +48,27 @@ const INSTAGRAM_URL = "https://www.instagram.com/busca.frete/";
 
 const services = [
   {
-    title: "Pequeno porte",
+    title: "Grande porte",
     description:
-      "Geladeira, fogão, mesa, sofá, cama e outros itens avulsos para mover sem complicação.",
-    icon: Package,
-  },
-  {
-    title: "Médio porte",
-    description:
-      "Alguns móveis, caixas e parte da mudança quando o volume já pede mais espaço no carro.",
+      "Cargas maiores que pedem espaço, organização e uma rota dedicada.",
     icon: Truck,
   },
   {
-    title: "Grande porte",
+    title: "Carga completa",
     description:
-      "Mudança completa de casa ou apartamento, com mais volume e organização no app.",
+      "Quando o envio precisa ir inteiro no mesmo frete, com mais controle no app.",
+    icon: Package,
+  },
+  {
+    title: "Carga dedicada",
+    description:
+      "Para atender volumes altos com atenção no horário de retirada e entrega.",
     icon: HomeIcon,
   },
   {
-    title: "Vinhedo e arredores",
+    title: "Cobertura em expansão",
     description:
-      "Atendimento local para reduzir espera, facilitar a conversa e combinar o melhor horário.",
+      "Operação com base no Piauí e em São Paulo, expandindo para novas regiões com atendimento ágil.",
     icon: MapPin,
   },
 ];
@@ -77,7 +77,7 @@ const steps = [
   {
     title: "Chame no WhatsApp",
     description:
-      "Toque no botão principal e envie sua mensagem com o pedido de mudança residencial.",
+      "Toque no botão principal e envie sua mensagem com o pedido de frete de cargas.",
     icon: MessageCircle,
   },
   {
@@ -87,9 +87,9 @@ const steps = [
     icon: Camera,
   },
   {
-    title: "Receba orientação local",
+    title: "Receba orientação rápida",
     description:
-      "A equipe responde com o caminho mais simples para organizar seu frete em Vinhedo.",
+      "A equipe responde com o caminho mais simples para organizar seu frete na sua região.",
     icon: Send,
   },
   {
@@ -102,30 +102,30 @@ const steps = [
 
 const localHighlights = [
   {
-    title: "Carreto residencial",
+    title: "Carreto de cargas",
     description:
-      "Sofá, geladeira, fogão, mesa e outros itens de casa saindo do lugar certo sem enrolação.",
+      "Caixas, mercadorias, eletrodomésticos e volumes saindo do lugar certo sem enrolação.",
     icon: Truck,
     color: COLORS.orange,
   },
   {
-    title: "Frete Vinhedo",
+    title: "Operação nacional",
     description:
-      "Atendimento local para Vinhedo e região, com resposta rápida e conversa direta no WhatsApp.",
+      "Atendimento com base no Piauí e em São Paulo, com expansão para outras regiões do país.",
     icon: MapPin,
     color: COLORS.blue,
   },
   {
-    title: "Casa e apartamento",
+    title: "Carga dedicada",
     description:
-      "Mudanças completas para quem vai trocar de endereço com mais volume e quer resolver no app.",
+      "Quando a carga grande precisa de uma rota exclusiva e acompanhamento mais próximo.",
     icon: HomeIcon,
     color: COLORS.green,
   },
   {
-    title: "Mudança Vinhedo",
+    title: "Carga completa",
     description:
-      "Quando o pedido é pequeno, médio ou grande porte e você quer receber propostas com agilidade.",
+      "Quando o pedido pede uma viagem dedicada e propostas rápidas no app.",
     icon: Package,
     color: COLORS.orange,
   },
@@ -149,7 +149,7 @@ const driverHighlights = [
   {
     title: "Receba fretes",
     description:
-      "Acompanhe as oportunidades da plataforma para Vinhedo e região.",
+      "Acompanhe as oportunidades de cargas da plataforma no Piauí, em São Paulo e em expansão para outras regiões.",
     icon: Truck,
     color: COLORS.orange,
   },
@@ -164,31 +164,31 @@ const driverHighlights = [
 
 const faqs = [
   {
-    question: "Vocês atendem só mudança completa?",
+    question: "Vocês atendem só carga grande?",
     answer:
-      "Não. O Busca Frete Residencial trabalha com pequeno, médio e grande porte, cobrindo desde um item avulso até a mudança completa.",
+      "Sim. O foco desta página é grande porte, com frete de cargas para volumes maiores e operação ativa no Piauí, em São Paulo e em expansão para outras regiões.",
   },
   {
     question: "Posso pedir orçamento pelo WhatsApp?",
     answer:
-      "Sim. O WhatsApp é o contato principal para enviar fotos, explicar os itens e receber orientação rápida.",
+      "Sim. O WhatsApp é o contato principal para enviar fotos, explicar a carga e receber orientação rápida.",
   },
   {
-    question: "O atendimento é em Vinhedo?",
+    question: "Onde a operação atende hoje?",
     answer:
-      "A página está focada em Vinhedo e região para manter a conversa local e facilitar o agendamento.",
+      "A operação hoje está no Piauí e em São Paulo, com expansão para outras regiões conforme a demanda cresce.",
   },
   {
     question: "Quais itens posso levar?",
     answer:
-      "Geladeira, fogão, mesa, sofá, cama, armário, caixas e outros itens de casa ou apartamento podem entrar no orçamento.",
+      "Caixas, mercadorias, equipamentos, eletrodomésticos e outros volumes podem entrar no orçamento.",
   },
 ];
 
 const trackContactEvent = (eventName: string) => {
   if (typeof window !== "undefined" && (window as any).gtag) {
     (window as any).gtag("event", eventName, {
-      page: "residential_landing_vinhedo",
+      page: "cargas_landing_nacional",
       timestamp: new Date().toISOString(),
     });
   }
@@ -248,11 +248,11 @@ export default function Home() {
   }, []);
 
   const handleWhatsAppClick = () => {
-    openExternal(WHATSAPP_URL, "contact_whatsapp_residential");
+    openExternal(WHATSAPP_URL, "contact_whatsapp_cargas");
   };
 
   const handleInstagramClick = () => {
-    openExternal(INSTAGRAM_URL, "contact_instagram_residential");
+    openExternal(INSTAGRAM_URL, "contact_instagram_cargas");
   };
 
   const handleAppStoreClick = () => {
@@ -270,7 +270,7 @@ export default function Home() {
           <a
             href="#inicio"
             className="flex items-center gap-3"
-            aria-label="Busca Frete Residencial"
+            aria-label="Busca Frete de Cargas"
           >
             <img
               src="/logo.png"
@@ -280,10 +280,10 @@ export default function Home() {
             />
             <span>
               <strong className="block text-lg font-bold text-slate-950">
-                Busca Frete Residencial
+                Busca Frete de Cargas
               </strong>
               <span className="block text-sm text-slate-600">
-                Vinhedo e região
+                Piauí, São Paulo e expansão nacional
               </span>
             </span>
           </a>
@@ -314,7 +314,7 @@ export default function Home() {
               className="rounded-full px-3 py-2 hover:bg-slate-100"
               href="#local"
             >
-              Vinhedo
+              Região
             </a>
             <a
               className="rounded-full px-3 py-2 hover:bg-slate-100"
@@ -335,10 +335,10 @@ export default function Home() {
             <div>
               <div className="mb-6 flex flex-wrap gap-3">
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
-                  Mudança residencial
+                  Frete de cargas
                 </span>
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
-                  Vinhedo/SP
+                  Piauí e São Paulo
                 </span>
                 <span className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white">
                   Motorista parceiro
@@ -346,12 +346,12 @@ export default function Home() {
               </div>
 
               <h1 className="max-w-3xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
-                Mudança sem dor de cabeça.
+                Frete de cargas sem dor de cabeça.
               </h1>
               <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-200 sm:text-xl">
-                O Busca Frete Residencial ajuda você a levar desde uma
-                geladeira, um fogão ou uma mesa até uma mudança completa de casa
-                ou apartamento, com uma conversa simples e direta.
+                O Busca Frete de Cargas ajuda você a levar cargas maiores, como
+                caixas, mercadorias, eletrodomésticos e volumes altos, com uma
+                conversa simples e direta.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -391,7 +391,7 @@ export default function Home() {
                       </strong>
                       <p className="mt-1 text-sm leading-6 text-slate-300">
                         Baixe o app, faça seu cadastro completo e comece a
-                        receber fretes em Vinhedo e região.
+                        receber fretes de cargas no Piauí, em São Paulo e em outras regiões.
                       </p>
                     </div>
                   </div>
@@ -435,16 +435,16 @@ export default function Home() {
                   </span>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                  <strong className="block text-base">Foco residencial</strong>
+                  <strong className="block text-base">Foco em cargas</strong>
                   <span className="mt-1 block text-sm leading-6 text-slate-300">
-                    Pequeno, médio e grande porte para qualquer tipo de mudança.
+                    Grande porte para qualquer tipo de frete.
                   </span>
                 </div>
                 <div className="rounded-xl border border-white/10 bg-white/5 p-4">
                   <strong className="block text-base">Propostas no app</strong>
                   <span className="mt-1 block text-sm leading-6 text-slate-300">
                     Baixe na App Store ou no Google Play para receber as
-                    propostas do pequeno ao grande porte.
+                    propostas do grande porte.
                   </span>
                 </div>
               </div>
@@ -461,7 +461,7 @@ export default function Home() {
                       Receba propostas no app
                     </p>
                     <h2 className="mt-3 text-2xl font-bold">
-                      Baixe o app e acompanhe as propostas da sua mudança.
+                      Baixe o app e acompanhe as propostas da sua carga.
                     </h2>
                     <p className="mt-3 text-sm leading-6 text-blue-100">
                       Depois de mandar os detalhes no WhatsApp, use o app para
@@ -474,8 +474,8 @@ export default function Home() {
 
               <div className="mt-5 grid gap-4">
                 {[
-                  "Envie fotos dos móveis e caixas.",
-                  "Informe se é pequeno, médio ou grande porte.",
+                  "Envie fotos dos volumes e caixas.",
+                  "Informe que é grande porte e envie os detalhes da carga.",
                   "Receba as propostas no app quando tudo estiver pronto.",
                 ].map(item => (
                   <div
@@ -538,7 +538,8 @@ export default function Home() {
                 </Button>
               </div>
               <p className="mt-3 text-center text-xs leading-5 text-slate-500">
-                Baixe o app para receber as propostas no iPhone ou no Android.
+                Baixe o app para receber as propostas da sua carga no iPhone ou
+                no Android.
               </p>
             </div>
           </div>
@@ -552,7 +553,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Motorista parceiro"
               title="Trabalhe conosco"
-              description="Se você é motorista, baixe o app, faça seu cadastro completo e comece a receber fretes em Vinhedo e região. Indique outro motorista e ganhe R$ 10 quando ele concluir o cadastro completo e fizer o primeiro frete na plataforma."
+              description="Se você é motorista, baixe o app, faça seu cadastro completo e comece a receber fretes no Piauí, em São Paulo e em outras regiões. Indique outro motorista e ganhe R$ 10 quando ele concluir o cadastro completo e fizer o primeiro frete na plataforma."
             />
 
             <div className="mx-auto mb-8 flex max-w-3xl flex-col justify-center gap-3 sm:flex-row">
@@ -623,8 +624,8 @@ export default function Home() {
           <div className="mx-auto max-w-6xl">
             <SectionHeading
               eyebrow="O que fazemos"
-              title="Frete residencial para a vida real"
-              description="A página fala com quem precisa resolver desde um item pequeno até uma mudança completa, sem cadastro obrigatório e sem linguagem complicada."
+              title="Frete de cargas para a vida real"
+              description="A página fala com quem precisa resolver uma carga maior, sem cadastro obrigatório e sem linguagem complicada."
             />
 
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -664,7 +665,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Como funciona"
               title="Do pedido ao agendamento em poucos passos"
-              description="O caminho é direto para o WhatsApp, com informações fáceis de enviar e resposta pensada para Vinhedo e região."
+              description="O caminho é direto para o WhatsApp, com informações fáceis de enviar e resposta pensada para operações no Piauí, em São Paulo e em expansão."
             />
 
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
@@ -720,8 +721,8 @@ export default function Home() {
               </h2>
               <p className="mt-4 text-lg leading-8 text-slate-600">
                 Assista ao vídeo e veja como o Busca Frete ajuda você a receber
-                propostas para item único, mudança parcial ou mudança completa
-                em Vinhedo e região.
+                propostas para frete de cargas no Piauí, em São Paulo e em
+                outras regiões, com foco total em grande porte.
               </p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -758,8 +759,8 @@ export default function Home() {
                 </Button>
               </div>
               <p className="mt-4 max-w-xl text-sm leading-6 text-slate-500">
-                Baixe o app para acompanhar as propostas da sua mudança com mais
-                praticidade.
+                Baixe o app para acompanhar as propostas da sua carga com mais
+                praticidade, onde quer que a operação esteja crescendo.
               </p>
             </div>
 
@@ -785,14 +786,14 @@ export default function Home() {
                 className="mb-3 text-sm font-bold uppercase tracking-[0.18em]"
                 style={{ color: COLORS.orange }}
               >
-                Foco local
+                Cobertura
               </p>
               <h2 className="text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
-                Vinhedo e região para sua mudança.
+                Piauí, São Paulo e expansão para outras regiões.
               </h2>
               <p className="mt-4 text-lg leading-8 text-slate-600">
-                Atendimento local para transporte de itens, carreto residencial
-                e mudança de pequeno, médio ou grande porte em Vinhedo e região.
+                Atendimento para transporte de itens, carreto de cargas e frete
+                de grande porte com base no Piauí e em São Paulo.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
                 <Button
@@ -850,7 +851,7 @@ export default function Home() {
             <SectionHeading
               eyebrow="Perguntas rápidas"
               title="Dúvidas antes de chamar"
-              description="As respostas já deixam claro o foco residencial e encurtam o caminho até o orçamento."
+              description="As respostas já deixam claro o foco em cargas e encurtam o caminho até o orçamento."
             />
 
             <Accordion type="single" collapsible className="space-y-4">
@@ -872,12 +873,12 @@ export default function Home() {
 
             <div className="mt-10 rounded-2xl bg-slate-950 p-6 text-center text-white">
               <h3 className="text-2xl font-bold">
-                Baixe o app e receba as propostas da sua mudança.
+                Baixe o app e receba as propostas da sua carga.
               </h3>
               <p className="mx-auto mt-3 max-w-2xl text-slate-300">
                 O WhatsApp continua aberto para falar com a equipe, e o app é
-                onde você acompanha as propostas de pequeno, médio e grande
-                porte no celular.
+                onde você acompanha as propostas de grande porte no celular,
+                em operações que já rodam no Piauí, em São Paulo e em expansão.
               </p>
               <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
                 <Button
@@ -928,9 +929,9 @@ export default function Home() {
             />
             <div>
               <strong className="block text-base text-slate-950">
-                Busca Frete Residencial
+                Busca Frete de Cargas
               </strong>
-              <span>Vinhedo e região • Mudança sem dor de cabeça</span>
+              <span>Piauí, São Paulo e expansão nacional • Frete de cargas sem dor de cabeça</span>
             </div>
           </div>
           <div className="flex flex-col gap-1 md:text-right">
@@ -952,7 +953,7 @@ export default function Home() {
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="min-w-0">
             <strong className="block text-sm sm:text-base">
-              Receba as propostas no app.
+              Receba as propostas da sua carga.
             </strong>
             <div className="mt-2 flex flex-wrap gap-2">
               <Button
