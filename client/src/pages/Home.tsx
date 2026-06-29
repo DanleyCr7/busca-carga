@@ -39,6 +39,8 @@ const COLORS = {
   azul: "#1E40AF",
   verde: "#10B981",
   laranja: "#F59E0B",
+
+  azul_escuro: "#1E40AF",
 };
 
 const DownloadButton = ({
