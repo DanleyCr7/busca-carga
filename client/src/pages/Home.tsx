@@ -6,14 +6,16 @@ import {
   Clock3,
   Headphones,
   MapPin,
+  Menu,
   PackageCheck,
   Search,
   ShieldCheck,
   Truck,
   Users,
   Warehouse,
+  X,
 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const vehicles = [
   { title: "Carreta Baú", description: "Carga fechada", image: "/images/carreta-bau-busca-frete.png", imageAlt: "Carreta baú da Busca Frete" },
@@ -44,11 +46,48 @@ const metrics = [
   { icon: ShieldCheck, value: "98%", label: "Satisfação dos clientes" },
 ] as const;
 
+const appStores = {
+  apple: "https://apps.apple.com/br/app/busca-frete/id6747501257",
+  google: "https://play.google.com/store/apps/details?id=com.frete.busca",
+} as const;
+
+function AppStoreLink({ store }: { store: keyof typeof appStores }) {
+  const isApple = store === "apple";
+
+  return (
+    <a
+      href={appStores[store]}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={`Baixar Busca Frete na ${isApple ? "App Store" : "Google Play"}`}
+      className="flex h-8 items-center gap-1.5 rounded-md bg-black px-2 text-white transition hover:bg-slate-800 sm:h-9 sm:px-2.5"
+    >
+      {isApple ? (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0 fill-current sm:size-5">
+          <path d="M17.05 12.54c-.02-2.25 1.84-3.34 1.92-3.4a4.12 4.12 0 0 0-3.24-1.75c-1.36-.14-2.68.82-3.37.82-.7 0-1.76-.8-2.91-.78a4.3 4.3 0 0 0-3.62 2.2c-1.57 2.72-.4 6.72 1.1 8.91.75 1.07 1.63 2.27 2.77 2.23 1.12-.05 1.54-.72 2.9-.72 1.34 0 1.74.72 2.91.7 1.2-.02 1.96-1.08 2.68-2.16a8.9 8.9 0 0 0 1.23-2.5 3.9 3.9 0 0 1-2.37-3.55ZM14.84 5.95a3.96 3.96 0 0 0 .9-2.84 4.03 4.03 0 0 0-2.61 1.35 3.78 3.78 0 0 0-.93 2.73 3.34 3.34 0 0 0 2.64-1.24Z" />
+        </svg>
+      ) : (
+        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0 sm:size-5">
+          <path fill="#00d7fe" d="M3.3 2.2 14 12 3.3 21.8c-.2-.4-.3-.8-.3-1.3v-17c0-.5.1-.9.3-1.3Z" />
+          <path fill="#ffce00" d="m14 12 3.5-3.2 3.9 2.2c.8.5.8 1.5 0 2l-3.9 2.2L14 12Z" />
+          <path fill="#00f076" d="M3.3 2.2c.5-.7 1.3-.9 2.1-.4l12.1 7-3.5 3.2L3.3 2.2Z" />
+          <path fill="#f63448" d="M3.3 21.8 14 12l3.5 3.2-12.1 7c-.8.5-1.6.3-2.1-.4Z" />
+        </svg>
+      )}
+      <span className="whitespace-nowrap leading-none">
+        <small className="block text-[6px] uppercase tracking-wide sm:text-[7px]">{isApple ? "Baixar na" : "Disponível no"}</small>
+        <strong className="mt-0.5 block text-[10px] font-semibold sm:text-[11px]">{isApple ? "App Store" : "Google Play"}</strong>
+      </span>
+    </a>
+  );
+}
+
 function EmptyImage({ slot, className = "" }: { slot: string; className?: string }) {
   return <img alt="" aria-hidden="true" data-image-slot={slot} className={`image-placeholder ${className}`} />;
 }
 
 export default function Home() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   useEffect(() => window.scrollTo(0, 0), []);
 
   return (
@@ -62,12 +101,35 @@ export default function Home() {
             <a href="#inicio">Início</a><a href="#como-funciona">Como funciona</a><a href="#servicos">Serviços</a>
             <a href="#solucoes">Para empresas</a><a href="#cobertura">Motoristas</a><a href="#sobre">Sobre nós</a>
           </nav>
-          <div className="flex shrink-0 items-center gap-2">
-            <button type="button" className="rounded-md border border-[#1757ba] px-4 py-2 text-xs font-bold text-[#1757ba]">Entrar</button>
-            <button type="button" className="rounded-md bg-[#1757ba] px-4 py-2 text-xs font-bold text-white">Cadastrar</button>
+          <div className="hidden shrink-0 items-center gap-2 lg:flex">
+            <AppStoreLink store="apple" />
+            <AppStoreLink store="google" />
           </div>
+          <button
+            type="button"
+            aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={mobileMenuOpen}
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="rounded-md p-2 text-[#1757ba] lg:hidden"
+          >
+            {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
+          </button>
         </div>
+        {mobileMenuOpen && (
+          <nav aria-label="Menu mobile" className="border-t border-slate-100 bg-white px-5 py-4 lg:hidden">
+            <div className="container flex flex-col gap-4 text-sm font-semibold text-slate-600">
+              {[['Início', '#inicio'], ['Como funciona', '#como-funciona'], ['Serviços', '#servicos'], ['Para empresas', '#solucoes'], ['Motoristas', '#cobertura'], ['Sobre nós', '#sobre']].map(([label, href]) => (
+                <a key={href} href={href} onClick={() => setMobileMenuOpen(false)}>{label}</a>
+              ))}
+            </div>
+          </nav>
+        )}
       </header>
+
+      <div className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 gap-2 rounded-xl bg-white/90 p-1.5 shadow-[0_8px_28px_rgba(16,38,80,.2)] backdrop-blur lg:hidden">
+        <AppStoreLink store="apple" />
+        <AppStoreLink store="google" />
+      </div>
 
       <main>
         <section id="inicio" className="relative overflow-hidden bg-[#e1f0fc]">
@@ -92,7 +154,7 @@ export default function Home() {
                 <div className="max-sm:flex-col max-sm:items-center max-sm:gap-1.5 max-sm:rounded-xl max-sm:bg-white max-sm:p-3 max-sm:text-center max-sm:shadow-[0_4px_10px_rgba(22,65,130,.08)] flex gap-2 text-[11px]"><Clock3 className="size-7 text-[#1757ba] sm:size-9" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
               </div>
             </div>
-            <div className="relative aspect-[1/1] w-full overflow-hidden rounded-3xl sm:aspect-[5/4]">
+            <div className="relative mx-auto aspect-[5/4] w-[84%] overflow-hidden rounded-3xl sm:mx-0 sm:aspect-[5/4] sm:w-full">
               <img
                 src="/images/mapa-cobertura-brasil.png"
                 alt=""
@@ -113,7 +175,7 @@ export default function Home() {
                 src="/images/busca-frete-caminhao.png"
                 alt="Caminhão de carga da Busca Frete"
                 data-image-slot="hero-map-truck"
-                className="image-placeholder absolute inset-x-10 bottom-[-18%] z-10 h-[72%] w-full object-contain object-bottom"
+                className="image-placeholder absolute inset-x-8 bottom-[-14%] z-10 h-[60%] w-full object-contain object-bottom sm:inset-x-10 sm:bottom-[-18%] sm:h-[72%]"
               />
             </div>
           </div>
@@ -144,7 +206,7 @@ export default function Home() {
             <div className="mt-9 grid gap-5 lg:grid-cols-3">
               {steps.map((step, index) => <article key={step.title} className="relative rounded-xl bg-[#f9fbff] p-5"><span className="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-bold text-white">{index + 1}</span><img src={step.image} alt={step.imageAlt} data-image-slot={`step-${index + 1}`} className="image-placeholder mx-auto aspect-[16/9] w-4/5 object-contain" /><h3 className="mt-4 text-sm font-bold">{step.title}</h3><p className="mt-2 text-xs leading-5 text-slate-500">{step.text}</p></article>)}
             </div>
-            <div className="mt-8 grid overflow-hidden rounded-2xl bg-[linear-gradient(120deg,#114aa9,#155bd0)] px-5 py-7 text-white sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-8 grid overflow-hidden rounded-2xl bg-[linear-gradient(120deg,#114aa9,#155bd0)] px-5 py-7 text-white grid-cols-2 lg:grid-cols-4">
               {metrics.map(({ icon: Icon, value, label }) => <div key={label} className="border-white/20 px-4 py-4 text-center lg:border-r lg:last:border-r-0"><Icon className="mx-auto size-8 stroke-1" /><strong className="mt-3 block text-2xl">{value}</strong><span className="text-xs text-blue-100">{label}</span></div>)}
             </div>
           </div>

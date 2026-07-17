@@ -20,6 +20,19 @@ describe("Home - Busca Frete landing", () => {
     expect(within(navigation).getByRole("link", { name: /para empresas/i })).toHaveAttribute("href", "#solucoes");
   });
 
+  it("links the header to both app stores", () => {
+    render(<Home />);
+    expect(screen.queryByRole("button", { name: /entrar|cadastrar/i })).not.toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /baixar busca frete na app store/i })[0]).toHaveAttribute(
+      "href",
+      "https://apps.apple.com/br/app/busca-frete/id6747501257",
+    );
+    expect(screen.getAllByRole("link", { name: /baixar busca frete na google play/i })[0]).toHaveAttribute(
+      "href",
+      "https://play.google.com/store/apps/details?id=com.frete.busca",
+    );
+  });
+
   it("keeps the freight search visual-only", () => {
     const { container } = render(<Home />);
     expect(container.querySelector("form")).toBeNull();
