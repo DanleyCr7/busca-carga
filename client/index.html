@@ -1,31 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5" />
+  <meta name="theme-color" content="#12274e" />
+  <meta name="robots" content="index, follow" />
+  <meta name="description" content="Encontre o frete certo para sua carga em qualquer lugar do Brasil com motoristas verificados, acompanhamento e suporte especializado." />
+  <meta name="keywords" content="fretes, mudancas, grandes cargas, frete interestadual, transporte de itens grandes, mudanca residencial, Busca Frete" />
+  <link rel="canonical" href="https://buscarfrete.com/" />
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
-  <title>Busca Frete</title>
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+
+  <title>Busca Frete | O frete certo para sua carga</title>
+
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="pt_BR" />
+  <meta property="og:site_name" content="Busca Frete" />
+  <meta property="og:title" content="Busca Frete | O frete certo para sua carga" />
+  <meta property="og:description" content="Conectamos você ao motorista ideal para grandes cargas em todo o Brasil." />
+  <meta property="og:url" content="https://buscarfrete.com/" />
+  <meta property="og:image" content="https://buscarfrete.com/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Busca Frete | O frete certo para sua carga" />
+  <meta name="twitter:description" content="Conectamos você ao motorista ideal para grandes cargas em todo o Brasil." />
+  <meta name="twitter:image" content="https://buscarfrete.com/logo.png" />
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "Busca Frete",
+          "url": "https://buscarfrete.com/",
+          "logo": "https://buscarfrete.com/logo.png",
+          "sameAs": ["https://www.instagram.com/busca.frete/"]
+        },
+        {
+          "@type": "WebSite",
+          "name": "Busca Frete",
+          "url": "https://buscarfrete.com/",
+          "description": "Pagina institucional da Busca Frete para fretes, mudancas e grandes cargas."
+        },
+        {
+          "@type": "Service",
+          "name": "Busca Frete",
+          "serviceType": "Fretes, mudancas e grandes cargas",
+          "provider": {
+            "@type": "Organization",
+            "name": "Busca Frete"
+          },
+          "areaServed": "BR",
+          "description": "Apresentacao institucional de servicos de frete, mudanca e transporte de itens grandes com cobertura ilustrativa nacional."
+        }
+      ]
+    }
   </script>
-  <!-- Add Google Fonts here, example:
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    -->
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
-  <script defer src="%VITE_ANALYTICS_ENDPOINT%/umami" data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
 </body>
 
 </html>

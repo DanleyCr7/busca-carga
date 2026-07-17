@@ -1,159 +1,59 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import Home from "./Home";
 
-// Mock window.open
-global.window.open = vi.fn();
+const fetchMock = vi.fn();
+const scrollToMock = vi.fn();
 
-// Mock gtag
-(global.window as any).gtag = vi.fn();
+Object.defineProperty(window, "fetch", { writable: true, value: fetchMock });
+Object.defineProperty(window, "scrollTo", { writable: true, value: scrollToMock });
 
-describe("Home - BuscaFrete Landing Page", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
+describe("Home - Busca Frete landing", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("renders the reference structure and navigation", () => {
+    render(<Home />);
+    expect(screen.getByRole("heading", { name: /o frete certo para sua carga/i })).toBeInTheDocument();
+    const navigation = screen.getByRole("navigation", { name: /navegação principal/i });
+    expect(within(navigation).getByRole("link", { name: /como funciona/i })).toHaveAttribute("href", "#como-funciona");
+    expect(within(navigation).getByRole("link", { name: /serviços/i })).toHaveAttribute("href", "#servicos");
+    expect(within(navigation).getByRole("link", { name: /para empresas/i })).toHaveAttribute("href", "#solucoes");
   });
 
-  it("renders the hero section with main headline", () => {
-    render(<Home />);
-    const headline = screen.getByText("CHEGA DE VAZIO DE RETORNO");
-    expect(headline).toBeTruthy();
+  it("keeps the freight search visual-only", () => {
+    const { container } = render(<Home />);
+    expect(container.querySelector("form")).toBeNull();
+    expect(screen.getByRole("textbox", { name: "Origem" })).toBeDisabled();
+    expect(screen.getByRole("textbox", { name: "Destino" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /buscar frete/i })).toHaveAttribute("type", "button");
+    expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it("renders the hero section with sub-headline", () => {
+  it("renders vehicles, solutions, steps and metrics", () => {
     render(<Home />);
-    const subHeadline = screen.getByText(/Frete Garantido para sua Volta: SP ⇄ PI/);
-    expect(subHeadline).toBeTruthy();
+    expect(screen.getByRole("heading", { name: /do pequeno ao extrapesado/i })).toBeInTheDocument();
+    expect(screen.getAllByText(/carreta baú|carroceria aberta|truck baú|carroceria sider|van/i)).toHaveLength(5);
+    expect(screen.getByRole("heading", { name: /soluções completas para sua logística/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("article")).toHaveLength(14);
+    expect(screen.getByText("+25.000")).toBeInTheDocument();
+    expect(screen.getByText("+80.000")).toBeInTheDocument();
+    expect(screen.getByText("+5.000")).toBeInTheDocument();
+    expect(screen.getByText("98%")).toBeInTheDocument();
   });
 
-  it("renders both download buttons in hero section", () => {
-    render(<Home />);
-    const androidButton = screen.getByText("BAIXAR PARA ANDROID");
-    const iphoneButton = screen.getByText("BAIXAR PARA IPHONE");
-    expect(androidButton).toBeTruthy();
-    expect(iphoneButton).toBeTruthy();
+  it("reserves every image slot without a source", () => {
+    const { container } = render(<Home />);
+    const placeholders = Array.from(container.querySelectorAll<HTMLImageElement>("img[data-image-slot]"));
+    expect(placeholders).toHaveLength(11);
+    expect(placeholders.every((image) => !image.hasAttribute("src"))).toBe(true);
+    expect(placeholders.map((image) => image.dataset.imageSlot)).toContain("hero-map-truck");
+    expect(placeholders.map((image) => image.dataset.imageSlot)).toContain("coverage-map");
   });
 
-  it("renders the 'Dor e Solução' section with 3 cards", () => {
+  it("renders national coverage and support CTA", () => {
     render(<Home />);
-    expect(screen.getByText("Sua Maior Dor tem Solução Imediata")).toBeTruthy();
-    expect(screen.getByText("Ficar Parado Custa Caro")).toBeTruthy();
-    expect(screen.getByText("Pagamento Demorado e Inseguro")).toBeTruthy();
-    expect(screen.getByText("Leilões Injustos")).toBeTruthy();
-  });
-
-  it("renders the 'Processo Simplificado' section with 3 steps", () => {
-    render(<Home />);
-    expect(screen.getByText("Como Funciona em 3 Passos Simples")).toBeTruthy();
-    expect(screen.getByText("Encontre o Frete Ideal")).toBeTruthy();
-    expect(screen.getByText("Feche seu Lance Vencedor")).toBeTruthy();
-    expect(screen.getByText("Receba Rápido e Garantido")).toBeTruthy();
-  });
-
-  it("renders the video section", () => {
-    render(<Home />);
-    expect(screen.getByText("Veja o BuscaFrete em Ação")).toBeTruthy();
-    const iframe = screen.getByTitle("BuscaFrete em Ação") as HTMLIFrameElement;
-    expect(iframe).toBeTruthy();
-    expect(iframe.src).toContain("youtube.com/embed");
-  });
-
-  it("renders the advantages section with 4 features", () => {
-    render(<Home />);
-    expect(screen.getByText("BuscaFrete na Rota SP ⇄ PI: Sua Vantagem Competitiva")).toBeTruthy();
-    expect(screen.getByText("Segurança Financeira")).toBeTruthy();
-    expect(screen.getByText("Foco Exclusivo")).toBeTruthy();
-    expect(screen.getByText("Cadastro Rápido")).toBeTruthy();
-    expect(screen.getByText("App Leve e Simples")).toBeTruthy();
-  });
-
-  it("renders the social proof section with testimonial", () => {
-    render(<Home />);
-    expect(screen.getByText("Quem usa, aprova")).toBeTruthy();
-    expect(screen.getByText(/Achei que ia voltar vazio/)).toBeTruthy();
-    expect(screen.getByText(/João A., Caminhoneiro Autônomo, PI/)).toBeTruthy();
-  });
-
-  it("renders the urgency counter", () => {
-    render(<Home />);
-    expect(screen.getByText("MUITOS FRETES MAPEADOS!")).toBeTruthy();
-  });
-
-  it("renders the final CTA section", () => {
-    render(<Home />);
-    expect(screen.getByText("Não perca mais tempo na estrada.")).toBeTruthy();
-    expect(screen.getByText("Comece a lucrar agora.")).toBeTruthy();
-  });
-
-  it("renders the footer", () => {
-    render(<Home />);
-    expect(screen.getByText(/© 2025 BuscaFrete/)).toBeTruthy();
-  });
-
-  it("tracks Android download event when Android button is clicked", () => {
-    render(<Home />);
-    const androidButton = screen.getByText("BAIXAR PARA ANDROID");
-    fireEvent.click(androidButton);
-    
-    expect((global.window as any).gtag).toHaveBeenCalledWith(
-      "event",
-      "app_download_sp_pi",
-      expect.objectContaining({
-        platform: "android",
-      })
-    );
-  });
-
-  it("tracks iOS download event when iOS button is clicked", () => {
-    render(<Home />);
-    const iphoneButton = screen.getByText("BAIXAR PARA IPHONE");
-    fireEvent.click(iphoneButton);
-    
-    expect((global.window as any).gtag).toHaveBeenCalledWith(
-      "event",
-      "app_download_sp_pi",
-      expect.objectContaining({
-        platform: "ios",
-      })
-    );
-  });
-
-  it("opens Google Play Store when Android button is clicked", () => {
-    render(<Home />);
-    const androidButton = screen.getByText("BAIXAR PARA ANDROID");
-    fireEvent.click(androidButton);
-    
-    expect(global.window.open).toHaveBeenCalledWith(
-      "https://play.google.com/store/apps/details?id=com.frete.busca",
-      "_blank"
-    );
-  });
-
-  it("opens Apple App Store when iOS button is clicked", () => {
-    render(<Home />);
-    const iphoneButton = screen.getByText("BAIXAR PARA IPHONE");
-    fireEvent.click(iphoneButton);
-    
-    expect(global.window.open).toHaveBeenCalledWith(
-      "https://apps.apple.com/br/app/busca-frete/id6747501257",
-      "_blank"
-    );
-  });
-
-  it("renders all CTA buttons with orange styling", () => {
-    render(<Home />);
-    const buttons = screen.getAllByText(/BAIXAR|COMECE/);
-    buttons.forEach((button: HTMLElement) => {
-      expect(button.className).toContain("bg-orange-500");
-      expect(button.className).toContain("text-white");
-      expect(button.className).toContain("font-bold");
-    });
-  });
-
-  it("renders responsive headline classes", () => {
-    render(<Home />);
-    const mainContainer = screen.getByText("CHEGA DE VAZIO DE RETORNO").closest("h1");
-    expect(mainContainer?.className).toContain("text-4xl");
-    expect(mainContainer?.className).toContain("sm:text-5xl");
-    expect(mainContainer?.className).toContain("lg:text-6xl");
+    expect(screen.getByRole("heading", { name: /atendemos todo o brasil/i })).toBeInTheDocument();
+    expect(screen.getByText("Cobertura nacional")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /falar com um especialista/i })).toHaveAttribute("type", "button");
   });
 });

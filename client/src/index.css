@@ -43,6 +43,12 @@
 }
 
 :root {
+  --font-display: "Inter", "Segoe UI", sans-serif;
+  --font-body: "Inter", "Segoe UI", sans-serif;
+  --brand-navy: #101a35;
+  --brand-blue: #1757ba;
+  --brand-orange: #f0933b;
+  --page-cream: #ffffff;
   --primary: var(--color-blue-700);
   --primary-foreground: var(--color-blue-50);
   --sidebar-primary: var(--color-blue-600);
@@ -119,6 +125,16 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-body);
+    background: var(--page-cream);
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
   }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
@@ -159,6 +175,30 @@
     min-height: 0;
     min-width: 0;
   }
+
+  .image-placeholder {
+    display: block;
+    object-fit: contain;
+    color: transparent;
+    background: transparent;
+  }
+
+  .solution-icon {
+    display: flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.65rem;
+  }
+
+  .solution-icon-blue { background: #e8f1ff; color: #1757ba; }
+  .solution-icon-mint { background: #ddf8ee; color: #15956f; }
+  .solution-icon-green { background: #e8f8df; color: #4b9e36; }
+  .solution-icon-orange { background: #fff0df; color: #e47e1d; }
+  .solution-icon-purple { background: #f0e7ff; color: #7d45bb; }
+  .solution-icon-yellow { background: #fff8d8; color: #d7a900; }
 
   @media (min-width: 640px) {
     .container {
