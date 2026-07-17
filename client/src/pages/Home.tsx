@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { TawkChat } from "@/components/landing/TawkChat";
 
 const vehicles = [
   { title: "Carreta Baú", description: "Carga fechada", image: "/images/carreta-bau-busca-frete.png", imageAlt: "Carreta baú da Busca Frete" },
@@ -92,6 +93,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white text-[#101a35]">
+      <TawkChat />
       <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur">
         <div className="container flex h-20 items-center justify-between gap-6">
           <a href="#inicio" aria-label="Busca Frete" className="shrink-0">
