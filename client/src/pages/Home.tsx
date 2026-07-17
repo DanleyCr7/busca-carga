@@ -52,6 +52,9 @@ const appStores = {
   google: "https://play.google.com/store/apps/details?id=com.frete.busca",
 } as const;
 
+const specialistWhatsAppUrl =
+  "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20encontrar%20o%20frete%20ideal.";
+
 function AppStoreLink({ store }: { store: keyof typeof appStores }) {
   const isApple = store === "apple";
 
@@ -228,7 +231,7 @@ export default function Home() {
         </section>
 
         <section id="sobre" className="pb-12">
-          <div className="container"><div className="flex flex-col items-center gap-5 rounded-2xl bg-[#eef5ff] px-6 py-5 sm:flex-row"><img src="/images/atendimento-busca-frete.png" alt="Atendimento especializado da Busca Frete" data-image-slot="support-avatar" className="image-placeholder size-16 shrink-0 rounded-full object-cover" /><div className="flex-1 text-center sm:text-left"><h2 className="font-bold text-[#1757ba]">Precisa de ajuda para encontrar o frete ideal?</h2><p className="mt-1 text-xs text-slate-500">Fale com nosso time e receba suporte especializado.</p></div><button type="button" className="inline-flex items-center gap-2 rounded-md bg-[#1757ba] px-6 py-3 text-xs font-bold text-white"><Headphones className="size-4" />Falar com um especialista</button></div></div>
+          <div className="container"><div className="flex flex-col items-center gap-5 rounded-2xl bg-[#eef5ff] px-6 py-5 sm:flex-row"><img src="/images/atendimento-busca-frete.png" alt="Atendimento especializado da Busca Frete" data-image-slot="support-avatar" className="image-placeholder size-16 shrink-0 rounded-full object-cover" /><div className="flex-1 text-center sm:text-left"><h2 className="font-bold text-[#1757ba]">Precisa de ajuda para encontrar o frete ideal?</h2><p className="mt-1 text-xs text-slate-500">Fale com nosso time e receba suporte especializado.</p></div><a href={specialistWhatsAppUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[#1757ba] px-6 py-3 text-xs font-bold text-white"><Headphones className="size-4" />Falar com um especialista</a></div></div>
         </section>
       </main>
     </div>

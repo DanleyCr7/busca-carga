@@ -83,6 +83,9 @@ describe("Home - Busca Frete landing", () => {
     render(<Home />);
     expect(screen.getByRole("heading", { name: /atendemos todo o brasil/i })).toBeInTheDocument();
     expect(screen.getByText("Cobertura nacional")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /falar com um especialista/i })).toHaveAttribute("type", "button");
+    expect(screen.getByRole("link", { name: /falar com um especialista/i })).toHaveAttribute(
+      "href",
+      "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20encontrar%20o%20frete%20ideal.",
+    );
   });
 });
