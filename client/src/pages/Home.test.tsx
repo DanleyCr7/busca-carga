@@ -33,12 +33,16 @@ describe("Home - Busca Frete landing", () => {
     );
   });
 
-  it("keeps the freight search visual-only", () => {
+  it("replaces the freight search with the app download card", () => {
     const { container } = render(<Home />);
     expect(container.querySelector("form")).toBeNull();
-    expect(screen.getByRole("textbox", { name: "Origem" })).toBeDisabled();
-    expect(screen.getByRole("textbox", { name: "Destino" })).toBeDisabled();
-    expect(screen.getByRole("button", { name: /buscar frete/i })).toHaveAttribute("type", "button");
+    expect(screen.queryByRole("button", { name: /buscar frete/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("textbox", { name: /origem|destino/i })).not.toBeInTheDocument();
+    expect(screen.getByText(/o busca frete está na palma da sua mão/i)).toBeInTheDocument();
+    expect(screen.getByText(/acompanhe suas cargas, negocie e receba atualizações/i)).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /baixar busca frete na app store/i })).toHaveLength(3);
+    expect(screen.getAllByRole("link", { name: /baixar busca frete na google play/i })).toHaveLength(3);
+    expect(screen.queryByText("Suporte dedicado")).not.toBeInTheDocument();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 

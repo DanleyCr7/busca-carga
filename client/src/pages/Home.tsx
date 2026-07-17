@@ -1,6 +1,4 @@
 import {
-  ArrowDown,
-  ArrowUp,
   Building2,
   Check,
   Clock3,
@@ -10,6 +8,7 @@ import {
   PackageCheck,
   Search,
   ShieldCheck,
+  Smartphone,
   Truck,
   Users,
   Warehouse,
@@ -137,26 +136,33 @@ export default function Home() {
       </div>
 
       <main>
-        <section id="inicio" className="relative overflow-hidden bg-[#e1f0fc]">
-          <div className="container grid min-h-[650px] items-center gap-10 py-14 lg:grid-cols-[53%_47%] lg:py-20">
+                <section id="inicio" className="relative overflow-hidden bg-[#e1f0fc] max-lg:overflow-visible">
+          <div className="container grid min-h-[650px] items-center gap-10 py-14 max-lg:pb-24 lg:grid-cols-[53%_47%] lg:py-20">
             <div className="relative z-10">
               <h1 className="max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-0.045em] sm:text-3xl lg:text-[3rem]">
                 O frete certo <span className="text-[#1757ba]">para sua carga, em qualquer lugar do Brasil.</span>
               </h1>
               <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">Conectamos você ao motorista ideal para grandes cargas com segurança, agilidade e o melhor preço.</p>
-              <div aria-label="Busca visual de frete" className="mt-8 grid max-w-3xl gap-2 rounded-xl bg-white p-1 shadow-[0_14px_40px_rgba(22,65,130,.12)] sm:grid-cols-[1fr_1fr_auto]">
-                <label className="flex min-w-0 items-center gap-3 rounded-lg px-3 py-1">
-                  <ArrowUp className="size-6 text-[#1757ba]" /><span className="min-w-0"><strong className="block text-xs">Origem</strong><input aria-label="Origem" disabled placeholder="Cidade ou estado" className="w-full bg-transparent text-xs outline-none disabled:opacity-100" /></span>
-                </label>
-                <label className="flex min-w-0 items-center gap-3 border-slate-200 rounded-lg px-3 py-1 sm:border-l">
-                  <ArrowDown className="size-6 text-[#1757ba]" /><span className="min-w-0"><strong className="block text-xs">Destino</strong><input aria-label="Destino" disabled placeholder="Cidade ou estado" className="w-full bg-transparent text-xs outline-none disabled:opacity-100" /></span>
-                </label>
-                <button type="button" className="rounded-md bg-[#1757ba] px-5 py-1 text-xs font-bold text-white">Buscar frete</button>
+              <div aria-label="Aplicativo Busca Frete" className="mt-7 flex max-w-2xl flex-col gap-3 rounded-xl bg-white px-4 py-3.5 shadow-[0_12px_32px_rgba(22,65,130,.12)] sm:grid sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-5">
+                <div className="flex items-start gap-3 sm:contents">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(145deg,#1764de,#0638ac)] text-white shadow-[0_8px_18px_rgba(23,87,186,.22)]">
+                    <Smartphone aria-hidden="true" className="size-6 stroke-[1.8]" />
+                  </span>
+                  <div className="min-w-0">
+                    <strong className="text-sm font-extrabold leading-tight">O Busca Frete está na palma da sua mão</strong>
+                    <p className="text-[11px] leading-4 text-slate-500">Acompanhe suas cargas, negocie e receba atualizações onde estiver.</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 sm:flex-col">
+                  <AppStoreLink store="apple" />
+                  <AppStoreLink store="google" />
+                </div>
               </div>
-              <div className="mt-7 grid max-w-2xl grid-cols-3 gap-4 text-[11px]">
-                <div className="max-sm:flex-col max-sm:items-center max-sm:gap-1.5 max-sm:rounded-xl max-sm:bg-white max-sm:p-3 max-sm:text-center max-sm:shadow-[0_4px_10px_rgba(22,65,130,.08)] flex gap-2 text-[11px]"><PackageCheck className="size-7 text-[#1757ba] sm:size-9" /><span><strong className="block font-semibold">Melhores preços</strong>Compare e economize</span></div>
-                <div className="max-sm:flex-col max-sm:items-center max-sm:gap-1.5 max-sm:rounded-xl max-sm:bg-white max-sm:p-3 max-sm:text-center max-sm:shadow-[0_4px_10px_rgba(22,65,130,.08)] flex gap-2 text-[11px]"><ShieldCheck className="size-7 text-[#1757ba] sm:size-9" /><span><strong className="block font-semibold">Motoristas verificados</strong>Segurança em cada etapa</span></div>
-                <div className="max-sm:flex-col max-sm:items-center max-sm:gap-1.5 max-sm:rounded-xl max-sm:bg-white max-sm:p-3 max-sm:text-center max-sm:shadow-[0_4px_10px_rgba(22,65,130,.08)] flex gap-2 text-[11px]"><Clock3 className="size-7 text-[#1757ba] sm:size-9" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
+              {/* desktop cards */}
+              <div className="mt-7 hidden max-w-3xl grid-cols-3 gap-4 text-[11px] lg:grid">
+                <div className="flex gap-2"><PackageCheck className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Melhores preços</strong>Compare e economize</span></div>
+                <div className="flex gap-2"><ShieldCheck className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Motoristas verificados</strong>Segurança em cada etapa</span></div>
+                <div className="flex gap-2"><Clock3 className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
               </div>
             </div>
             <div className="relative mx-auto aspect-[5/4] w-[84%] overflow-hidden rounded-3xl sm:mx-0 sm:aspect-[5/4] sm:w-full">
@@ -184,9 +190,17 @@ export default function Home() {
               />
             </div>
           </div>
+          {/* mobile cards — entre azul e branco */}
+          <div className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 lg:hidden">
+            <div className="container grid grid-cols-3 gap-4 text-[11px]">
+              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><PackageCheck className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Melhores preços</strong>Compare e economize</span></div>
+              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><ShieldCheck className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Motoristas verificados</strong>Segurança em cada etapa</span></div>
+              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><Clock3 className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
+            </div>
+          </div>
         </section>
 
-        <section id="servicos" className="py-14 sm:py-18">
+        <section id="servicos" className="py-14 max-lg:pt-24 sm:py-18">
           <div className="container">
             <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Do pequeno ao extrapesado, a gente entrega.</h2>
             <div className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
