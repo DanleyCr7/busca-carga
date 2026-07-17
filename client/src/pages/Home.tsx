@@ -40,10 +40,10 @@ const steps = [
 ] as const;
 
 const metrics = [
-  { icon: Users, value: "+25.000", label: "Motoristas cadastrados" },
-  { icon: PackageCheck, value: "+80.000", label: "Cargas transportadas" },
-  { icon: MapPin, value: "+5.000", label: "Cidades atendidas" },
-  { icon: ShieldCheck, value: "98%", label: "Satisfação dos clientes" },
+  { icon: Users, value: "1.809", label: "Motoristas cadastrados" },
+  { icon: PackageCheck, value: "13", label: "Cargas transportadas" },
+  { icon: MapPin, value: "64", label: "Cidades atendidas" },
+  { icon: ShieldCheck, value: "94%", label: "Satisfação dos clientes" },
 ] as const;
 
 const appStores = {
