@@ -32,22 +32,38 @@ describe("Home - Busca Frete landing", () => {
   it("renders vehicles, solutions, steps and metrics", () => {
     render(<Home />);
     expect(screen.getByRole("heading", { name: /do pequeno ao extrapesado/i })).toBeInTheDocument();
-    expect(screen.getAllByText(/carreta baú|carroceria aberta|truck baú|carroceria sider|van/i)).toHaveLength(5);
+    expect(screen.getAllByText(/carreta baú|carroceria aberta|truck baú|carroceria sider/i)).toHaveLength(4);
+    expect(screen.queryByText("Van")).not.toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /soluções completas para sua logística/i })).toBeInTheDocument();
-    expect(screen.getAllByRole("article")).toHaveLength(14);
+    expect(screen.getAllByRole("article")).toHaveLength(13);
     expect(screen.getByText("+25.000")).toBeInTheDocument();
     expect(screen.getByText("+80.000")).toBeInTheDocument();
     expect(screen.getByText("+5.000")).toBeInTheDocument();
     expect(screen.getByText("98%")).toBeInTheDocument();
   });
 
-  it("reserves every image slot without a source", () => {
+  it("renders the landing images without empty slots", () => {
     const { container } = render(<Home />);
     const placeholders = Array.from(container.querySelectorAll<HTMLImageElement>("img[data-image-slot]"));
-    expect(placeholders).toHaveLength(11);
-    expect(placeholders.every((image) => !image.hasAttribute("src"))).toBe(true);
-    expect(placeholders.map((image) => image.dataset.imageSlot)).toContain("hero-map-truck");
-    expect(placeholders.map((image) => image.dataset.imageSlot)).toContain("coverage-map");
+    const heroImage = container.querySelector<HTMLImageElement>('img[data-image-slot="hero-map-truck"]');
+    const coverageImage = container.querySelector<HTMLImageElement>('img[data-image-slot="coverage-map"]');
+    const emptyPlaceholders = placeholders.filter((image) => !image.hasAttribute("src"));
+
+    expect(placeholders).toHaveLength(10);
+    expect(emptyPlaceholders).toHaveLength(0);
+    expect(heroImage).toHaveAttribute("src", "/images/busca-frete-caminhao.png");
+    expect(heroImage).toHaveAttribute("alt", "Caminhão de carga da Busca Frete");
+    expect(coverageImage).toHaveAttribute("src", "/images/mapa-brasil-busca-frete-corrigido.svg");
+    expect(coverageImage).toHaveAttribute("alt", "Mapa do Brasil representando a cobertura nacional da Busca Frete");
+    expect(container.querySelector('img[data-image-slot="support-avatar"]')).toHaveAttribute("src", "/images/atendimento-busca-frete.png");
+    expect(screen.getByRole("img", { name: "Atendimento especializado da Busca Frete" })).toBeInTheDocument();
+    expect(container.querySelector('img[data-image-slot="step-1"]')).toHaveAttribute("src", "/images/como-funciona-caminhao.png");
+    expect(container.querySelector('img[data-image-slot="step-2"]')).toHaveAttribute("src", "/images/como-funciona-painel.png");
+    expect(container.querySelector('img[data-image-slot="step-3"]')).toHaveAttribute("src", "/images/como-funciona-aplicativo.png");
+    expect(screen.getByRole("img", { name: "Carreta baú da Busca Frete" })).toHaveAttribute("src", "/images/carreta-bau-busca-frete.png");
+    expect(screen.getByRole("img", { name: "Caminhão de carroceria aberta" })).toHaveAttribute("src", "/images/caminhao-carroceria-aberta.png");
+    expect(screen.getByRole("img", { name: "Caminhão truck baú" })).toHaveAttribute("src", "/images/caminhao-truck-bau.png");
+    expect(screen.getByRole("img", { name: "Caminhão de carroceria sider com lona azul" })).toHaveAttribute("src", "/images/caminhao-carroceria-sider.png");
   });
 
   it("renders national coverage and support CTA", () => {

@@ -11,6 +11,17 @@ function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/empresas"} component={Home} />
+      <Route path={"/motoristas"} component={Home} />
+      <Route path={"/transportadoras"} component={Home} />
+      <Route path={"/seguranca-pagamentos"} component={Home} />
+      <Route path={"/tipos-de-carga"} component={Home} />
+      <Route path={"/regioes"} component={Home} />
+      <Route path={"/app"} component={Home} />
+      <Route path={"/painel-empresas"} component={Home} />
+      <Route path={"/conteudos"} component={Home} />
+      <Route path={"/faq"} component={Home} />
+      <Route path={"/contato"} component={Home} />
       <Route path={"/privacidade"} component={Privacidade} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
