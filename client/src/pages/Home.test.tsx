@@ -62,14 +62,14 @@ describe("Home - Busca Frete landing", () => {
   it("renders the landing images without empty slots", () => {
     const { container } = render(<Home />);
     const placeholders = Array.from(container.querySelectorAll<HTMLImageElement>("img[data-image-slot]"));
-    const heroImage = container.querySelector<HTMLImageElement>('img[data-image-slot="hero-map-truck"]');
+    const heroImage = container.querySelector<HTMLImageElement>('img[data-image-slot="hero-map-fleet"]');
     const coverageImage = container.querySelector<HTMLImageElement>('img[data-image-slot="coverage-map"]');
     const emptyPlaceholders = placeholders.filter((image) => !image.hasAttribute("src"));
 
     expect(placeholders).toHaveLength(10);
     expect(emptyPlaceholders).toHaveLength(0);
-    expect(heroImage).toHaveAttribute("src", "/images/busca-frete-caminhao.png");
-    expect(heroImage).toHaveAttribute("alt", "Caminhão de carga da Busca Frete");
+    expect(heroImage).toHaveAttribute("src", "/images/busca-frete-frota.png");
+    expect(heroImage).toHaveAttribute("alt", "Frota de caminhões da Busca Frete");
     expect(coverageImage).toHaveAttribute("src", "/images/mapa-brasil-busca-frete-corrigido.svg");
     expect(coverageImage).toHaveAttribute("alt", "Mapa do Brasil representando a cobertura nacional da Busca Frete");
     expect(container.querySelector('img[data-image-slot="support-avatar"]')).toHaveAttribute("src", "/images/atendimento-busca-frete.png");

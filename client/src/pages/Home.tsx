@@ -165,7 +165,7 @@ export default function Home() {
                 <div className="flex gap-2"><Clock3 className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
               </div>
             </div>
-            <div className="relative mx-auto aspect-[5/4] w-[84%] overflow-hidden rounded-3xl sm:mx-0 sm:aspect-[5/4] sm:w-full">
+            <div className="relative mx-auto aspect-[16/9] w-full overflow-hidden rounded-3xl sm:mx-0">
               <img
                 src="/images/mapa-cobertura-brasil.png"
                 alt=""
@@ -183,10 +183,10 @@ export default function Home() {
                 }}
               />
               <img
-                src="/images/busca-frete-caminhao.png"
-                alt="Caminhão de carga da Busca Frete"
-                data-image-slot="hero-map-truck"
-                className="image-placeholder absolute inset-x-8 bottom-[-14%] z-10 h-[60%] w-full object-contain object-bottom sm:inset-x-10 sm:bottom-[-18%] sm:h-[72%]"
+                src="/images/busca-frete-frota.png"
+                alt="Frota de caminhões da Busca Frete"
+                data-image-slot="hero-map-fleet"
+                className="image-placeholder absolute inset-x-0 bottom-[8%] z-10 w-full object-contain object-bottom sm:bottom-[6%]"
               />
             </div>
           </div>
