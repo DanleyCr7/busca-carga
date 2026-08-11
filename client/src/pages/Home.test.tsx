@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Home from "./Home";
 
@@ -30,14 +30,17 @@ describe("landing residencial Busca Frete", () => {
         name: /seu frete residencial no abc, do seu jeito/i,
       })
     ).toBeInTheDocument();
+    const appCard = screen.getByTestId("hero-app-card");
     expect(
-      screen.getByRole("heading", { name: /acompanhe tudo pelo aplicativo/i })
+      within(appCard).getByRole("heading", {
+        name: /o busca frete está na palma da sua mão/i,
+      })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: /baixar o app e solicitar/i })
+      within(appCard).getByRole("link", { name: /baixar o app/i })
     ).toBeInTheDocument();
     expect(
-      screen.getAllByRole("link", { name: /sou motorista/i })[0]
+      within(appCard).getByRole("link", { name: /sou motorista/i })
     ).toHaveAttribute("href", "/motoristas");
     expect(
       screen.getByText(/agende com pelo menos 48 horas/i)
@@ -51,12 +54,38 @@ describe("landing residencial Busca Frete", () => {
   it("mantém a composição visual do hero com largura disponível no desktop", async () => {
     render(<Home />);
 
+    expect(screen.getByTestId("hero-brazil-map")).toHaveAttribute(
+      "src",
+      "/images/mapa-cobertura-brasil.png"
+    );
     expect(
       screen.getByRole("img", {
-        name: /caminhão para frete residencial sobre o mapa do abc paulista/i,
+        name: /caminhão de carga da busca frete/i,
       })
-    ).toBeInTheDocument();
+    ).toHaveAttribute("src", "/images/busca-frete-caminhao.png");
     await screen.findByText("São Bernardo do Campo");
+  });
+
+  it("restaura o card do aplicativo e os benefícios do hero antigo", async () => {
+    render(<Home />);
+
+    const appCard = screen.getByTestId("hero-app-card");
+    expect(
+      within(appCard).getByText(/solicite seu frete residencial/i)
+    ).toBeInTheDocument();
+    expect(
+      within(appCard).getByText(/compare propostas e acompanhe o serviço/i)
+    ).toBeInTheDocument();
+
+    const benefits = screen.getByTestId("hero-benefits-desktop");
+    expect(within(benefits).getByText("Propostas livres")).toBeInTheDocument();
+    expect(within(benefits).getByText("Compare e escolha")).toBeInTheDocument();
+    expect(within(benefits).getByText("Motoristas aptos")).toBeInTheDocument();
+    expect(within(benefits).getByText("Para sua rota")).toBeInTheDocument();
+    expect(within(benefits).getByText("Agendamento")).toBeInTheDocument();
+    expect(within(benefits).getByText("Mínimo de 48 horas")).toBeInTheDocument();
+
+    await screen.findByText("São Caetano do Sul");
   });
 
   it("recupera a hierarquia comercial da landing antiga com conteúdo residencial", async () => {
@@ -161,8 +190,9 @@ describe("landing residencial Busca Frete", () => {
 
     expect(await screen.findByText("ABC Paulista")).toBeInTheDocument();
     expect(screen.queryByText(/abc30/i)).not.toBeInTheDocument();
+    const appCard = screen.getByTestId("hero-app-card");
     expect(
-      screen.getByRole("link", { name: /baixar o app e solicitar/i })
+      within(appCard).getByRole("link", { name: /baixar o app/i })
     ).not.toHaveAttribute("href");
   });
 });

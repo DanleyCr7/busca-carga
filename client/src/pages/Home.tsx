@@ -6,6 +6,7 @@ import {
   Clock3,
   Home as HomeIcon,
   MapPin,
+  PackageCheck,
   Route,
   ShieldCheck,
   Smartphone,
@@ -109,12 +110,32 @@ const steps: IconContent[] = [
   },
 ];
 
+const heroBenefits: IconContent[] = [
+  {
+    icon: PackageCheck,
+    title: "Propostas livres",
+    text: "Compare e escolha",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Motoristas aptos",
+    text: "Para sua rota",
+  },
+  {
+    icon: Clock3,
+    title: "Agendamento",
+    text: "Mínimo de 48 horas",
+  },
+];
+
 function AppLink({
   children,
   variant = "primary",
+  compact = false,
 }: {
   children: ReactNode;
   variant?: "primary" | "light" | "outline";
+  compact?: boolean;
 }) {
   const variants = {
     primary:
@@ -145,12 +166,52 @@ function AppLink({
       rel="noreferrer"
       onClick={handleClick}
       className={
-        "inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-extrabold transition aria-disabled:cursor-not-allowed aria-disabled:opacity-60 " +
+        "inline-flex items-center justify-center gap-2 font-extrabold transition aria-disabled:cursor-not-allowed aria-disabled:opacity-60 " +
+        (compact
+          ? "rounded-lg px-4 py-2.5 text-xs "
+          : "rounded-xl px-6 py-3.5 text-sm ") +
         variants[variant]
       }
     >
       {children}
     </a>
+  );
+}
+
+function HeroBenefits({ mobile = false }: { mobile?: boolean }) {
+  return (
+    <ul
+      data-testid={mobile ? "hero-benefits-mobile" : "hero-benefits-desktop"}
+      className={
+        mobile
+          ? "container grid grid-cols-3 gap-2 text-[10px] sm:gap-4 sm:text-[11px]"
+          : "mt-7 hidden max-w-3xl grid-cols-3 gap-4 text-[11px] lg:grid"
+      }
+    >
+      {heroBenefits.map(({ icon: Icon, title, text }) => (
+        <li
+          key={title}
+          className={
+            mobile
+              ? "flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"
+              : "flex items-center gap-2"
+          }
+        >
+          <Icon
+            aria-hidden="true"
+            className={
+              mobile
+                ? "size-7 shrink-0 text-[#1757ba]"
+                : "size-9 shrink-0 text-[#1757ba]"
+            }
+          />
+          <span>
+            <strong className="block font-semibold">{title}</strong>
+            {text}
+          </span>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -210,17 +271,20 @@ export default function Home() {
     <div className="min-h-screen overflow-x-hidden bg-white text-[#101a35]">
       <MarketingHeader />
       <main>
-        <section id="inicio" className="overflow-hidden bg-[#edf5ff]">
-          <div className="container grid min-h-[620px] items-center gap-12 py-14 lg:grid-cols-[.88fr_1.12fr] lg:py-16">
+        <section
+          id="inicio"
+          className="relative overflow-hidden bg-[#e1f0fc] max-lg:overflow-visible"
+        >
+          <div className="container grid min-h-[650px] items-center gap-10 py-14 max-lg:pb-24 lg:grid-cols-[53%_47%] lg:py-20">
             <div className="relative z-10">
               <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-extrabold text-[#1757ba]">
                 <MapPin className="size-4" /> Piloto residencial no ABC Paulista
               </span>
-              <h1 className="mt-7 max-w-xl text-4xl font-black leading-[1.06] tracking-[-.045em] sm:text-5xl lg:text-[3.65rem]">
+              <h1 className="mt-7 max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-.045em] lg:text-[3rem]">
                 Seu frete residencial no ABC,{" "}
                 <span className="text-[#1757ba]">do seu jeito.</span>
               </h1>
-              <p className="mt-6 max-w-lg text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+              <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">
                 Agende com pelo menos 48 horas de antecedência, informe os itens
                 e receba propostas de motoristas aptos para a sua mudança.
               </p>
@@ -231,46 +295,80 @@ export default function Home() {
                 </div>
               )}
 
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <AppLink>
-                  Baixar o app e solicitar <ArrowRight className="size-4" />
-                </AppLink>
-                <a
-                  href="/motoristas"
-                  onClick={() =>
-                    trackLandingEvent("driver_cta_click", {
-                      audience: "driver",
-                      pilot: pilot?.pilotSlug ?? "abc-residencial-v1",
-                    })
-                  }
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-[#1757ba] bg-white px-6 py-3.5 text-sm font-extrabold text-[#1757ba] transition hover:bg-blue-50"
-                >
-                  Sou motorista <Truck className="size-4" />
-                </a>
+              <div
+                data-testid="hero-app-card"
+                aria-label="Aplicativo Busca Frete"
+                className="mt-7 flex max-w-2xl flex-col gap-3 rounded-xl bg-white px-4 py-3.5 shadow-[0_12px_32px_rgba(22,65,130,.12)] sm:grid sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-5"
+              >
+                <div className="flex items-start gap-3 sm:contents">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(145deg,#1764de,#0638ac)] text-white shadow-[0_8px_18px_rgba(23,87,186,.22)]">
+                    <Smartphone
+                      aria-hidden="true"
+                      className="size-6 stroke-[1.8]"
+                    />
+                  </span>
+                  <div className="min-w-0">
+                    <h2 className="text-sm font-extrabold leading-tight">
+                      O Busca Frete está na palma da sua mão
+                    </h2>
+                    <p className="text-[11px] leading-4 text-slate-500">
+                      Solicite seu frete residencial, compare propostas e
+                      acompanhe o serviço pelo app.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 sm:flex-col">
+                  <AppLink compact>
+                    Baixar o app <ArrowRight className="size-3.5" />
+                  </AppLink>
+                  <a
+                    href="/motoristas"
+                    onClick={() =>
+                      trackLandingEvent("driver_cta_click", {
+                        audience: "driver",
+                        pilot: pilot?.pilotSlug ?? "abc-residencial-v1",
+                      })
+                    }
+                    className="inline-flex items-center justify-center gap-2 rounded-lg border border-[#1757ba] bg-white px-4 py-2.5 text-xs font-extrabold text-[#1757ba] transition hover:bg-blue-50"
+                  >
+                    Sou motorista <Truck className="size-3.5" />
+                  </a>
+                </div>
               </div>
 
-              <div className="mt-7 inline-flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-600 shadow-[0_8px_22px_rgba(23,87,186,.08)]">
-                <Clock3 className="size-5 text-[#1757ba]" />
-                Agendamento mínimo de 48 horas
-              </div>
+              <HeroBenefits />
             </div>
 
-            <figure className="relative mx-auto aspect-[9/6.4] w-full max-w-[700px]">
+            <div className="relative mx-auto aspect-[5/4] w-[84%] overflow-hidden rounded-3xl sm:mx-0 sm:w-full">
               <img
-                src="/images/residential/abc-pilot-map.svg"
+                data-testid="hero-brazil-map"
+                data-image-slot="hero-brazil-map"
+                src="/images/mapa-cobertura-brasil.png"
                 alt=""
                 aria-hidden="true"
-                className="absolute inset-0 size-full object-contain"
+                className="absolute inset-0 size-full object-cover"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-[1]"
+                style={{
+                  background: [
+                    "linear-gradient(to right, #e1f0fc 0%, transparent 18%, transparent 82%, #e1f0fc 100%)",
+                    "linear-gradient(to bottom, #e1f0fc 0%, transparent 18%, transparent 82%, #e1f0fc 100%)",
+                  ].join(", "),
+                }}
               />
               <img
-                src="/images/residential/category-2-medium-truck.webp"
-                alt="Caminhão para frete residencial sobre o mapa do ABC Paulista"
-                className="absolute bottom-[2%] right-[-2%] w-[57%] object-contain drop-shadow-[0_18px_22px_rgba(16,26,53,.22)]"
+                src="/images/busca-frete-caminhao.png"
+                alt="Caminhão de carga da Busca Frete"
+                data-image-slot="hero-map-truck"
+                className="image-placeholder absolute inset-x-8 bottom-[-14%] z-10 h-[60%] w-full object-contain object-bottom sm:inset-x-10 sm:bottom-[-18%] sm:h-[72%]"
               />
-              <figcaption className="absolute bottom-[4%] left-[6%] inline-flex items-center gap-2 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-800 shadow-sm">
-                <MapPin className="size-4" /> Novas cidades em breve
-              </figcaption>
-            </figure>
+            </div>
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 lg:hidden">
+            <HeroBenefits mobile />
           </div>
         </section>
 
