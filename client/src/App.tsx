@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Drivers from "./pages/Drivers";
 import DataDeletion from "./pages/DataDeletion";
 import Privacidade from "./pages/privacidade";
+import Terms from "./pages/Terms";
 
 function Router() {
   return (
@@ -27,6 +28,7 @@ function Router() {
       <Route path={"/faq"} component={Home} />
       <Route path={"/contato"} component={Home} />
       <Route path={"/privacidade"} component={Privacidade} />
+      <Route path={"/termos"} component={Terms} />
       <Route path={"/exclusao-de-dados"} component={DataDeletion} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

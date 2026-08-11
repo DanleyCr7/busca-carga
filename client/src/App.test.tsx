@@ -30,4 +30,13 @@ describe("recursos globais da landing", () => {
     ).toBeInTheDocument();
     expect(document.getElementById("tawkto-script")).not.toBeInTheDocument();
   });
+
+  it("registra uma rota pública real para os termos de uso", () => {
+    window.history.replaceState({}, "", "/termos");
+
+    render(<App />);
+
+    expect(screen.getByRole("heading", { name: /termos de uso/i })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /página não encontrada/i })).not.toBeInTheDocument();
+  });
 });

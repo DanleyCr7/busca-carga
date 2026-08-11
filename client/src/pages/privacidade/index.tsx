@@ -3,8 +3,20 @@ import { useEffect } from "react";
 
 const policySections = [
   {
-    title: "Dados usados para prestar o serviço",
-    body: "Tratamos dados de cadastro, endereços e localização, informações do frete, conversas, propostas e pagamentos para conectar clientes e motoristas, operar a entrega, prevenir fraudes e oferecer suporte.",
+    title: "Cadastro e identificação",
+    body: "Tratamos nome, CPF ou CNPJ, telefone, e-mail, dados de acesso, endereço e informações cadastrais de clientes, motoristas e empresas para criar e proteger contas, verificar perfis e cumprir obrigações legais.",
+  },
+  {
+    title: "Fretes, localização e conteúdo",
+    body: "Tratamos endereços e localização, documentos, fotos e conversas, itens transportados, propostas, dados de veículos, disponibilidade e acompanhamento da rota para conectar clientes e motoristas e executar o serviço solicitado.",
+  },
+  {
+    title: "Pagamentos, segurança e suporte",
+    body: "Tratamos informações de pagamentos, histórico de transações, registros técnicos e solicitações de atendimento para processar cobranças e repasses, prevenir fraudes, resolver disputas e oferecer suporte. Dados completos de cartão são tratados pelo provedor de pagamento, quando aplicável.",
+  },
+  {
+    title: "Firebase e funcionamento do aplicativo",
+    body: "Usamos serviços do Firebase para autenticação, notificações, proteção do aplicativo, armazenamento, configuração remota, analytics e diagnóstico de falhas. Esses serviços podem tratar identificadores do dispositivo, interação no app, dados técnicos e relatórios de erro necessários ao funcionamento e à segurança.",
   },
   {
     title: "Atribuição e mensuração agregada",
@@ -15,8 +27,8 @@ const policySections = [
     body: "Não enviamos nome, CPF, telefone ou endereço nos eventos de atribuição. Compartilhamos somente eventos essenciais, como cadastro concluído, solicitação residencial, início do checkout e pagamento confirmado, sem o valor da compra nesta primeira configuração.",
   },
   {
-    title: "Compartilhamento e retenção",
-    body: "Compartilhamos dados apenas com prestadores necessários à operação, segurança, pagamento, atendimento e mensuração, sob finalidades definidas. Mantemos as informações pelo período necessário ao serviço e às obrigações legais e regulatórias aplicáveis.",
+    title: "Compartilhamento, proteção e retenção",
+    body: "Compartilhamos dados apenas com prestadores necessários à operação, hospedagem, mapas, segurança, pagamento, atendimento e mensuração, sob finalidades definidas. Usamos conexões protegidas e controles de acesso. Mantemos as informações pelo período necessário ao serviço e às obrigações legais e regulatórias aplicáveis.",
   },
   {
     title: "Seus direitos",
@@ -89,6 +101,12 @@ export default function Privacidade() {
               >
                 Solicitar exclusão
                 <ExternalLink className="size-4" aria-hidden="true" />
+              </a>
+              <a
+                href="/termos"
+                className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#1254d8] underline sm:ml-4 sm:mt-0"
+              >
+                Consultar os Termos de Uso
               </a>
             </section>
           </div>
