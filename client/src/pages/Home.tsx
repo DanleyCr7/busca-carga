@@ -44,7 +44,7 @@ function HomeAndAppVisual() {
   return (
     <div
       aria-label="Ilustração de casa e aplicativo Busca Frete"
-      className="relative mx-auto min-h-[430px] max-w-[520px]"
+      className="relative mx-auto min-h-[430px] w-full max-w-[520px]"
     >
       <div className="absolute inset-x-4 bottom-6 top-20 rounded-[2.5rem] bg-[linear-gradient(145deg,#dff7f2,#c9e8ff)]" />
       <div className="absolute bottom-16 left-2 w-[58%] rounded-[2rem] bg-white p-6 shadow-xl">

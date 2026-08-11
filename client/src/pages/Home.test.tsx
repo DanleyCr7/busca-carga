@@ -48,6 +48,15 @@ describe("landing residencial Busca Frete", () => {
     );
   });
 
+  it("mantém a composição visual do hero com largura disponível no desktop", async () => {
+    render(<Home />);
+
+    expect(
+      screen.getByLabelText(/ilustração de casa e aplicativo busca frete/i)
+    ).toHaveClass("w-full");
+    await screen.findByText("São Bernardo do Campo");
+  });
+
   it("mantém cargas como serviço secundário sem promessa nacional", async () => {
     render(<Home />);
 
