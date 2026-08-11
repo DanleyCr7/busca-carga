@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Busca Frete residencial no ABC Paulista</title>
+  <desc id="desc">Composição sintética de uma casa e do aplicativo Busca Frete.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e8f4ff"/><stop offset="1" stop-color="#d9f7ee"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect x="72" y="72" width="650" height="486" rx="48" fill="#fff"/>
+  <path d="M132 302 290 178l158 124v176H132Z" fill="#1254d8" opacity=".12"/>
+  <path d="m112 308 178-142 178 142" fill="none" stroke="#1254d8" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="176" y="310" width="228" height="168" rx="20" fill="#fff" stroke="#1254d8" stroke-width="12"/>
+  <rect x="268" y="372" width="56" height="106" rx="10" fill="#1254d8"/>
+  <text x="492" y="238" fill="#0b1f45" font-family="Arial, sans-serif" font-size="30" font-weight="700">BUSCA FRETE</text>
+  <text x="492" y="294" fill="#0b1f45" font-family="Arial, sans-serif" font-size="48" font-weight="800">Frete residencial</text>
+  <text x="492" y="344" fill="#1254d8" font-family="Arial, sans-serif" font-size="38" font-weight="800">no ABC Paulista</text>
+  <text x="492" y="406" fill="#53627a" font-family="Arial, sans-serif" font-size="24">Agende, informe os itens e receba propostas.</text>
+  <rect x="832" y="78" width="282" height="474" rx="54" fill="#0b1f45"/>
+  <rect x="850" y="102" width="246" height="426" rx="38" fill="#fff"/>
+  <rect x="916" y="120" width="112" height="10" rx="5" fill="#0b1f45"/>
+  <rect x="878" y="176" width="190" height="88" rx="20" fill="#edf5ff"/>
+  <circle cx="910" cy="208" r="13" fill="#1254d8"/>
+  <rect x="934" y="196" width="104" height="10" rx="5" fill="#bfd5fa"/>
+  <rect x="934" y="218" width="82" height="10" rx="5" fill="#d7e5fb"/>
+  <rect x="878" y="286" width="88" height="82" rx="18" fill="#e8f8f3"/>
+  <rect x="980" y="286" width="88" height="82" rx="18" fill="#fff0dd"/>
+  <rect x="878" y="444" width="190" height="48" rx="16" fill="#1254d8"/>
+</svg>
