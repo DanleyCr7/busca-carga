@@ -1,5 +1,7 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ConsentBanner } from "@/components/landing/ConsentBanner";
+import { TawkChat } from "@/components/landing/TawkChat";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -48,6 +50,8 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Router />
+          <TawkChat />
+          <ConsentBanner />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

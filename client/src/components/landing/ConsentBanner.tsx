@@ -20,7 +20,7 @@ export function ConsentBanner() {
   return (
     <aside
       aria-label="Preferências de privacidade"
-      className="fixed inset-x-4 bottom-4 z-[80] mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl"
+      className="fixed inset-x-4 bottom-24 z-30 mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-5 shadow-2xl sm:bottom-4 sm:right-24"
     >
       <div className="items-center gap-5 sm:flex">
         <div className="flex-1">

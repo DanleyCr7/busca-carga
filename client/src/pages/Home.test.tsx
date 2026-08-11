@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Home from "./Home";
 
@@ -15,8 +9,6 @@ Object.defineProperty(window, "scrollTo", { writable: true, value: vi.fn() });
 describe("landing residencial Busca Frete", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.clear();
-    document.getElementById("tawkto-script")?.remove();
     fetchMock.mockResolvedValue({
       ok: true,
       json: async () => ({
@@ -28,20 +20,6 @@ describe("landing residencial Busca Frete", () => {
         promotion: null,
       }),
     });
-  });
-
-  it("restaura o atendimento Tawk.to após o consentimento", async () => {
-    render(<Home />);
-
-    expect(document.getElementById("tawkto-script")).not.toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Aceitar" }));
-
-    await waitFor(() =>
-      expect(document.getElementById("tawkto-script")).toHaveAttribute(
-        "src",
-        "https://embed.tawk.to/6a3c3b322784431d3e92a12c/1jrtkeg36"
-      )
-    );
   });
 
   it("prioriza frete residencial e mostra os dois públicos acima da dobra", async () => {

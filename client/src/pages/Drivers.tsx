@@ -9,7 +9,6 @@ import {
   Users,
 } from "lucide-react";
 import { useEffect } from "react";
-import { ConsentBanner } from "@/components/landing/ConsentBanner";
 import { MarketingHeader } from "@/components/landing/MarketingHeader";
 import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
 import { trackLandingEvent } from "@/lib/analytics";
@@ -172,7 +171,6 @@ export default function Drivers() {
           <a href="/privacidade">Privacidade</a>
         </div>
       </footer>
-      <ConsentBanner />
     </div>
   );
 }
