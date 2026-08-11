@@ -18,6 +18,7 @@ import { useEffect, type MouseEvent, type ReactNode } from "react";
 import { ConsentBanner } from "@/components/landing/ConsentBanner";
 import { BrazilAbcCoverageMap } from "@/components/landing/BrazilAbcCoverageMap";
 import { MarketingHeader } from "@/components/landing/MarketingHeader";
+import { TawkChat } from "@/components/landing/TawkChat";
 import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
 import { trackLandingEvent } from "@/lib/analytics";
 
@@ -650,6 +651,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <TawkChat />
       <ConsentBanner />
     </div>
   );

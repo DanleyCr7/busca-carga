@@ -22,6 +22,17 @@ type MetaPixelFunction = {
 };
 
 const consentKey = "bf_marketing_consent";
+export const marketingConsentChangedEvent =
+  "bf:marketing-consent-changed";
+export type MarketingConsent = "granted" | "denied";
+
+function notifyMarketingConsentChanged(consent: MarketingConsent) {
+  window.dispatchEvent(
+    new CustomEvent<MarketingConsent>(marketingConsentChangedEvent, {
+      detail: consent,
+    })
+  );
+}
 
 function dataLayer() {
   window.dataLayer = window.dataLayer ?? [];
@@ -70,6 +81,7 @@ function initializeMetaPixel(pixelId: string) {
 
 export function enableMarketingAnalytics() {
   localStorage.setItem(consentKey, "granted");
+  notifyMarketingConsentChanged("granted");
   dataLayer().push([
     "consent",
     "update",
@@ -103,10 +115,12 @@ export function enableMarketingAnalytics() {
 
 export function denyMarketingAnalytics() {
   localStorage.setItem(consentKey, "denied");
+  notifyMarketingConsentChanged("denied");
 }
 
-export function currentConsent() {
-  return localStorage.getItem(consentKey);
+export function currentConsent(): MarketingConsent | null {
+  const consent = localStorage.getItem(consentKey);
+  return consent === "granted" || consent === "denied" ? consent : null;
 }
 
 export function trackLandingEvent(

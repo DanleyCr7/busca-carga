@@ -28,8 +28,9 @@ export function ConsentBanner() {
             Sua privacidade importa
           </strong>
           <p className="mt-1 text-xs leading-5 text-slate-600">
-            Com sua autorização, usamos analytics para entender campanhas e
-            melhorar a experiência. Recusar mantém apenas recursos essenciais.
+            Com sua autorização, usamos analytics para entender campanhas e o
+            chat de atendimento para falar com você. Recusar mantém apenas
+            recursos essenciais.
           </p>
         </div>
         <div className="mt-4 flex gap-2 sm:mt-0">
