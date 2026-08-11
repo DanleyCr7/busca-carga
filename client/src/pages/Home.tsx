@@ -1,253 +1,403 @@
 import {
+  ArrowRight,
+  Box,
   Building2,
+  CalendarClock,
   Check,
-  Clock3,
-  Headphones,
+  Home as HomeIcon,
   MapPin,
-  Menu,
-  PackageCheck,
-  Search,
+  Package,
   ShieldCheck,
   Smartphone,
+  Sofa,
+  Sparkles,
   Truck,
   Users,
-  Warehouse,
-  X,
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { TawkChat } from "@/components/landing/TawkChat";
+import { useEffect } from "react";
+import { ConsentBanner } from "@/components/landing/ConsentBanner";
+import { MarketingHeader } from "@/components/landing/MarketingHeader";
+import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
+import { trackLandingEvent } from "@/lib/analytics";
 
-const vehicles = [
-  { title: "Carreta Baú", description: "Carga fechada", image: "/images/carreta-bau-busca-frete.png", imageAlt: "Carreta baú da Busca Frete" },
-  { title: "Carroceria Aberta", description: "Cargas secas", image: "/images/caminhao-carroceria-aberta.png", imageAlt: "Caminhão de carroceria aberta" },
-  { title: "Truck Baú", description: "Carga fechada", image: "/images/caminhao-truck-bau.png", imageAlt: "Caminhão truck baú" },
-  { title: "Carroceria Sider", description: "Carga seca", image: "/images/caminhao-carroceria-sider.png", imageAlt: "Caminhão de carroceria sider com lona azul" },
-] as const;
+const clientLink = import.meta.env.VITE_APPSFLYER_CLIENT_ONELINK_URL;
 
 const solutions = [
-  { icon: Truck, title: "Mudanças residenciais", text: "Encontre motoristas para transportar móveis, eletrodomésticos e itens da sua casa.", color: "blue" },
-  { icon: PackageCheck, title: "Pequenos fretes", text: "Transporte poucos volumes com praticidade e segurança.", color: "mint" },
-  { icon: Warehouse, title: "Cargas fechadas e lotações", text: "Ideal para grandes volumes e longas distâncias.", color: "green" },
-  { icon: Building2, title: "Fretes para empresas", text: "Soluções personalizadas para a operação do seu negócio.", color: "orange" },
-  { icon: Search, title: "Acompanhamento em tempo real", text: "Monitore seu frete do início ao destino final.", color: "purple" },
-  { icon: ShieldCheck, title: "Segurança no transporte", text: "Mais tranquilidade e proteção para seus itens ou mercadorias.", color: "yellow" },
-] as const;
+  {
+    icon: Box,
+    title: "Itens avulsos",
+    text: "Geladeira, sofá, cama, armário e outros itens da sua casa.",
+  },
+  {
+    icon: Sofa,
+    title: "Pequenas mudanças",
+    text: "Para poucos móveis e volumes, com veículo calculado pelos itens.",
+  },
+  {
+    icon: HomeIcon,
+    title: "Mudanças completas",
+    text: "Informe acessos, ajudantes e fotos para receber propostas adequadas.",
+  },
+];
 
-const steps = [
-  { title: "Solicite seu frete", text: "Informe origem, destino e o que será transportado em poucos segundos.", image: "/images/como-funciona-caminhao.png", imageAlt: "Caminhão de carga da Busca Frete" },
-  { title: "Receba propostas", text: "Motoristas qualificados enviam propostas com os melhores valores.", image: "/images/como-funciona-painel.png", imageAlt: "Painel web da Busca Frete com acompanhamento de entrega" },
-  { title: "Escolha e acompanhe", text: "Escolha a melhor proposta e acompanhe seu frete em tempo real.", image: "/images/como-funciona-aplicativo.png", imageAlt: "Aplicativo móvel da Busca Frete com rastreamento da carga" },
-] as const;
-
-const metrics = [
-  { icon: Users, value: "1.809", label: "Motoristas cadastrados" },
-  { icon: PackageCheck, value: "13", label: "Fretes realizados" },
-  { icon: MapPin, value: "64", label: "Cidades atendidas" },
-  { icon: ShieldCheck, value: "94%", label: "Satisfação dos clientes" },
-] as const;
-
-const appStores = {
-  apple: "https://apps.apple.com/br/app/busca-frete/id6747501257",
-  google: "https://play.google.com/store/apps/details?id=com.frete.busca",
-} as const;
-
-const specialistWhatsAppUrl =
-  "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20solicitar%20uma%20mudan%C3%A7a%20ou%20transportar%20uma%20carga.";
-
-function AppStoreLink({ store }: { store: keyof typeof appStores }) {
-  const isApple = store === "apple";
-
+function HomeAndAppVisual() {
   return (
-    <a
-      href={appStores[store]}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`Baixar Busca Frete na ${isApple ? "App Store" : "Google Play"}`}
-      className="flex h-8 items-center gap-1.5 rounded-md bg-black px-2 text-white transition hover:bg-slate-800 sm:h-9 sm:px-2.5"
+    <div
+      aria-label="Ilustração de casa e aplicativo Busca Frete"
+      className="relative mx-auto min-h-[430px] max-w-[520px]"
     >
-      {isApple ? (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0 fill-current sm:size-5">
-          <path d="M17.05 12.54c-.02-2.25 1.84-3.34 1.92-3.4a4.12 4.12 0 0 0-3.24-1.75c-1.36-.14-2.68.82-3.37.82-.7 0-1.76-.8-2.91-.78a4.3 4.3 0 0 0-3.62 2.2c-1.57 2.72-.4 6.72 1.1 8.91.75 1.07 1.63 2.27 2.77 2.23 1.12-.05 1.54-.72 2.9-.72 1.34 0 1.74.72 2.91.7 1.2-.02 1.96-1.08 2.68-2.16a8.9 8.9 0 0 0 1.23-2.5 3.9 3.9 0 0 1-2.37-3.55ZM14.84 5.95a3.96 3.96 0 0 0 .9-2.84 4.03 4.03 0 0 0-2.61 1.35 3.78 3.78 0 0 0-.93 2.73 3.34 3.34 0 0 0 2.64-1.24Z" />
-        </svg>
-      ) : (
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="size-4 shrink-0 sm:size-5">
-          <path fill="#00d7fe" d="M3.3 2.2 14 12 3.3 21.8c-.2-.4-.3-.8-.3-1.3v-17c0-.5.1-.9.3-1.3Z" />
-          <path fill="#ffce00" d="m14 12 3.5-3.2 3.9 2.2c.8.5.8 1.5 0 2l-3.9 2.2L14 12Z" />
-          <path fill="#00f076" d="M3.3 2.2c.5-.7 1.3-.9 2.1-.4l12.1 7-3.5 3.2L3.3 2.2Z" />
-          <path fill="#f63448" d="M3.3 21.8 14 12l3.5 3.2-12.1 7c-.8.5-1.6.3-2.1-.4Z" />
-        </svg>
-      )}
-      <span className="whitespace-nowrap leading-none">
-        <small className="block text-[6px] uppercase tracking-wide sm:text-[7px]">{isApple ? "Baixar na" : "Disponível no"}</small>
-        <strong className="mt-0.5 block text-[10px] font-semibold sm:text-[11px]">{isApple ? "App Store" : "Google Play"}</strong>
-      </span>
-    </a>
+      <div className="absolute inset-x-4 bottom-6 top-20 rounded-[2.5rem] bg-[linear-gradient(145deg,#dff7f2,#c9e8ff)]" />
+      <div className="absolute bottom-16 left-2 w-[58%] rounded-[2rem] bg-white p-6 shadow-xl">
+        <div className="flex size-14 items-center justify-center rounded-2xl bg-[#e4f4ff] text-[#1254d8]">
+          <HomeIcon className="size-8" />
+        </div>
+        <div className="mt-7 h-3 w-3/4 rounded bg-slate-200" />
+        <div className="mt-3 h-3 w-1/2 rounded bg-slate-100" />
+        <div className="mt-8 flex gap-3">
+          <span className="h-12 flex-1 rounded-xl bg-[#eaf7f3]" />
+          <span className="h-12 flex-1 rounded-xl bg-[#fff2df]" />
+        </div>
+      </div>
+      <div className="absolute right-2 top-2 w-[54%] rounded-[2.4rem] border-[7px] border-[#0b1f45] bg-white p-4 shadow-2xl">
+        <div className="mx-auto h-1.5 w-16 rounded-full bg-[#0b1f45]" />
+        <p className="mt-6 text-[10px] font-bold text-[#0b1f45]">
+          Solicitar frete residencial
+        </p>
+        <div className="mt-4 rounded-xl bg-[#edf5ff] p-3">
+          <MapPin className="size-4 text-[#1254d8]" />
+          <div className="mt-2 h-2 rounded bg-white" />
+          <div className="mt-2 h-2 w-3/4 rounded bg-white" />
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <div className="h-16 rounded-xl bg-[#e8f8f3]" />
+          <div className="h-16 rounded-xl bg-[#fff0dd]" />
+        </div>
+        <div className="mt-3 rounded-xl bg-[#1254d8] py-3 text-center text-[9px] font-bold text-white">
+          Receber propostas
+        </div>
+      </div>
+    </div>
   );
 }
 
-function EmptyImage({ slot, className = "" }: { slot: string; className?: string }) {
-  return <img alt="" aria-hidden="true" data-image-slot={slot} className={`image-placeholder ${className}`} />;
-}
-
 export default function Home() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  useEffect(() => window.scrollTo(0, 0), []);
+  const { pilot, failed } = usePublicResidentialPilot();
+  const cities = pilot?.available ? pilot.cities : [];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    trackLandingEvent("landing_view", {
+      audience: "client",
+      pilot: "abc-residencial-v1",
+    });
+  }, []);
+  useEffect(() => {
+    if (pilot?.available)
+      trackLandingEvent("coverage_view", {
+        audience: "client",
+        pilot: pilot.pilotSlug,
+      });
+    if (pilot?.promotion)
+      trackLandingEvent("promotion_view", {
+        audience: "client",
+        pilot: pilot.pilotSlug,
+      });
+  }, [pilot]);
 
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-[#101a35]">
-      <TawkChat />
-      <header className="sticky top-0 z-50 border-b border-slate-100 bg-white/95 backdrop-blur">
-        <div className="container flex h-20 items-center justify-between gap-6">
-          <a href="#inicio" aria-label="Busca Frete" className="shrink-0">
-            <img src="/logo_with_name.svg" alt="Busca Frete" className="h-10 w-auto" />
-          </a>
-          <nav aria-label="Navegação principal" className="hidden items-center gap-7 text-xs font-semibold text-slate-600 lg:flex">
-            <a href="#inicio">Início</a><a href="#como-funciona">Como funciona</a><a href="#servicos">Serviços</a>
-            <a href="#solucoes">Soluções</a><a href="#cobertura">Motoristas</a><a href="#sobre">Sobre nós</a>
-          </nav>
-          <div className="hidden shrink-0 items-center gap-2 lg:flex">
-            <AppStoreLink store="apple" />
-            <AppStoreLink store="google" />
-          </div>
-          <button
-            type="button"
-            aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={mobileMenuOpen}
-            onClick={() => setMobileMenuOpen((open) => !open)}
-            className="rounded-md p-2 text-[#1757ba] lg:hidden"
-          >
-            {mobileMenuOpen ? <X className="size-6" /> : <Menu className="size-6" />}
-          </button>
-        </div>
-        {mobileMenuOpen && (
-          <nav aria-label="Menu mobile" className="border-t border-slate-100 bg-white px-5 py-4 lg:hidden">
-            <div className="container flex flex-col gap-4 text-sm font-semibold text-slate-600">
-              {[['Início', '#inicio'], ['Como funciona', '#como-funciona'], ['Serviços', '#servicos'], ['Soluções', '#solucoes'], ['Motoristas', '#cobertura'], ['Sobre nós', '#sobre']].map(([label, href]) => (
-                <a key={href} href={href} onClick={() => setMobileMenuOpen(false)}>{label}</a>
-              ))}
-            </div>
-          </nav>
-        )}
-      </header>
-
-      <div className="fixed bottom-4 left-1/2 z-40 flex -translate-x-1/2 gap-2 rounded-xl bg-white/90 p-1.5 shadow-[0_8px_28px_rgba(16,38,80,.2)] backdrop-blur lg:hidden">
-        <AppStoreLink store="apple" />
-        <AppStoreLink store="google" />
-      </div>
-
+    <div className="min-h-screen bg-white text-[#0b1f45]">
+      <MarketingHeader />
       <main>
-                <section id="inicio" className="relative overflow-hidden bg-[#e1f0fc] max-lg:overflow-visible">
-          <div className="container grid min-h-[650px] items-center gap-10 py-14 max-lg:pb-24 lg:grid-cols-[53%_47%] lg:py-20">
-            <div className="relative z-10">
-              <h1 className="max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-0.045em] sm:text-3xl lg:text-[3rem]">
-                O frete certo <span className="text-[#1757ba]">para sua mudança ou carga.</span>
+        <section className="overflow-hidden bg-[radial-gradient(circle_at_80%_15%,#d9f7ee_0,transparent_38%),linear-gradient(180deg,#f4f9ff_0%,#fff_100%)]">
+          <div className="container grid min-h-[650px] items-center gap-8 py-16 lg:grid-cols-[1.02fr_.98fr]">
+            <div>
+              <span className="inline-flex items-center gap-2 rounded-full bg-[#e1f3ff] px-4 py-2 text-xs font-bold text-[#1254d8]">
+                <Sparkles className="size-4" /> Piloto residencial no ABC
+                Paulista
+              </span>
+              <h1 className="mt-7 max-w-2xl text-4xl font-black leading-[1.05] tracking-[-.04em] sm:text-5xl lg:text-6xl">
+                Seu frete residencial no ABC,{" "}
+                <span className="text-[#1254d8]">do seu jeito.</span>
               </h1>
-              <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">Conectamos você a motoristas verificados para mudanças residenciais e transporte de cargas, com segurança, agilidade e preço justo.</p>
-              <div aria-label="Aplicativo Busca Frete" className="mt-7 flex max-w-2xl flex-col gap-3 rounded-xl bg-white px-4 py-3.5 shadow-[0_12px_32px_rgba(22,65,130,.12)] sm:grid sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-5">
-                <div className="flex items-start gap-3 sm:contents">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(145deg,#1764de,#0638ac)] text-white shadow-[0_8px_18px_rgba(23,87,186,.22)]">
-                    <Smartphone aria-hidden="true" className="size-6 stroke-[1.8]" />
+              <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+                Agende com pelo menos 48 horas de antecedência, informe os itens
+                e receba propostas de motoristas aptos para a sua mudança.
+              </p>
+              {pilot?.promotion && (
+                <div className="mt-5 inline-flex rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+                  ABC30 · até R$ 30 de benefício no lançamento
+                </div>
+              )}
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a
+                  role="link"
+                  href={clientLink || undefined}
+                  aria-disabled={!clientLink}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={event => {
+                    if (!clientLink) {
+                      event.preventDefault();
+                      return;
+                    }
+                    trackLandingEvent("store_cta_click", {
+                      audience: "client",
+                      store: "onelink",
+                      pilot: pilot?.pilotSlug ?? "abc-residencial-v1",
+                    });
+                  }}
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#1254d8] px-6 py-4 font-bold text-white shadow-lg shadow-blue-700/20 aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
+                >
+                  Baixar o app e solicitar <ArrowRight className="size-5" />
+                </a>
+                <a
+                  href="/motoristas"
+                  onClick={() =>
+                    trackLandingEvent("driver_cta_click", {
+                      audience: "driver",
+                      pilot: pilot?.pilotSlug ?? "abc-residencial-v1",
+                    })
+                  }
+                  className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-300 bg-white px-6 py-4 font-bold"
+                >
+                  Sou motorista <Truck className="size-5" />
+                </a>
+              </div>
+              <div className="mt-7 flex flex-wrap gap-3 text-sm text-slate-600">
+                <span className="flex items-center gap-2">
+                  <Check className="size-4 text-emerald-600" /> Propostas livres
+                </span>
+                <span className="flex items-center gap-2">
+                  <Check className="size-4 text-emerald-600" /> Fotos e acessos
+                </span>
+                <span className="flex items-center gap-2">
+                  <Check className="size-4 text-emerald-600" /> Data agendada
+                </span>
+              </div>
+            </div>
+            <HomeAndAppVisual />
+          </div>
+        </section>
+
+        <section id="solucoes" className="container py-20">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[.18em] text-[#128b77]">
+              O que você pode transportar
+            </p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+              Da geladeira à mudança completa
+            </h2>
+            <p className="mt-4 text-slate-600">
+              O app calcula a categoria de veículo a partir do que você
+              informar.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {solutions.map(({ icon: Icon, title, text }) => (
+              <article
+                key={title}
+                className="rounded-3xl border border-slate-200 bg-white p-7 shadow-sm"
+              >
+                <span className="flex size-12 items-center justify-center rounded-2xl bg-[#e9f3ff] text-[#1254d8]">
+                  <Icon className="size-6" />
+                </span>
+                <h3 className="mt-5 text-xl font-bold">{title}</h3>
+                <p className="mt-3 leading-7 text-slate-600">{text}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="como-funciona" className="bg-[#0b1f45] py-20 text-white">
+          <div className="container">
+            <p className="text-sm font-bold uppercase tracking-[.18em] text-[#78d9c9]">
+              Simples e transparente
+            </p>
+            <h2 className="mt-3 text-3xl font-black sm:text-4xl">
+              Como funciona
+            </h2>
+            <div className="mt-10 grid gap-5 md:grid-cols-3">
+              {[
+                [
+                  Package,
+                  "1. Conte o que vai levar",
+                  "Adicione itens, fotos, origem, destino, acessos e ajudantes.",
+                ],
+                [
+                  CalendarClock,
+                  "2. Escolha a data",
+                  "Agende o serviço com antecedência mínima de 48 horas.",
+                ],
+                [
+                  Users,
+                  "3. Compare propostas",
+                  "Escolha a proposta de um motorista elegível para a rota.",
+                ],
+              ].map(([Icon, title, text]) => {
+                const StepIcon = Icon as typeof Package;
+                return (
+                  <article
+                    key={String(title)}
+                    className="rounded-3xl bg-white/8 p-7"
+                  >
+                    <StepIcon className="size-8 text-[#78d9c9]" />
+                    <h3 className="mt-5 text-xl font-bold">{String(title)}</h3>
+                    <p className="mt-3 leading-7 text-blue-100/75">
+                      {String(text)}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        <section id="cobertura" className="container py-20">
+          <div className="grid gap-10 rounded-[2.5rem] bg-[#eff8f6] p-8 lg:grid-cols-[.9fr_1.1fr] lg:p-12">
+            <div>
+              <span className="flex size-12 items-center justify-center rounded-2xl bg-white text-[#128b77]">
+                <MapPin />
+              </span>
+              <h2 className="mt-6 text-3xl font-black">
+                Cobertura residencial em expansão
+              </h2>
+              <p className="mt-4 leading-7 text-slate-600">
+                No momento, o piloto atende rotas residenciais internas entre as
+                cidades liberadas. Outras regiões serão adicionadas
+                gradualmente.
+              </p>
+            </div>
+            <div className="flex flex-wrap content-center gap-3">
+              {cities.length > 0 ? (
+                cities.map(city => (
+                  <span
+                    key={city}
+                    className="rounded-full border border-emerald-200 bg-white px-5 py-3 font-bold text-[#0f7565]"
+                  >
+                    {city}
                   </span>
-                  <div className="min-w-0">
-                    <strong className="text-sm font-extrabold leading-tight">O Busca Frete está na palma da sua mão</strong>
-                    <p className="text-[11px] leading-4 text-slate-500">Acompanhe seus fretes, negocie e receba atualizações onde estiver.</p>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-1.5 sm:flex-col">
-                  <AppStoreLink store="apple" />
-                  <AppStoreLink store="google" />
-                </div>
-              </div>
-              {/* desktop cards */}
-              <div className="mt-7 hidden max-w-3xl grid-cols-3 gap-4 text-[11px] lg:grid">
-                <div className="flex gap-2"><PackageCheck className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Melhores preços</strong>Compare e economize</span></div>
-                <div className="flex gap-2"><ShieldCheck className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Motoristas verificados</strong>Segurança em cada etapa</span></div>
-                <div className="flex gap-2"><Clock3 className="size-9 text-[#1757ba]" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
-              </div>
-            </div>
-            <div className="relative mx-auto aspect-[16/9] w-full overflow-hidden rounded-3xl sm:mx-0">
-              <img
-                src="/images/mapa-cobertura-brasil.png"
-                alt=""
-                aria-hidden="true"
-                className="absolute inset-0 size-full object-cover"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 z-[1]"
-                style={{
-                  background: [
-                    "linear-gradient(to right, #e1f0fc 0%, transparent 18%, transparent 82%, #e1f0fc 100%)",
-                    "linear-gradient(to bottom, #e1f0fc 0%, transparent 18%, transparent 82%, #e1f0fc 100%)",
-                  ].join(", "),
-                }}
-              />
-              <img
-                src="/images/busca-frete-frota.png"
-                alt="Frota de caminhões da Busca Frete"
-                data-image-slot="hero-map-fleet"
-                className="image-placeholder absolute inset-x-0 bottom-[8%] z-10 w-full object-contain object-bottom sm:bottom-[6%]"
-              />
-            </div>
-          </div>
-          {/* mobile cards — entre azul e branco */}
-          <div className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 lg:hidden">
-            <div className="container grid grid-cols-3 gap-4 text-[11px]">
-              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><PackageCheck className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Melhores preços</strong>Compare e economize</span></div>
-              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><ShieldCheck className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Motoristas verificados</strong>Segurança em cada etapa</span></div>
-              <div className="flex flex-col items-center gap-1.5 rounded-xl bg-white p-3 text-center shadow-[0_4px_10px_rgba(22,65,130,.08)]"><Clock3 className="size-7 text-[#1757ba]" /><span><strong className="block font-semibold">Acompanhamento</strong>Em tempo real</span></div>
+                ))
+              ) : (
+                <span className="rounded-full border border-emerald-200 bg-white px-5 py-3 font-bold text-[#0f7565]">
+                  ABC Paulista
+                </span>
+              )}
+              {failed && (
+                <p className="w-full pt-3 text-sm text-slate-500">
+                  Consulte a disponibilidade atual no aplicativo.
+                </p>
+              )}
             </div>
           </div>
         </section>
 
-        <section id="servicos" className="py-14 max-lg:pt-24 sm:py-18">
-          <div className="container">
-            <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Veículos para mudanças e cargas de todos os portes.</h2>
-            <div className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-              {vehicles.map(({ title, description, image, imageAlt }) => <article key={title} className="text-center"><img src={image} alt={imageAlt} data-image-slot={`vehicle-${title.toLowerCase().replaceAll(" ", "-")}`} className="image-placeholder mx-auto aspect-[16/9] w-full object-contain" /><h3 className="mt-4 text-sm font-bold">{title}</h3><p className="mt-1 text-xs text-slate-500">{description}</p></article>)}
+        <section className="container pb-20">
+          <div className="grid items-center gap-8 rounded-[2.5rem] border border-blue-100 bg-[#f5f9ff] p-8 lg:grid-cols-2 lg:p-12">
+            <div>
+              <ShieldCheck className="size-10 text-[#1254d8]" />
+              <h2 className="mt-5 text-3xl font-black">
+                Informações para uma proposta mais segura
+              </h2>
+              <p className="mt-4 leading-7 text-slate-600">
+                Fotos, quantidade de itens, tipo de acesso e necessidade de
+                ajudantes ajudam o motorista a avaliar o serviço antes de enviar
+                uma proposta.
+              </p>
             </div>
-            <div className="mt-9 text-center"><a href="#solucoes" className="inline-flex rounded-md border border-[#1757ba] px-5 py-3 text-xs font-bold text-[#1757ba]">Ver todos os tipos de veículos</a></div>
+            <div className="grid grid-cols-2 gap-4 text-sm font-bold">
+              <span className="rounded-2xl bg-white p-5">
+                <Building2 className="mb-3 text-[#1254d8]" /> Casa ou
+                apartamento
+              </span>
+              <span className="rounded-2xl bg-white p-5">
+                <Smartphone className="mb-3 text-[#1254d8]" /> Tudo pelo app
+              </span>
+              <span className="rounded-2xl bg-white p-5">
+                <CalendarClock className="mb-3 text-[#1254d8]" /> Serviço
+                agendado
+              </span>
+              <span className="rounded-2xl bg-white p-5">
+                <Users className="mb-3 text-[#1254d8]" /> Ajudantes informados
+              </span>
+            </div>
           </div>
         </section>
 
-        <section id="solucoes" className="py-5 sm:py-8">
-          <div className="container rounded-3xl bg-[#f7faff] px-5 py-10 sm:px-10">
-            <h2 className="text-center text-2xl font-extrabold">Soluções para mudanças e transporte de cargas</h2>
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {solutions.map(({ icon: Icon, title, text, color }) => <article key={title} className="flex gap-4 rounded-xl bg-white p-5 shadow-[0_8px_25px_rgba(28,66,125,.04)]"><span className={`solution-icon solution-icon-${color}`}><Icon className="size-6" /></span><div><h3 className="text-sm font-bold">{title}</h3><p className="mt-2 text-xs leading-5 text-slate-500">{text}</p></div></article>)}
+        <section id="aplicativo" className="container pb-20">
+          <div className="flex flex-col items-start justify-between gap-8 rounded-[2.5rem] bg-[#1254d8] p-8 text-white lg:flex-row lg:items-center lg:p-12">
+            <div className="max-w-2xl">
+              <Smartphone className="size-10 text-blue-100" />
+              <h2 className="mt-5 text-3xl font-black">
+                Acompanhe tudo pelo aplicativo
+              </h2>
+              <p className="mt-4 leading-7 text-blue-100">
+                Crie a solicitação, compare propostas e acompanhe o frete
+                residencial em um só lugar.
+              </p>
             </div>
+            <a
+              role="link"
+              href={clientLink || undefined}
+              aria-disabled={!clientLink}
+              target="_blank"
+              rel="noreferrer"
+              onClick={event => {
+                if (!clientLink) {
+                  event.preventDefault();
+                  return;
+                }
+                trackLandingEvent("store_cta_click", {
+                  audience: "client",
+                  store: "onelink",
+                  pilot: pilot?.pilotSlug ?? "abc-residencial-v1",
+                });
+              }}
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-4 font-bold text-[#1254d8] aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
+            >
+              Baixar o Busca Frete <ArrowRight className="size-5" />
+            </a>
           </div>
         </section>
 
-        <section id="como-funciona" className="py-14">
-          <div className="container">
-            <h2 className="text-center text-2xl font-extrabold">Como funciona</h2><p className="mt-1 text-center text-sm text-slate-500">É rápido, fácil e seguro</p>
-            <div className="mt-9 grid gap-5 lg:grid-cols-3">
-              {steps.map((step, index) => <article key={step.title} className="relative rounded-xl bg-[#f9fbff] p-5"><span className="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-bold text-white">{index + 1}</span><img src={step.image} alt={step.imageAlt} data-image-slot={`step-${index + 1}`} className="image-placeholder mx-auto aspect-[16/9] w-4/5 object-contain" /><h3 className="mt-4 text-sm font-bold">{step.title}</h3><p className="mt-2 text-xs leading-5 text-slate-500">{step.text}</p></article>)}
+        <section
+          id="cargas"
+          className="border-t border-slate-200 bg-slate-50 py-16"
+        >
+          <div className="container flex flex-col items-start justify-between gap-7 lg:flex-row lg:items-center">
+            <div className="max-w-2xl">
+              <p className="text-sm font-bold uppercase tracking-[.18em] text-slate-500">
+                Serviço complementar
+              </p>
+              <h2 className="mt-3 text-3xl font-black">
+                Também precisa transportar cargas?
+              </h2>
+              <p className="mt-4 leading-7 text-slate-600">
+                A Busca Frete continua conectando cargas e motoristas. A
+                disponibilidade varia por região e tipo de veículo; consulte a
+                disponibilidade no app.
+              </p>
             </div>
-            <div className="mt-8 grid overflow-hidden rounded-2xl bg-[linear-gradient(120deg,#114aa9,#155bd0)] px-5 py-7 text-white grid-cols-2 lg:grid-cols-4">
-              {metrics.map(({ icon: Icon, value, label }) => <div key={label} className="border-white/20 px-4 py-4 text-center lg:border-r lg:last:border-r-0"><Icon className="mx-auto size-8 stroke-1" /><strong className="mt-3 block text-2xl">{value}</strong><span className="text-xs text-blue-100">{label}</span></div>)}
-            </div>
+            <a
+              role="link"
+              href={clientLink || undefined}
+              aria-disabled={!clientLink}
+              onClick={event => {
+                if (!clientLink) event.preventDefault();
+              }}
+              className="inline-flex items-center gap-2 rounded-2xl border border-slate-300 bg-white px-6 py-4 font-bold aria-disabled:cursor-not-allowed aria-disabled:opacity-60"
+            >
+              Consultar no aplicativo <ArrowRight className="size-5" />
+            </a>
           </div>
-        </section>
-
-        <section id="cobertura" className="pb-10">
-          <div className="container grid items-center gap-8 rounded-3xl bg-[#f7faff] px-6 py-10 lg:grid-cols-[0.72fr_1fr_0.72fr] lg:px-10">
-            <div><h2 className="text-3xl font-extrabold leading-tight">Cargas para <span className="block text-[#1757ba]">todo o Brasil</span></h2><p className="mt-5 text-sm leading-6 text-slate-600">Conectamos embarcadores e motoristas em todos os estados. Para mudanças residenciais, consulte a disponibilidade na sua região.</p><a href="#inicio" className="mt-6 inline-flex rounded-md bg-[#1757ba] px-5 py-3 text-xs font-bold text-white">Quero solicitar um frete</a></div>
-            <img
-              src="/images/mapa-brasil-busca-frete-corrigido.svg"
-              alt="Mapa do Brasil representando a cobertura nacional da Busca Frete"
-              data-image-slot="coverage-map"
-              className="image-placeholder aspect-square w-full object-contain"
-            />
-            <ul className="space-y-4 text-sm">{["Transporte de cargas com cobertura nacional", "Mudanças residenciais conforme a região", "Motoristas e transportadoras de confiança", "Agilidade e segurança em todo o processo"].map(item => <li key={item} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-[#1757ba]" />{item}</li>)}</ul>
-          </div>
-        </section>
-
-        <section id="sobre" className="pb-12">
-          <div className="container"><div className="flex flex-col items-center gap-5 rounded-2xl bg-[#eef5ff] px-6 py-5 sm:flex-row"><img src="/images/atendimento-busca-frete.png" alt="Atendimento especializado da Busca Frete" data-image-slot="support-avatar" className="image-placeholder size-16 shrink-0 rounded-full object-cover" /><div className="flex-1 text-center sm:text-left"><h2 className="font-bold text-[#1757ba]">Precisa de ajuda com sua mudança ou carga?</h2><p className="mt-1 text-xs text-slate-500">Fale com nosso time e receba suporte especializado.</p></div><a href={specialistWhatsAppUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[#1757ba] px-6 py-3 text-xs font-bold text-white"><Headphones className="size-4" />Falar com um especialista</a></div></div>
         </section>
       </main>
+      <footer className="bg-[#071731] py-10 text-sm text-blue-100/65">
+        <div className="container flex flex-col justify-between gap-4 sm:flex-row">
+          <p>© 2026 Busca Frete. Frete residencial e transporte de cargas.</p>
+          <a href="/privacidade">Política de privacidade</a>
+        </div>
+      </footer>
+      <ConsentBanner />
     </div>
   );
 }

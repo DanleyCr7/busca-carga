@@ -5,6 +5,8 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import Drivers from "./pages/Drivers";
+import DataDeletion from "./pages/DataDeletion";
 import Privacidade from "./pages/privacidade";
 
 function Router() {
@@ -12,7 +14,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/empresas"} component={Home} />
-      <Route path={"/motoristas"} component={Home} />
+      <Route path={"/motoristas"} component={Drivers} />
       <Route path={"/transportadoras"} component={Home} />
       <Route path={"/seguranca-pagamentos"} component={Home} />
       <Route path={"/tipos-de-carga"} component={Home} />
@@ -23,6 +25,7 @@ function Router() {
       <Route path={"/faq"} component={Home} />
       <Route path={"/contato"} component={Home} />
       <Route path={"/privacidade"} component={Privacidade} />
+      <Route path={"/exclusao-de-dados"} component={DataDeletion} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />
@@ -40,7 +43,7 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider
         defaultTheme="light"
-      // switchable
+        // switchable
       >
         <TooltipProvider>
           <Toaster />
