@@ -25,23 +25,23 @@ const vehicles = [
 ] as const;
 
 const solutions = [
-  { icon: Truck, title: "Transporte de cargas nacionais", text: "Encontre motoristas para cargas em todo o Brasil.", color: "blue" },
-  { icon: PackageCheck, title: "Cargas dedicadas ou ponto a ponto", text: "Mais segurança e controle para sua operação.", color: "mint" },
+  { icon: Truck, title: "Mudanças residenciais", text: "Encontre motoristas para transportar móveis, eletrodomésticos e itens da sua casa.", color: "blue" },
+  { icon: PackageCheck, title: "Pequenos fretes", text: "Transporte poucos volumes com praticidade e segurança.", color: "mint" },
   { icon: Warehouse, title: "Cargas fechadas e lotações", text: "Ideal para grandes volumes e longas distâncias.", color: "green" },
-  { icon: Building2, title: "Fretes para empresas", text: "Soluções personalizadas para o seu negócio.", color: "orange" },
-  { icon: Search, title: "Acompanhamento em tempo real", text: "Monitore sua carga do início ao destino final.", color: "purple" },
-  { icon: ShieldCheck, title: "Seguro de carga", text: "Mais tranquilidade e proteção para sua mercadoria.", color: "yellow" },
+  { icon: Building2, title: "Fretes para empresas", text: "Soluções personalizadas para a operação do seu negócio.", color: "orange" },
+  { icon: Search, title: "Acompanhamento em tempo real", text: "Monitore seu frete do início ao destino final.", color: "purple" },
+  { icon: ShieldCheck, title: "Segurança no transporte", text: "Mais tranquilidade e proteção para seus itens ou mercadorias.", color: "yellow" },
 ] as const;
 
 const steps = [
-  { title: "Publique sua carga", text: "Informe origem, destino e detalhes da sua carga em poucos segundos.", image: "/images/como-funciona-caminhao.png", imageAlt: "Caminhão de carga da Busca Frete" },
+  { title: "Solicite seu frete", text: "Informe origem, destino e o que será transportado em poucos segundos.", image: "/images/como-funciona-caminhao.png", imageAlt: "Caminhão de carga da Busca Frete" },
   { title: "Receba propostas", text: "Motoristas qualificados enviam propostas com os melhores valores.", image: "/images/como-funciona-painel.png", imageAlt: "Painel web da Busca Frete com acompanhamento de entrega" },
-  { title: "Escolha e acompanhe", text: "Escolha o melhor frete e acompanhe sua carga em tempo real.", image: "/images/como-funciona-aplicativo.png", imageAlt: "Aplicativo móvel da Busca Frete com rastreamento da carga" },
+  { title: "Escolha e acompanhe", text: "Escolha a melhor proposta e acompanhe seu frete em tempo real.", image: "/images/como-funciona-aplicativo.png", imageAlt: "Aplicativo móvel da Busca Frete com rastreamento da carga" },
 ] as const;
 
 const metrics = [
   { icon: Users, value: "1.809", label: "Motoristas cadastrados" },
-  { icon: PackageCheck, value: "13", label: "Cargas transportadas" },
+  { icon: PackageCheck, value: "13", label: "Fretes realizados" },
   { icon: MapPin, value: "64", label: "Cidades atendidas" },
   { icon: ShieldCheck, value: "94%", label: "Satisfação dos clientes" },
 ] as const;
@@ -52,7 +52,7 @@ const appStores = {
 } as const;
 
 const specialistWhatsAppUrl =
-  "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20encontrar%20o%20frete%20ideal.";
+  "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20solicitar%20uma%20mudan%C3%A7a%20ou%20transportar%20uma%20carga.";
 
 function AppStoreLink({ store }: { store: keyof typeof appStores }) {
   const isApple = store === "apple";
@@ -103,7 +103,7 @@ export default function Home() {
           </a>
           <nav aria-label="Navegação principal" className="hidden items-center gap-7 text-xs font-semibold text-slate-600 lg:flex">
             <a href="#inicio">Início</a><a href="#como-funciona">Como funciona</a><a href="#servicos">Serviços</a>
-            <a href="#solucoes">Para empresas</a><a href="#cobertura">Motoristas</a><a href="#sobre">Sobre nós</a>
+            <a href="#solucoes">Soluções</a><a href="#cobertura">Motoristas</a><a href="#sobre">Sobre nós</a>
           </nav>
           <div className="hidden shrink-0 items-center gap-2 lg:flex">
             <AppStoreLink store="apple" />
@@ -122,7 +122,7 @@ export default function Home() {
         {mobileMenuOpen && (
           <nav aria-label="Menu mobile" className="border-t border-slate-100 bg-white px-5 py-4 lg:hidden">
             <div className="container flex flex-col gap-4 text-sm font-semibold text-slate-600">
-              {[['Início', '#inicio'], ['Como funciona', '#como-funciona'], ['Serviços', '#servicos'], ['Para empresas', '#solucoes'], ['Motoristas', '#cobertura'], ['Sobre nós', '#sobre']].map(([label, href]) => (
+              {[['Início', '#inicio'], ['Como funciona', '#como-funciona'], ['Serviços', '#servicos'], ['Soluções', '#solucoes'], ['Motoristas', '#cobertura'], ['Sobre nós', '#sobre']].map(([label, href]) => (
                 <a key={href} href={href} onClick={() => setMobileMenuOpen(false)}>{label}</a>
               ))}
             </div>
@@ -140,9 +140,9 @@ export default function Home() {
           <div className="container grid min-h-[650px] items-center gap-10 py-14 max-lg:pb-24 lg:grid-cols-[53%_47%] lg:py-20">
             <div className="relative z-10">
               <h1 className="max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-0.045em] sm:text-3xl lg:text-[3rem]">
-                O frete certo <span className="text-[#1757ba]">para sua carga, em qualquer lugar do Brasil.</span>
+                O frete certo <span className="text-[#1757ba]">para sua mudança ou carga.</span>
               </h1>
-              <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">Conectamos você ao motorista ideal para grandes cargas com segurança, agilidade e o melhor preço.</p>
+              <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">Conectamos você a motoristas verificados para mudanças residenciais e transporte de cargas, com segurança, agilidade e preço justo.</p>
               <div aria-label="Aplicativo Busca Frete" className="mt-7 flex max-w-2xl flex-col gap-3 rounded-xl bg-white px-4 py-3.5 shadow-[0_12px_32px_rgba(22,65,130,.12)] sm:grid sm:grid-cols-[auto_1fr_auto] sm:items-center sm:px-5">
                 <div className="flex items-start gap-3 sm:contents">
                   <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[linear-gradient(145deg,#1764de,#0638ac)] text-white shadow-[0_8px_18px_rgba(23,87,186,.22)]">
@@ -150,7 +150,7 @@ export default function Home() {
                   </span>
                   <div className="min-w-0">
                     <strong className="text-sm font-extrabold leading-tight">O Busca Frete está na palma da sua mão</strong>
-                    <p className="text-[11px] leading-4 text-slate-500">Acompanhe suas cargas, negocie e receba atualizações onde estiver.</p>
+                    <p className="text-[11px] leading-4 text-slate-500">Acompanhe seus fretes, negocie e receba atualizações onde estiver.</p>
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-1.5 sm:flex-col">
@@ -202,7 +202,7 @@ export default function Home() {
 
         <section id="servicos" className="py-14 max-lg:pt-24 sm:py-18">
           <div className="container">
-            <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Do pequeno ao extrapesado, a gente entrega.</h2>
+            <h2 className="text-center text-2xl font-extrabold tracking-tight sm:text-3xl">Veículos para mudanças e cargas de todos os portes.</h2>
             <div className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
               {vehicles.map(({ title, description, image, imageAlt }) => <article key={title} className="text-center"><img src={image} alt={imageAlt} data-image-slot={`vehicle-${title.toLowerCase().replaceAll(" ", "-")}`} className="image-placeholder mx-auto aspect-[16/9] w-full object-contain" /><h3 className="mt-4 text-sm font-bold">{title}</h3><p className="mt-1 text-xs text-slate-500">{description}</p></article>)}
             </div>
@@ -212,7 +212,7 @@ export default function Home() {
 
         <section id="solucoes" className="py-5 sm:py-8">
           <div className="container rounded-3xl bg-[#f7faff] px-5 py-10 sm:px-10">
-            <h2 className="text-center text-2xl font-extrabold">Soluções completas para sua logística</h2>
+            <h2 className="text-center text-2xl font-extrabold">Soluções para mudanças e transporte de cargas</h2>
             <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {solutions.map(({ icon: Icon, title, text, color }) => <article key={title} className="flex gap-4 rounded-xl bg-white p-5 shadow-[0_8px_25px_rgba(28,66,125,.04)]"><span className={`solution-icon solution-icon-${color}`}><Icon className="size-6" /></span><div><h3 className="text-sm font-bold">{title}</h3><p className="mt-2 text-xs leading-5 text-slate-500">{text}</p></div></article>)}
             </div>
@@ -233,19 +233,19 @@ export default function Home() {
 
         <section id="cobertura" className="pb-10">
           <div className="container grid items-center gap-8 rounded-3xl bg-[#f7faff] px-6 py-10 lg:grid-cols-[0.72fr_1fr_0.72fr] lg:px-10">
-            <div><h2 className="text-3xl font-extrabold leading-tight">Atendemos <span className="block text-[#1757ba]">todo o Brasil</span></h2><p className="mt-5 text-sm leading-6 text-slate-600">Nossa plataforma conecta embarcadores e motoristas em todos os estados, com cobertura nacional e suporte dedicado.</p><a href="#inicio" className="mt-6 inline-flex rounded-md bg-[#1757ba] px-5 py-3 text-xs font-bold text-white">Quero enviar uma carga</a></div>
+            <div><h2 className="text-3xl font-extrabold leading-tight">Cargas para <span className="block text-[#1757ba]">todo o Brasil</span></h2><p className="mt-5 text-sm leading-6 text-slate-600">Conectamos embarcadores e motoristas em todos os estados. Para mudanças residenciais, consulte a disponibilidade na sua região.</p><a href="#inicio" className="mt-6 inline-flex rounded-md bg-[#1757ba] px-5 py-3 text-xs font-bold text-white">Quero solicitar um frete</a></div>
             <img
               src="/images/mapa-brasil-busca-frete-corrigido.svg"
               alt="Mapa do Brasil representando a cobertura nacional da Busca Frete"
               data-image-slot="coverage-map"
               className="image-placeholder aspect-square w-full object-contain"
             />
-            <ul className="space-y-4 text-sm">{["Cobertura nacional", "Suporte em todas as regiões", "Parcerias com transportadoras e motoristas de confiança", "Agilidade e segurança em todo o processo"].map(item => <li key={item} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-[#1757ba]" />{item}</li>)}</ul>
+            <ul className="space-y-4 text-sm">{["Transporte de cargas com cobertura nacional", "Mudanças residenciais conforme a região", "Motoristas e transportadoras de confiança", "Agilidade e segurança em todo o processo"].map(item => <li key={item} className="flex gap-2"><Check className="mt-0.5 size-4 shrink-0 text-[#1757ba]" />{item}</li>)}</ul>
           </div>
         </section>
 
         <section id="sobre" className="pb-12">
-          <div className="container"><div className="flex flex-col items-center gap-5 rounded-2xl bg-[#eef5ff] px-6 py-5 sm:flex-row"><img src="/images/atendimento-busca-frete.png" alt="Atendimento especializado da Busca Frete" data-image-slot="support-avatar" className="image-placeholder size-16 shrink-0 rounded-full object-cover" /><div className="flex-1 text-center sm:text-left"><h2 className="font-bold text-[#1757ba]">Precisa de ajuda para encontrar o frete ideal?</h2><p className="mt-1 text-xs text-slate-500">Fale com nosso time e receba suporte especializado.</p></div><a href={specialistWhatsAppUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[#1757ba] px-6 py-3 text-xs font-bold text-white"><Headphones className="size-4" />Falar com um especialista</a></div></div>
+          <div className="container"><div className="flex flex-col items-center gap-5 rounded-2xl bg-[#eef5ff] px-6 py-5 sm:flex-row"><img src="/images/atendimento-busca-frete.png" alt="Atendimento especializado da Busca Frete" data-image-slot="support-avatar" className="image-placeholder size-16 shrink-0 rounded-full object-cover" /><div className="flex-1 text-center sm:text-left"><h2 className="font-bold text-[#1757ba]">Precisa de ajuda com sua mudança ou carga?</h2><p className="mt-1 text-xs text-slate-500">Fale com nosso time e receba suporte especializado.</p></div><a href={specialistWhatsAppUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-md bg-[#1757ba] px-6 py-3 text-xs font-bold text-white"><Headphones className="size-4" />Falar com um especialista</a></div></div>
         </section>
       </main>
     </div>

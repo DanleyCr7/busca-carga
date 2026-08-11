@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { render, screen, within } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import Home from "./Home";
@@ -13,11 +14,11 @@ describe("Home - Busca Frete landing", () => {
 
   it("renders the reference structure and navigation", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: /o frete certo para sua carga/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /o frete certo para sua mudança ou carga/i })).toBeInTheDocument();
     const navigation = screen.getByRole("navigation", { name: /navegação principal/i });
     expect(within(navigation).getByRole("link", { name: /como funciona/i })).toHaveAttribute("href", "#como-funciona");
     expect(within(navigation).getByRole("link", { name: /serviços/i })).toHaveAttribute("href", "#servicos");
-    expect(within(navigation).getByRole("link", { name: /para empresas/i })).toHaveAttribute("href", "#solucoes");
+    expect(within(navigation).getByRole("link", { name: /^soluções$/i })).toHaveAttribute("href", "#solucoes");
   });
 
   it("links the header to both app stores", () => {
@@ -39,7 +40,7 @@ describe("Home - Busca Frete landing", () => {
     expect(screen.queryByRole("button", { name: /buscar frete/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("textbox", { name: /origem|destino/i })).not.toBeInTheDocument();
     expect(screen.getByText(/o busca frete está na palma da sua mão/i)).toBeInTheDocument();
-    expect(screen.getByText(/acompanhe suas cargas, negocie e receba atualizações/i)).toBeInTheDocument();
+    expect(screen.getByText(/acompanhe seus fretes, negocie e receba atualizações/i)).toBeInTheDocument();
     expect(screen.getAllByRole("link", { name: /baixar busca frete na app store/i })).toHaveLength(3);
     expect(screen.getAllByRole("link", { name: /baixar busca frete na google play/i })).toHaveLength(3);
     expect(screen.queryByText("Suporte dedicado")).not.toBeInTheDocument();
@@ -48,15 +49,19 @@ describe("Home - Busca Frete landing", () => {
 
   it("renders vehicles, solutions, steps and metrics", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: /do pequeno ao extrapesado/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /veículos para mudanças e cargas de todos os portes/i })).toBeInTheDocument();
     expect(screen.getAllByText(/carreta baú|carroceria aberta|truck baú|carroceria sider/i)).toHaveLength(4);
     expect(screen.queryByText("Van")).not.toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /soluções completas para sua logística/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /soluções para mudanças e transporte de cargas/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /mudanças residenciais/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /pequenos fretes/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /solicite seu frete/i })).toBeInTheDocument();
+    expect(screen.getByText("Fretes realizados")).toBeInTheDocument();
     expect(screen.getAllByRole("article")).toHaveLength(13);
-    expect(screen.getByText("+25.000")).toBeInTheDocument();
-    expect(screen.getByText("+80.000")).toBeInTheDocument();
-    expect(screen.getByText("+5.000")).toBeInTheDocument();
-    expect(screen.getByText("98%")).toBeInTheDocument();
+    expect(screen.getByText("1.809")).toBeInTheDocument();
+    expect(screen.getByText("13")).toBeInTheDocument();
+    expect(screen.getByText("64")).toBeInTheDocument();
+    expect(screen.getByText("94%")).toBeInTheDocument();
   });
 
   it("renders the landing images without empty slots", () => {
@@ -85,11 +90,41 @@ describe("Home - Busca Frete landing", () => {
 
   it("renders national coverage and support CTA", () => {
     render(<Home />);
-    expect(screen.getByRole("heading", { name: /atendemos todo o brasil/i })).toBeInTheDocument();
-    expect(screen.getByText("Cobertura nacional")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /cargas para todo o brasil/i })).toBeInTheDocument();
+    expect(screen.getByText("Transporte de cargas com cobertura nacional")).toBeInTheDocument();
+    expect(screen.getByText("Mudanças residenciais conforme a região")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /quero solicitar um frete/i })).toHaveAttribute("href", "#inicio");
+    expect(screen.getByRole("heading", { name: /precisa de ajuda com sua mudança ou carga/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /falar com um especialista/i })).toHaveAttribute(
       "href",
-      "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20encontrar%20o%20frete%20ideal.",
+      "https://wa.me/558699960441?text=Ol%C3%A1%21%20Preciso%20de%20ajuda%20para%20solicitar%20uma%20mudan%C3%A7a%20ou%20transportar%20uma%20carga.",
     );
+  });
+
+  it("describes residential moves and cargo transport in the page metadata", () => {
+    const indexHtml = readFileSync("client/index.html", "utf8");
+    const structuredDataSource = indexHtml.match(
+      /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+    )?.[1];
+    const structuredData = JSON.parse(structuredDataSource ?? "{}");
+    const service = structuredData["@graph"]?.find((item: { "@type"?: string }) => item["@type"] === "Service");
+
+    expect(indexHtml).toContain(
+      "<title>Busca Frete | Mudanças e transporte de cargas</title>",
+    );
+    expect(indexHtml).toContain(
+      '<meta name="description" content="Encontre motoristas verificados para mudanças residenciais e transporte de cargas, com acompanhamento e suporte especializado." />',
+    );
+    expect(indexHtml).toContain(
+      '<meta property="og:title" content="Busca Frete | Mudanças e transporte de cargas" />',
+    );
+    expect(indexHtml).toContain(
+      '<meta property="og:image:alt" content="Busca Frete — mudanças residenciais e transporte de cargas" />',
+    );
+    expect(service).toMatchObject({
+      areaServed: "BR",
+      serviceType: "Mudanças residenciais e transporte de cargas",
+      description: "Transporte de cargas com cobertura nacional e mudanças residenciais sujeitas à disponibilidade regional.",
+    });
   });
 });
