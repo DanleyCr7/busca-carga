@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { useEffect, type MouseEvent, type ReactNode } from "react";
 import { ConsentBanner } from "@/components/landing/ConsentBanner";
+import { BrazilAbcCoverageMap } from "@/components/landing/BrazilAbcCoverageMap";
 import { MarketingHeader } from "@/components/landing/MarketingHeader";
 import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
 import { trackLandingEvent } from "@/lib/analytics";
@@ -579,12 +580,7 @@ export default function Home() {
                 </p>
               )}
             </div>
-            <img
-              src="/images/residential/abc-pilot-map.svg"
-              alt="Mapa das cidades atendidas pelo piloto residencial no ABC Paulista"
-              className="mx-auto w-full max-w-[620px] object-contain"
-              loading="lazy"
-            />
+            <BrazilAbcCoverageMap />
           </div>
         </section>
 

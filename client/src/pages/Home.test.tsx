@@ -83,7 +83,9 @@ describe("landing residencial Busca Frete", () => {
     expect(within(benefits).getByText("Motoristas aptos")).toBeInTheDocument();
     expect(within(benefits).getByText("Para sua rota")).toBeInTheDocument();
     expect(within(benefits).getByText("Agendamento")).toBeInTheDocument();
-    expect(within(benefits).getByText("Mínimo de 48 horas")).toBeInTheDocument();
+    expect(
+      within(benefits).getByText("Mínimo de 48 horas")
+    ).toBeInTheDocument();
 
     await screen.findByText("São Caetano do Sul");
   });
@@ -111,6 +113,39 @@ describe("landing residencial Busca Frete", () => {
     ).toBeInTheDocument();
 
     await screen.findByText("São Bernardo do Campo");
+  });
+
+  it("renderiza o Brasil inteiro e destaca as cidades do ABC a partir do GeoJSON", async () => {
+    render(<Home />);
+
+    const coverageMap = screen.getByTestId("coverage-map");
+    expect(coverageMap).toHaveAttribute(
+      "data-source",
+      "client/src/data/brazil-abc-coverage.json"
+    );
+    expect(
+      within(coverageMap).getByRole("img", {
+        name: /mapa do brasil com o abc paulista em destaque/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(coverageMap).getByRole("listitem", {
+        name: "São Bernardo do Campo",
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(coverageMap).getByRole("listitem", { name: "Santo André" })
+    ).toBeInTheDocument();
+    expect(
+      within(coverageMap).getByRole("listitem", {
+        name: "São Caetano do Sul",
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/todo o brasil|cobertura nacional/i)
+    ).not.toBeInTheDocument();
+
+    await screen.findByText("Santo André");
   });
 
   it("apresenta somente as três categorias residenciais reais", async () => {
