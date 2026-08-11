@@ -142,6 +142,12 @@ describe("landing residencial Busca Frete", () => {
       })
     ).toBeInTheDocument();
     expect(
+      within(coverageMap).getAllByTestId("state-abbreviation")
+    ).toHaveLength(27);
+    expect(
+      within(coverageMap).getByLabelText("São Paulo (SP)")
+    ).toHaveTextContent("SP");
+    expect(
       screen.queryByText(/todo o brasil|cobertura nacional/i)
     ).not.toBeInTheDocument();
 

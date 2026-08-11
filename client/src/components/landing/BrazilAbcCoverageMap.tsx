@@ -20,6 +20,7 @@ type CoverageFeature = {
   properties: {
     code: string;
     name: string;
+    abbreviation?: string;
     layer: "state" | "pilot-city";
     highlighted: boolean;
   };
@@ -125,6 +126,77 @@ const abcCenter: Position = [
 ];
 const abcAnchor = projectPosition(abcCenter, brazilBounds, 480, 560, 18);
 
+const stateLabelOffsets: Record<string, Position> = {
+  24: [3, -3],
+  25: [1, -1],
+  26: [7, 0],
+  27: [8, 3],
+  28: [9, 5],
+  32: [7, 0],
+  33: [9, 5],
+  53: [7, -3],
+};
+
+function ringArea(ring: Position[]) {
+  return (
+    ring.reduce((area, [x, y], index) => {
+      const [nextX, nextY] = ring[(index + 1) % ring.length];
+      return area + x * nextY - nextX * y;
+    }, 0) / 2
+  );
+}
+
+function ringCentroid(ring: Position[]): Position {
+  const area = ringArea(ring);
+
+  if (Math.abs(area) < Number.EPSILON) {
+    const [longitude, latitude] = ring.reduce(
+      ([longitudeSum, latitudeSum], [longitude, latitude]) => [
+        longitudeSum + longitude,
+        latitudeSum + latitude,
+      ],
+      [0, 0]
+    );
+    return [longitude / ring.length, latitude / ring.length];
+  }
+
+  const [longitude, latitude] = ring.reduce(
+    ([longitudeSum, latitudeSum], [x, y], index) => {
+      const [nextX, nextY] = ring[(index + 1) % ring.length];
+      const factor = x * nextY - nextX * y;
+      return [
+        longitudeSum + (x + nextX) * factor,
+        latitudeSum + (y + nextY) * factor,
+      ];
+    },
+    [0, 0]
+  );
+
+  return [longitude / (6 * area), latitude / (6 * area)];
+}
+
+function stateLabelPosition(feature: CoverageFeature): Position {
+  const outerRings =
+    feature.geometry.type === "Polygon"
+      ? [feature.geometry.coordinates[0]]
+      : feature.geometry.coordinates.map(polygon => polygon[0]);
+  const largestRing = outerRings.reduce((largest, ring) =>
+    Math.abs(ringArea(ring)) > Math.abs(ringArea(largest)) ? ring : largest
+  );
+  const [x, y] = projectPosition(
+    ringCentroid(largestRing),
+    brazilBounds,
+    480,
+    560,
+    18
+  );
+  const [offsetX, offsetY] = stateLabelOffsets[feature.properties.code] ?? [
+    0, 0,
+  ];
+
+  return [x + offsetX, y + offsetY];
+}
+
 export function BrazilAbcCoverageMap() {
   return (
     <figure
@@ -171,6 +243,34 @@ export function BrazilAbcCoverageMap() {
               <title>{feature.properties.name}</title>
             </path>
           ))}
+        </g>
+
+        <g aria-label="Siglas dos estados brasileiros">
+          {stateFeatures.map(feature => {
+            const [x, y] = stateLabelPosition(feature);
+            const abbreviation = feature.properties.abbreviation;
+
+            return (
+              <text
+                key={feature.id}
+                data-testid="state-abbreviation"
+                aria-label={`${feature.properties.name} (${abbreviation})`}
+                x={x}
+                y={y}
+                fill={feature.properties.code === "35" ? "#0d4fc5" : "#17386f"}
+                fontSize="8.5"
+                fontWeight="800"
+                paintOrder="stroke"
+                stroke="white"
+                strokeWidth="2.4"
+                strokeLinejoin="round"
+                textAnchor="middle"
+                dominantBaseline="middle"
+              >
+                {abbreviation}
+              </text>
+            );
+          })}
         </g>
 
         <g aria-label="Localização do ABC Paulista">
