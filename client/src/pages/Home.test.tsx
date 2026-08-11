@@ -52,9 +52,67 @@ describe("landing residencial Busca Frete", () => {
     render(<Home />);
 
     expect(
-      screen.getByLabelText(/ilustração de casa e aplicativo busca frete/i)
-    ).toHaveClass("w-full");
+      screen.getByRole("img", {
+        name: /caminhão para frete residencial sobre o mapa do abc paulista/i,
+      })
+    ).toBeInTheDocument();
     await screen.findByText("São Bernardo do Campo");
+  });
+
+  it("recupera a hierarquia comercial da landing antiga com conteúdo residencial", async () => {
+    render(<Home />);
+
+    expect(
+      screen.getByRole("heading", {
+        name: /do item avulso à mudança completa/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /tudo o que sua mudança precisa/i,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /como funciona/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", {
+        name: /cobertura residencial no abc paulista/i,
+      })
+    ).toBeInTheDocument();
+
+    await screen.findByText("São Bernardo do Campo");
+  });
+
+  it("apresenta somente as três categorias residenciais reais", async () => {
+    render(<Home />);
+
+    expect(screen.getByText("Categoria 1")).toBeInTheDocument();
+    expect(screen.getByText("Caminhão pequeno")).toBeInTheDocument();
+    expect(screen.getByText("Categoria 2")).toBeInTheDocument();
+    expect(screen.getByText("Caminhão médio")).toBeInTheDocument();
+    expect(screen.getByText("Categoria 3")).toBeInTheDocument();
+    expect(screen.getByText("Caminhão grande")).toBeInTheDocument();
+    expect(screen.queryByText("Categoria 4")).not.toBeInTheDocument();
+    expect(screen.getByText("Ajudantes informados")).toBeInTheDocument();
+
+    await screen.findByText("Santo André");
+  });
+
+  it("substitui métricas antigas por fatos verificáveis do piloto", async () => {
+    render(<Home />);
+
+    expect(screen.getByText("3 cidades")).toBeInTheDocument();
+    expect(screen.getByText("48 horas")).toBeInTheDocument();
+    expect(screen.getByText("3 categorias")).toBeInTheDocument();
+    expect(screen.getByText("Expansão em andamento")).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        /1\.809|motoristas cadastrados|satisfação dos clientes/i
+      )
+    ).not.toBeInTheDocument();
+
+    await screen.findByText("São Caetano do Sul");
   });
 
   it("mantém cargas como serviço secundário sem promessa nacional", async () => {

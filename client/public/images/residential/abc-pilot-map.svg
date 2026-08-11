@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title description">
+  <title id="title">Mapa das cidades do piloto residencial no ABC Paulista</title>
+  <desc id="description">Contornos de Santo André, São Bernardo do Campo e São Caetano do Sul com base nas malhas municipais do IBGE.</desc>
+  <metadata>Fonte cartográfica: IBGE, API de Malhas, qualidade mínima.</metadata>
+  <g><g fill="#d8e9ff" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"><path d="M305.76 118.41 L323.52 161.67 L376.79 196.20 L371.85 238.34 L463.32 316.13 L526.88 351.22 L627.92 303.73 L653.71 333.89 L712.76 287.66 L651.46 251.16 L642.72 228.61 L559.15 278.78 L500.66 281.18 L470.79 288.23 L435.70 214.38 L420.90 80.07 L332.82 56.25 L305.76 118.41 Z" /></g>
+      <g aria-hidden="true">
+        <circle cx="492.75" cy="216.47" r="8" fill="#1757ba" stroke="#ffffff" stroke-width="4" />
+        <text x="492.75" y="252.47" text-anchor="middle" fill="#101a35" font-family="Inter, Segoe UI, sans-serif" font-size="19" font-weight="750"><tspan x="492.75" dy="0">Santo André</tspan></text>
+      </g>
+<g fill="#c7ddff" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"><path d="M187.24 232.28 L227.40 310.07 L213.59 401.53 L234.17 449.59 L242.76 566.00 L309.56 545.00 L343.39 503.57 L405.82 469.89 L526.88 351.22 L463.32 316.13 L371.85 238.34 L376.79 196.20 L323.52 161.67 L305.76 118.41 L282.93 105.44 L236.56 129.40 L289.41 174.50 L231.91 243.55 L187.24 232.28 Z" /></g>
+      <g aria-hidden="true">
+        <circle cx="309.60" cy="288.27" r="8" fill="#1757ba" stroke="#ffffff" stroke-width="4" />
+        <text x="309.60" y="324.27" text-anchor="middle" fill="#101a35" font-family="Inter, Segoe UI, sans-serif" font-size="19" font-weight="750"><tspan x="309.60" dy="0">São Bernardo</tspan><tspan x="309.60" dy="24">do Campo</tspan></text>
+      </g>
+<g fill="#e6f1ff" stroke="#ffffff" stroke-width="5" stroke-linejoin="round"><path d="M332.82 56.25 L288.71 54.00 L282.93 105.44 L305.76 118.41 L332.82 56.25 Z" /></g>
+      <g aria-hidden="true">
+        <circle cx="302.55" cy="65.52" r="8" fill="#1757ba" stroke="#ffffff" stroke-width="4" />
+        <text x="302.55" y="101.52" text-anchor="middle" fill="#101a35" font-family="Inter, Segoe UI, sans-serif" font-size="19" font-weight="750"><tspan x="302.55" dy="0">São Caetano</tspan><tspan x="302.55" dy="24">do Sul</tspan></text>
+      </g></g>
+  <text x="878" y="602" text-anchor="end" fill="#64748b" font-family="Inter, Segoe UI, sans-serif" font-size="12">Fonte cartográfica: IBGE</text>
+</svg>
