@@ -1,13 +1,11 @@
 import {
   ArrowRight,
   Box,
-  CalendarClock,
   Camera,
   Clock3,
   Home as HomeIcon,
   MapPin,
   PackageCheck,
-  Route,
   ShieldCheck,
   Smartphone,
   Sofa,
@@ -88,28 +86,26 @@ const solutions: IconContent[] = [
   },
 ];
 
-const steps: IconContent[] = [
+const steps = [
   {
-    icon: Route,
-    title: "Informe rota e itens",
-    text: "Adicione origem, destino, itens, fotos e detalhes dos acessos.",
+    title: "Informe rota, itens e data",
+    text: "Adicione origem, destino e itens, e agende com pelo menos 48 horas de antecedência.",
+    image: "/images/como-funciona-caminhao.png",
+    imageAlt: "Caminhão da Busca Frete para a solicitação residencial",
   },
   {
-    icon: CalendarClock,
-    title: "Escolha a data",
-    text: "Agende o frete com pelo menos 48 horas de antecedência.",
-  },
-  {
-    icon: Users,
     title: "Compare propostas",
-    text: "Avalie as propostas livres enviadas pelos motoristas aptos.",
+    text: "Receba propostas livres de motoristas aptos e escolha a melhor opção para você.",
+    image: "/images/como-funciona-painel.png",
+    imageAlt: "Propostas recebidas pelo Busca Frete",
   },
   {
-    icon: Smartphone,
     title: "Acompanhe o frete",
-    text: "Consulte os detalhes e acompanhe o serviço pelo aplicativo.",
+    text: "Consulte os detalhes e acompanhe o serviço residencial pelo aplicativo.",
+    image: "/images/como-funciona-aplicativo.png",
+    imageAlt: "Acompanhamento do frete no aplicativo Busca Frete",
   },
-];
+] as const;
 
 const heroBenefits: IconContent[] = [
   {
@@ -461,7 +457,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="como-funciona" className="pb-16 sm:pb-20">
+        <section
+          id="como-funciona"
+          data-testid="how-it-works"
+          className="pb-16 sm:pb-20"
+        >
           <div className="container">
             <div className="text-center">
               <p className="text-xs font-extrabold uppercase tracking-[.2em] text-[#1757ba]">
@@ -471,48 +471,42 @@ export default function Home() {
                 Como funciona
               </h2>
             </div>
-            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-              {steps.map(({ icon: Icon, title, text }, index) => (
+            <div className="mt-9 grid gap-5 lg:grid-cols-3">
+              {steps.map(({ title, text, image, imageAlt }, index) => (
                 <article
                   key={title}
-                  className="relative min-h-64 rounded-2xl border border-blue-100 bg-[#f8fbff] p-6 pt-16"
+                  data-testid="how-step"
+                  className="relative overflow-hidden rounded-xl bg-[#f9fbff] p-5"
                 >
-                  <span className="absolute left-5 top-5 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-black text-white">
+                  <span className="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-bold text-white">
                     {index + 1}
                   </span>
-                  <Icon className="size-10 text-[#1757ba]" strokeWidth={1.7} />
-                  <h3 className="mt-5 text-lg font-black">{title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">
+                  <img
+                    src={image}
+                    alt={imageAlt}
+                    data-image-slot={`step-${index + 1}`}
+                    className="image-placeholder mx-auto aspect-[16/9] w-4/5 object-contain"
+                    loading="lazy"
+                  />
+                  <h3 className="mt-4 text-sm font-bold">{title}</h3>
+                  <p className="mt-2 text-xs leading-5 text-slate-500">
                     {text}
                   </p>
                 </article>
               ))}
             </div>
 
-            <div className="mt-8 grid overflow-hidden rounded-2xl bg-[#1555bd] px-4 py-4 text-white sm:grid-cols-2 lg:grid-cols-4">
-              {facts.map(({ icon: Icon, value, label }, index) => {
-                const borders =
-                  (index > 0 ? "border-t border-white/20 sm:border-t-0 " : "") +
-                  (index % 2 === 1 ? "sm:border-l sm:border-white/20 " : "") +
-                  (index > 1 ? "lg:border-l lg:border-white/20" : "");
-                return (
-                  <div
-                    key={value}
-                    className={"flex items-center gap-3 px-4 py-4 " + borders}
-                  >
-                    <Icon
-                      className="size-8 shrink-0 text-blue-100"
-                      strokeWidth={1.6}
-                    />
-                    <div>
-                      <strong className="block text-base font-black">
-                        {value}
-                      </strong>
-                      <span className="text-xs text-blue-100">{label}</span>
-                    </div>
-                  </div>
-                );
-              })}
+            <div className="mt-8 grid grid-cols-2 overflow-hidden rounded-2xl bg-[linear-gradient(120deg,#114aa9,#155bd0)] px-5 py-7 text-white lg:grid-cols-4">
+              {facts.map(({ icon: Icon, value, label }) => (
+                <div
+                  key={value}
+                  className="border-white/20 px-4 py-4 text-center lg:border-r lg:last:border-r-0"
+                >
+                  <Icon className="mx-auto size-8 stroke-1" />
+                  <strong className="mt-3 block text-2xl">{value}</strong>
+                  <span className="text-xs text-blue-100">{label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>

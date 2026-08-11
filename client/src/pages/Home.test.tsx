@@ -43,8 +43,8 @@ describe("landing residencial Busca Frete", () => {
       within(appCard).getByRole("link", { name: /sou motorista/i })
     ).toHaveAttribute("href", "/motoristas");
     expect(
-      screen.getByText(/agende com pelo menos 48 horas/i)
-    ).toBeInTheDocument();
+      screen.getAllByText(/agende com pelo menos 48 horas/i).length
+    ).toBeGreaterThan(0);
 
     await waitFor(() =>
       expect(screen.getByText("São Bernardo do Campo")).toBeInTheDocument()
@@ -113,6 +113,39 @@ describe("landing residencial Busca Frete", () => {
     ).toBeInTheDocument();
 
     await screen.findByText("São Bernardo do Campo");
+  });
+
+  it("restaura a composição antiga de três etapas com conteúdo residencial", async () => {
+    render(<Home />);
+
+    const howItWorks = screen.getByTestId("how-it-works");
+    expect(within(howItWorks).getAllByTestId("how-step")).toHaveLength(3);
+    expect(
+      within(howItWorks).getByRole("img", {
+        name: /caminhão da busca frete para a solicitação residencial/i,
+      })
+    ).toHaveAttribute("src", "/images/como-funciona-caminhao.png");
+    expect(
+      within(howItWorks).getByRole("img", {
+        name: /propostas recebidas pelo busca frete/i,
+      })
+    ).toHaveAttribute("src", "/images/como-funciona-painel.png");
+    expect(
+      within(howItWorks).getByRole("img", {
+        name: /acompanhamento do frete no aplicativo busca frete/i,
+      })
+    ).toHaveAttribute("src", "/images/como-funciona-aplicativo.png");
+    expect(
+      within(howItWorks).getByText("Informe rota, itens e data")
+    ).toBeInTheDocument();
+    expect(
+      within(howItWorks).getByText("Compare propostas")
+    ).toBeInTheDocument();
+    expect(
+      within(howItWorks).getByText("Acompanhe o frete")
+    ).toBeInTheDocument();
+
+    await screen.findByText("Santo André");
   });
 
   it("renderiza o Brasil inteiro e destaca as cidades do ABC a partir do GeoJSON", async () => {
