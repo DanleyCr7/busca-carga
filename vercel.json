@@ -6,6 +6,14 @@
   "outputDirectory": "dist/public",
   "rewrites": [
     {
+      "source": "/cobertura",
+      "destination": "/cobertura.html"
+    },
+    {
+      "source": "/motoristas",
+      "destination": "/motoristas.html"
+    },
+    {
       "destination": "/index.html",
       "source": "/(.*)"
     }

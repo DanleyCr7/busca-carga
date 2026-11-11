@@ -18,7 +18,12 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
-  // Handle client-side routing - serve index.html for all routes
+  // Serve each indexable route with its own metadata before client rendering.
+  app.get(["/cobertura", "/motoristas"], (req, res) => {
+    res.sendFile(path.join(staticPath, `${req.path.slice(1).replace(/\/+$/, "")}.html`));
+  });
+
+  // Handle remaining client-side routes.
   app.get("*", (_req, res) => {
     res.sendFile(path.join(staticPath, "index.html"));
   });

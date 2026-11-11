@@ -8,6 +8,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import Drivers from "./pages/Drivers";
+import Coverage from "./pages/Coverage";
 import DataDeletion from "./pages/DataDeletion";
 import Privacidade from "./pages/privacidade";
 import Terms from "./pages/Terms";
@@ -17,6 +18,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/empresas"} component={Home} />
+      <Route path={"/cobertura"} component={Coverage} />
       <Route path={"/motoristas"} component={Drivers} />
       <Route path={"/transportadoras"} component={Home} />
       <Route path={"/seguranca-pagamentos"} component={Home} />

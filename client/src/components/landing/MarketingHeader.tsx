@@ -1,6 +1,13 @@
 import { ArrowRight } from "lucide-react";
 
-export function MarketingHeader({ driver = false }: { driver?: boolean }) {
+export function MarketingHeader({
+  driver = false,
+  home = true,
+}: {
+  driver?: boolean;
+  home?: boolean;
+}) {
+  const homeAnchor = home ? "" : "/";
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/90 backdrop-blur-xl">
       <div className="container flex h-18 items-center justify-between py-3">
@@ -15,10 +22,10 @@ export function MarketingHeader({ driver = false }: { driver?: boolean }) {
           aria-label="Navegação principal"
           className="hidden items-center gap-7 text-sm font-semibold text-slate-600 md:flex"
         >
-          {!driver && <a href="#solucoes">O que transportar</a>}
-          <a href="#como-funciona">Como funciona</a>
-          <a href="#cobertura">Cobertura</a>
-          {!driver && <a href="#cargas">Frete de cargas</a>}
+          {!driver && <a href={`${homeAnchor}#solucoes`}>O que transportar</a>}
+          <a href={`${homeAnchor}#como-funciona`}>Como funciona</a>
+          <a href="/cobertura">Cobertura</a>
+          {!driver && <a href={`${homeAnchor}#cargas`}>Frete de cargas</a>}
         </nav>
         <a
           href={driver ? "/" : "/motoristas"}

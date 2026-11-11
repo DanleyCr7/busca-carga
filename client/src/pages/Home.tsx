@@ -14,13 +14,21 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, type MouseEvent, type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { BrazilAbcCoverageMap } from "@/components/landing/BrazilAbcCoverageMap";
 import { MarketingHeader } from "@/components/landing/MarketingHeader";
+import { PageMetadata } from "@/components/landing/PageMetadata";
 import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
 import { trackLandingEvent } from "@/lib/analytics";
 
-const clientLink = import.meta.env.VITE_APPSFLYER_CLIENT_ONELINK_URL;
+import {
+  APP_STORE_URL,
+  CLIENT_APP_LINK,
+  GOOGLE_PLAY_URL,
+  MINIMUM_LEAD_HOURS,
+  RESIDENTIAL_CITIES,
+  residentialLeadHours,
+} from "@/lib/site";
 
 type IconContent = {
   icon: LucideIcon;
@@ -85,26 +93,27 @@ const solutions: IconContent[] = [
   },
 ];
 
-const steps = [
-  {
-    title: "Informe rota, itens e data",
-    text: "Adicione origem, destino e itens, e agende com pelo menos 48 horas de antecedência.",
-    image: "/images/como-funciona-caminhao.png",
-    imageAlt: "Caminhão da Busca Frete para a solicitação residencial",
-  },
-  {
-    title: "Compare propostas",
-    text: "Receba propostas livres de motoristas aptos e escolha a melhor opção para você.",
-    image: "/images/como-funciona-painel.png",
-    imageAlt: "Propostas recebidas pelo Busca Frete",
-  },
-  {
-    title: "Acompanhe o frete",
-    text: "Consulte os detalhes e acompanhe o serviço residencial pelo aplicativo.",
-    image: "/images/como-funciona-aplicativo.png",
-    imageAlt: "Acompanhamento do frete no aplicativo Busca Frete",
-  },
-] as const;
+const steps = (minimumLeadHours: number) =>
+  [
+    {
+      title: "Informe rota, itens e data",
+      text: `Adicione origem, destino e itens, e agende com pelo menos ${minimumLeadHours} horas de antecedência.`,
+      image: "/images/como-funciona-caminhao.png",
+      imageAlt: "Caminhão da Busca Frete para a solicitação residencial",
+    },
+    {
+      title: "Compare propostas",
+      text: "Receba propostas livres de motoristas aptos e escolha a melhor opção para você.",
+      image: "/images/como-funciona-painel.png",
+      imageAlt: "Propostas recebidas pelo Busca Frete",
+    },
+    {
+      title: "Acompanhe o frete",
+      text: "Consulte os detalhes e acompanhe o serviço residencial pelo aplicativo.",
+      image: "/images/como-funciona-aplicativo.png",
+      imageAlt: "Acompanhamento do frete no aplicativo Busca Frete",
+    },
+  ] as const;
 
 const heroBenefits: IconContent[] = [
   {
@@ -140,12 +149,7 @@ function AppLink({
     outline: "border border-[#1757ba] bg-white text-[#1757ba] hover:bg-blue-50",
   };
 
-  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    if (!clientLink) {
-      event.preventDefault();
-      return;
-    }
-
+  function handleClick() {
     trackLandingEvent("store_cta_click", {
       audience: "client",
       store: "onelink",
@@ -156,8 +160,7 @@ function AppLink({
   return (
     <a
       role="link"
-      href={clientLink || undefined}
-      aria-disabled={!clientLink}
+      href={CLIENT_APP_LINK}
       target="_blank"
       rel="noreferrer"
       onClick={handleClick}
@@ -174,7 +177,13 @@ function AppLink({
   );
 }
 
-function HeroBenefits({ mobile = false }: { mobile?: boolean }) {
+function HeroBenefits({
+  mobile = false,
+  minimumLeadHours = MINIMUM_LEAD_HOURS,
+}: {
+  mobile?: boolean;
+  minimumLeadHours?: number;
+}) {
   return (
     <ul
       data-testid={mobile ? "hero-benefits-mobile" : "hero-benefits-desktop"}
@@ -203,7 +212,9 @@ function HeroBenefits({ mobile = false }: { mobile?: boolean }) {
           />
           <span>
             <strong className="block font-semibold">{title}</strong>
-            {text}
+            {title === "Agendamento"
+              ? `Mínimo de ${minimumLeadHours} horas`
+              : text}
           </span>
         </li>
       ))}
@@ -213,14 +224,12 @@ function HeroBenefits({ mobile = false }: { mobile?: boolean }) {
 
 export default function Home() {
   const { pilot, failed } = usePublicResidentialPilot();
-  const cities = pilot?.available ? pilot.cities : [];
-  const visibleCities = cities.length > 0 ? cities : ["ABC Paulista"];
-  const minimumLeadHours = pilot?.minimumLeadHours ?? 48;
+  const minimumLeadHours = residentialLeadHours(pilot?.minimumLeadHours);
   const facts = [
     {
       icon: MapPin,
-      value: (cities.length || 3) + " cidades",
-      label: "no núcleo inicial",
+      value: RESIDENTIAL_CITIES.length + " cidades",
+      label: "na cobertura residencial",
     },
     {
       icon: Clock3,
@@ -234,8 +243,8 @@ export default function Home() {
     },
     {
       icon: Sparkles,
-      value: "Expansão em andamento",
-      label: "novas cidades gradualmente",
+      value: "Pelo aplicativo",
+      label: "consulte rotas e datas",
     },
   ];
 
@@ -255,7 +264,7 @@ export default function Home() {
       });
     }
 
-    if (pilot?.promotion) {
+    if (pilot?.available && pilot.promotion) {
       trackLandingEvent("promotion_view", {
         audience: "client",
         pilot: pilot.pilotSlug,
@@ -265,6 +274,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-white text-[#101a35]">
+      <PageMetadata
+        title="Busca Frete | Fretes e mudanças no ABCD e Mauá"
+        description="Frete residencial e mudanças em Santo André, São Bernardo do Campo, São Caetano do Sul, Diadema e Mauá. Compare propostas pelo app Busca Frete."
+        path="/"
+      />
       <MarketingHeader />
       <main>
         <section
@@ -274,18 +288,19 @@ export default function Home() {
           <div className="container grid min-h-[650px] items-center gap-10 py-14 max-lg:pb-24 lg:grid-cols-[53%_47%] lg:py-20">
             <div className="relative z-10">
               <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-white px-4 py-2 text-xs font-extrabold text-[#1757ba]">
-                <MapPin className="size-4" /> Piloto residencial no ABC Paulista
+                <MapPin className="size-4" /> Frete residencial no ABCD e Mauá
               </span>
               <h1 className="mt-7 max-w-xl text-3xl font-extrabold leading-[1.08] tracking-[-.045em] lg:text-[3rem]">
-                Seu frete residencial no ABC,{" "}
+                Seu frete residencial no ABCD e Mauá,{" "}
                 <span className="text-[#1757ba]">do seu jeito.</span>
               </h1>
               <p className="mt-6 max-w-md text-sm leading-7 text-slate-600">
-                Agende com pelo menos 48 horas de antecedência, informe os itens
-                e receba propostas de motoristas aptos para a sua mudança.
+                Agende com pelo menos {minimumLeadHours} horas de antecedência,
+                informe os itens e receba propostas de motoristas aptos para a
+                sua mudança.
               </p>
 
-              {pilot?.promotion && (
+              {pilot?.available && pilot.promotion && (
                 <div className="mt-5 inline-flex rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-extrabold text-emerald-800">
                   ABC30 · até R$ 30 de benefício no lançamento
                 </div>
@@ -332,7 +347,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <HeroBenefits />
+              <HeroBenefits minimumLeadHours={minimumLeadHours} />
             </div>
 
             <div className="relative mx-auto aspect-[5/4] w-[84%] overflow-hidden rounded-3xl sm:mx-0 sm:w-full">
@@ -364,7 +379,7 @@ export default function Home() {
           </div>
 
           <div className="absolute inset-x-0 bottom-0 z-10 translate-y-1/2 lg:hidden">
-            <HeroBenefits mobile />
+            <HeroBenefits mobile minimumLeadHours={minimumLeadHours} />
           </div>
         </section>
 
@@ -471,28 +486,30 @@ export default function Home() {
               </h2>
             </div>
             <div className="mt-9 grid gap-5 lg:grid-cols-3">
-              {steps.map(({ title, text, image, imageAlt }, index) => (
-                <article
-                  key={title}
-                  data-testid="how-step"
-                  className="relative overflow-hidden rounded-xl bg-[#f9fbff] p-5"
-                >
-                  <span className="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-bold text-white">
-                    {index + 1}
-                  </span>
-                  <img
-                    src={image}
-                    alt={imageAlt}
-                    data-image-slot={`step-${index + 1}`}
-                    className="image-placeholder mx-auto aspect-[16/9] w-4/5 object-contain"
-                    loading="lazy"
-                  />
-                  <h3 className="mt-4 text-sm font-bold">{title}</h3>
-                  <p className="mt-2 text-xs leading-5 text-slate-500">
-                    {text}
-                  </p>
-                </article>
-              ))}
+              {steps(minimumLeadHours).map(
+                ({ title, text, image, imageAlt }, index) => (
+                  <article
+                    key={title}
+                    data-testid="how-step"
+                    className="relative overflow-hidden rounded-xl bg-[#f9fbff] p-5"
+                  >
+                    <span className="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-full bg-[#1757ba] text-sm font-bold text-white">
+                      {index + 1}
+                    </span>
+                    <img
+                      src={image}
+                      alt={imageAlt}
+                      data-image-slot={`step-${index + 1}`}
+                      className="image-placeholder mx-auto aspect-[16/9] w-4/5 object-contain"
+                      loading="lazy"
+                    />
+                    <h3 className="mt-4 text-sm font-bold">{title}</h3>
+                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                      {text}
+                    </p>
+                  </article>
+                )
+              )}
             </div>
 
             <div className="mt-8 grid grid-cols-2 overflow-hidden rounded-2xl bg-[linear-gradient(120deg,#114aa9,#155bd0)] px-5 py-7 text-white lg:grid-cols-4">
@@ -525,7 +542,8 @@ export default function Home() {
                 </h2>
                 <p className="mt-2 max-w-xl text-sm leading-6 text-blue-100">
                   O cadastro está liberado. Após a aprovação, informe sua
-                  disponibilidade para atender as cidades do piloto.
+                  disponibilidade para atender as cidades da cobertura
+                  residencial.
                 </p>
               </div>
               <a
@@ -551,14 +569,16 @@ export default function Home() {
                 <MapPin className="size-6" />
               </span>
               <h2 className="mt-6 text-3xl font-black leading-tight sm:text-4xl">
-                Cobertura residencial no ABC Paulista
+                Fretes e mudanças no ABCD e Mauá
               </h2>
               <p className="mt-4 max-w-lg leading-7 text-slate-600">
-                O piloto atende rotas residenciais internas entre as cidades
-                liberadas. A expansão acontecerá gradualmente.
+                Para transportar um móvel, fazer uma pequena mudança ou planejar
+                uma mudança completa, consulte no app as rotas entre Santo
+                André, São Bernardo do Campo, São Caetano do Sul, Diadema e
+                Mauá.
               </p>
               <div className="mt-6 flex flex-wrap gap-2">
-                {visibleCities.map(city => (
+                {RESIDENTIAL_CITIES.map(city => (
                   <span
                     key={city}
                     className="rounded-full border border-blue-200 bg-white px-4 py-2 text-sm font-extrabold text-[#1757ba]"
@@ -567,11 +587,19 @@ export default function Home() {
                   </span>
                 ))}
               </div>
-              {failed && (
+              {(failed || !pilot?.available) && (
                 <p className="mt-4 text-sm text-slate-500">
-                  Consulte a disponibilidade atual no aplicativo.
+                  A disponibilidade de motoristas, rotas e datas deve ser
+                  consultada no aplicativo.
                 </p>
               )}
+              <a
+                href="/cobertura"
+                className="mt-5 inline-flex items-center gap-2 font-bold text-[#1757ba] hover:underline"
+              >
+                Veja a cobertura e como solicitar{" "}
+                <ArrowRight className="size-4" />
+              </a>
             </div>
             <BrazilAbcCoverageMap />
           </div>
@@ -594,9 +622,43 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-              <AppLink variant="light">
-                Baixar o Busca Frete <ArrowRight className="size-4" />
-              </AppLink>
+              <div className="flex flex-col items-start gap-4 md:items-end">
+                <AppLink variant="light">
+                  Baixar o Busca Frete <ArrowRight className="size-4" />
+                </AppLink>
+                <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold">
+                  <a
+                    href={GOOGLE_PLAY_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() =>
+                      trackLandingEvent("store_cta_click", {
+                        audience: "client",
+                        store: "google_play",
+                        pilot: "abc-residencial-v1",
+                      })
+                    }
+                    className="underline underline-offset-4 hover:text-blue-100"
+                  >
+                    Google Play · Android
+                  </a>
+                  <a
+                    href={APP_STORE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={() =>
+                      trackLandingEvent("store_cta_click", {
+                        audience: "client",
+                        store: "app_store",
+                        pilot: "abc-residencial-v1",
+                      })
+                    }
+                    className="underline underline-offset-4 hover:text-blue-100"
+                  >
+                    App Store · iPhone
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -640,6 +702,9 @@ export default function Home() {
         <div className="container flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <p>© 2026 Busca Frete. Frete residencial e transporte de cargas.</p>
           <div className="flex flex-wrap gap-5">
+            <a href="/cobertura" className="hover:text-white">
+              Cobertura
+            </a>
             <a href="/privacidade" className="hover:text-white">
               Política de privacidade
             </a>
