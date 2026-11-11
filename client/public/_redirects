@@ -1,4 +1,7 @@
 # Redirects from what the browser requests to what we serve
 /api/*  https://your-backend-api.vercel.app/api/:splat  200
 
+/cobertura   /cobertura.html   200
+/motoristas  /motoristas.html  200
+
 /*      /index.html   200

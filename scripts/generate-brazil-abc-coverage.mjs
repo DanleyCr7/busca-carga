@@ -75,6 +75,8 @@ const pilotCities = [
   { code: "3548708", name: "São Bernardo do Campo" },
   { code: "3547809", name: "Santo André" },
   { code: "3548807", name: "São Caetano do Sul" },
+  { code: "3513801", name: "Diadema" },
+  { code: "3529401", name: "Mauá" },
 ];
 
 async function fetchGeoJson(url) {
@@ -147,7 +149,7 @@ const coverageGeoJson = {
   metadata: {
     source: "IBGE API de Malhas Geográficas v3",
     sourceUrl: "https://servicodados.ibge.gov.br/api/docs/malhas?versao=3",
-    generatedOn: "2026-08-11",
+    generatedOn: new Date().toISOString().slice(0, 10),
     stateCount: states.length,
     highlightedCityCount: cities.length,
   },

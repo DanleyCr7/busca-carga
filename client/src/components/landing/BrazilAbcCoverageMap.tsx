@@ -206,11 +206,11 @@ export function BrazilAbcCoverageMap() {
     >
       <svg
         role="img"
-        aria-label="Mapa do Brasil com o ABC Paulista em destaque"
+        aria-label="Mapa do Brasil com o ABCD e Mauá em destaque"
         viewBox="0 0 720 600"
         className="h-auto w-full"
       >
-        <title>Mapa do Brasil com o ABC Paulista em destaque</title>
+        <title>Mapa do Brasil com o ABCD e Mauá em destaque</title>
         <defs>
           <filter
             id="abc-map-shadow"
@@ -307,14 +307,14 @@ export function BrazilAbcCoverageMap() {
             stroke="#b8e5df"
           />
           <text x="18" y="32" fill="#101a35" fontSize="16" fontWeight="800">
-            ABC em destaque
+            ABCD e Mauá
           </text>
           <text x="18" y="51" fill="#64748b" fontSize="10">
             detalhe das cidades liberadas
           </text>
           <g
             role="list"
-            aria-label="Cidades do piloto residencial"
+            aria-label="Cidades da cobertura residencial"
             transform="translate(15 62)"
           >
             {pilotCityFeatures.map(feature => (
@@ -339,7 +339,7 @@ export function BrazilAbcCoverageMap() {
           className="size-2.5 rounded-full bg-[#0f9f8f]"
           aria-hidden="true"
         />
-        Cidades do piloto residencial destacadas no mapa
+        Cidades da cobertura residencial destacadas no mapa
       </figcaption>
     </figure>
   );

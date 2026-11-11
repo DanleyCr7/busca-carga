@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { useEffect } from "react";
 import { MarketingHeader } from "@/components/landing/MarketingHeader";
+import { PageMetadata } from "@/components/landing/PageMetadata";
+import { RESIDENTIAL_CITIES } from "@/lib/site";
 import { usePublicResidentialPilot } from "@/hooks/usePublicResidentialPilot";
 import { trackLandingEvent } from "@/lib/analytics";
 
@@ -17,10 +19,7 @@ const driverLink = import.meta.env.VITE_APPSFLYER_DRIVER_ONELINK_URL;
 
 export default function Drivers() {
   const { pilot } = usePublicResidentialPilot();
-  const cities =
-    pilot?.available && pilot.cities.length > 0
-      ? pilot.cities
-      : ["ABC Paulista"];
+  const cities = RESIDENTIAL_CITIES;
   useEffect(() => {
     window.scrollTo(0, 0);
     trackLandingEvent("landing_view", {
@@ -38,6 +37,11 @@ export default function Drivers() {
   }, [pilot]);
   return (
     <div className="min-h-screen bg-white text-[#0b1f45]">
+      <PageMetadata
+        title="Motoristas parceiros no ABCD e Mauá | Busca Frete"
+        description="Cadastre-se como motorista parceiro do Busca Frete para atender fretes residenciais em Santo André, São Bernardo do Campo, São Caetano do Sul, Diadema e Mauá."
+        path="/motoristas"
+      />
       <MarketingHeader driver />
       <main>
         <section className="bg-[radial-gradient(circle_at_75%_20%,#d9f7ee_0,transparent_38%),linear-gradient(180deg,#f4f9ff,#fff)]">
@@ -47,7 +51,7 @@ export default function Drivers() {
                 O cadastro está liberado
               </span>
               <h1 className="mt-7 text-4xl font-black leading-[1.06] tracking-[-.04em] sm:text-5xl">
-                Fretes residenciais no ABC para quem está disponível de verdade.
+                Fretes residenciais no ABCD e Mauá para motoristas parceiros.
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
                 Cadastre-se, conclua a aprovação cadastral e informe em quais
@@ -78,7 +82,7 @@ export default function Drivers() {
             <div className="rounded-[2.5rem] bg-[#0b1f45] p-8 text-white shadow-2xl">
               <Truck className="size-12 text-[#78d9c9]" />
               <h2 className="mt-6 text-2xl font-black">
-                Onde o piloto está disponível
+                Cidades da cobertura residencial
               </h2>
               <div className="mt-6 flex flex-wrap gap-3">
                 {cities.map(city => (
