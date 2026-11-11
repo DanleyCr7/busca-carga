@@ -9,6 +9,8 @@ declare global {
   interface Window {
     dataLayer?: unknown[];
     fbq?: MetaPixelFunction;
+    gtag?: (...args: unknown[]) => void;
+    [key: `ga-disable-${string}`]: boolean | undefined;
   }
 }
 
@@ -22,8 +24,12 @@ type MetaPixelFunction = {
 };
 
 const consentKey = "bf_marketing_consent";
-export const marketingConsentChangedEvent =
-  "bf:marketing-consent-changed";
+const gtmId = import.meta.env.VITE_GTM_ID?.trim();
+const ga4Id = import.meta.env.VITE_GA4_ID?.trim() || "G-PDYVBF5ZND";
+let consentModeInitialized = false;
+let marketingAnalyticsEnabled = false;
+let googleTagConfigured = false;
+export const marketingConsentChangedEvent = "bf:marketing-consent-changed";
 export type MarketingConsent = "granted" | "denied";
 
 function notifyMarketingConsentChanged(consent: MarketingConsent) {
@@ -39,17 +45,38 @@ function dataLayer() {
   return window.dataLayer;
 }
 
+function gtag(...args: unknown[]) {
+  window.gtag =
+    window.gtag ??
+    function (..._args: unknown[]) {
+      dataLayer().push(arguments);
+    };
+  window.gtag(...args);
+}
+
+function disableGoogleAnalytics(disabled: boolean) {
+  window[`ga-disable-${ga4Id}`] = disabled;
+}
+
+function updateGoogleConsent(consent: MarketingConsent) {
+  gtag("consent", "update", {
+    ad_storage: consent,
+    analytics_storage: consent,
+    ad_user_data: consent,
+    ad_personalization: consent,
+  });
+}
+
 export function initializeConsentMode() {
-  dataLayer().push([
-    "consent",
-    "default",
-    {
-      ad_storage: "denied",
-      analytics_storage: "denied",
-      ad_user_data: "denied",
-      ad_personalization: "denied",
-    },
-  ]);
+  if (consentModeInitialized) return;
+  consentModeInitialized = true;
+  disableGoogleAnalytics(true);
+  gtag("consent", "default", {
+    ad_storage: "denied",
+    analytics_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
 }
 
 function injectScript(id: string, src: string) {
@@ -80,41 +107,45 @@ function initializeMetaPixel(pixelId: string) {
 }
 
 export function enableMarketingAnalytics() {
+  initializeConsentMode();
+  if (marketingAnalyticsEnabled) return;
+  marketingAnalyticsEnabled = true;
   localStorage.setItem(consentKey, "granted");
+  disableGoogleAnalytics(false);
+  updateGoogleConsent("granted");
   notifyMarketingConsentChanged("granted");
-  dataLayer().push([
-    "consent",
-    "update",
-    {
-      ad_storage: "granted",
-      analytics_storage: "granted",
-      ad_user_data: "granted",
-      ad_personalization: "granted",
-    },
-  ]);
-  const gtmId = import.meta.env.VITE_GTM_ID;
-  const ga4Id = import.meta.env.VITE_GA4_ID;
-  const metaId = import.meta.env.VITE_META_PIXEL_ID;
+
   if (gtmId) {
-    injectScript(
-      "bf-gtm",
-      `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
-    );
+    if (!googleTagConfigured) {
+      googleTagConfigured = true;
+      dataLayer().push({ "gtm.start": Date.now(), event: "gtm.js" });
+      injectScript(
+        "bf-gtm",
+        `https://www.googletagmanager.com/gtm.js?id=${gtmId}`
+      );
+    }
     return;
   }
-  if (ga4Id) {
+
+  if (!googleTagConfigured) {
+    googleTagConfigured = true;
+    gtag("js", new Date());
+    gtag("config", ga4Id, { anonymize_ip: true });
     injectScript(
       "bf-ga4",
       `https://www.googletagmanager.com/gtag/js?id=${ga4Id}`
     );
-    dataLayer().push(["js", new Date()]);
-    dataLayer().push(["config", ga4Id, { anonymize_ip: true }]);
   }
+  const metaId = import.meta.env.VITE_META_PIXEL_ID;
   if (metaId) initializeMetaPixel(metaId);
 }
 
 export function denyMarketingAnalytics() {
   localStorage.setItem(consentKey, "denied");
+  marketingAnalyticsEnabled = false;
+  initializeConsentMode();
+  disableGoogleAnalytics(true);
+  updateGoogleConsent("denied");
   notifyMarketingConsentChanged("denied");
 }
 
@@ -128,15 +159,16 @@ export function trackLandingEvent(
   properties: Record<string, string | number | boolean | null> = {}
 ) {
   if (currentConsent() !== "granted") return;
+  if (!marketingAnalyticsEnabled) enableMarketingAnalytics();
   const params = new URLSearchParams(window.location.search);
   const payload = {
-    event,
     route: window.location.pathname,
     utm_source: params.get("utm_source"),
     utm_medium: params.get("utm_medium"),
     utm_campaign: params.get("utm_campaign"),
     ...properties,
   };
-  dataLayer().push(payload);
-  window.fbq?.("trackCustom", event, payload);
+  if (gtmId) dataLayer().push({ event, ...payload });
+  else gtag("event", event, { ...payload, send_to: ga4Id });
+  window.fbq?.("trackCustom", event, { event, ...payload });
 }
